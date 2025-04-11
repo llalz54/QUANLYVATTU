@@ -121,7 +121,7 @@ public class FormNhapHang extends javax.swing.JFrame {
                     .addGroup(panelNhapHangLayout.createSequentialGroup()
                         .addGap(202, 202, 202)
                         .addComponent(lbNhapHang, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(237, Short.MAX_VALUE))
+                .addContainerGap(238, Short.MAX_VALUE))
         );
         panelNhapHangLayout.setVerticalGroup(
             panelNhapHangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
