@@ -12,6 +12,7 @@ public class CONNECTION {
             Connection con = DriverManager.getConnection(URL);
             return con;
         } catch (SQLException ex) {
+            System.out.println(ex);
             return null;
         }
     }
