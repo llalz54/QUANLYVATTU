@@ -8,11 +8,13 @@ public class PHIEUNHAP {
     private int price;
     private String ngayNhap;
     private String supplier;
+    private int group_id;
+    private int tongTien;
     
     public PHIEUNHAP() {
     }
 
-    public PHIEUNHAP(int idpn, int userID, int categoryID, int quantity, int price, String ngayNhap, String supplier) {
+    public PHIEUNHAP(int idpn, int userID, int categoryID,int group_id, int quantity, int price, String ngayNhap, String supplier) {
         this.idpn = idpn;
         this.userID = userID;
         this.categoryID = categoryID;
@@ -20,8 +22,32 @@ public class PHIEUNHAP {
         this.price = price;
         this.ngayNhap = ngayNhap;
         this.supplier = supplier;
+        this.group_id = group_id;
     }
 
+    public int getTongTien() {
+        return tongTien;
+    }
+
+    public void setIdpn(int idpn) {
+        this.idpn = idpn;
+    }
+    
+
+    public void setTongTien(int tongTien) {
+        this.tongTien = quantity*price;
+    }
+
+    
+    public int getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(int group_id) {
+        this.group_id = group_id;
+    }
+
+    
     public int getIdpn() {
         return idpn;
     }
