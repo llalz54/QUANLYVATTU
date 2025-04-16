@@ -7,6 +7,7 @@ public class SANPHAM {
     private String status;
     private String startDate;
     private String endDate;
+    private String tenLoai;
 
     public SANPHAM() {
     }
@@ -20,6 +21,16 @@ public class SANPHAM {
         this.endDate = endDate;
     }
 
+    public String getTenLoai() {
+        return tenLoai;
+    }
+
+    public void setTenLoai(String tenLoai) {
+        this.tenLoai = tenLoai;
+    }
+
+    
+    
     public void setProductID(int productID) {
         this.productID = productID;
     }

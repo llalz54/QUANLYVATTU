@@ -25,16 +25,17 @@ public class SANPHAM_DATA {
     public ArrayList<SANPHAM> getListSP() {
         try {
             DBAccess acc = new DBAccess();
-            ResultSet rs = acc.Query("SELECT * FROM dbo.SanPham");
+            ResultSet rs = acc.Query("SELECT sp.*, c.name FROM SanPham sp  JOIN LoaiSP c ON sp.category_id = c.category_id");
             ArrayList<SANPHAM> dssp = new ArrayList<>();
             while (rs.next()) {
               SANPHAM sp = new SANPHAM();
                sp.setProductID(rs.getInt("product_id"));
-               sp.setCategoryID(rs.getInt("category_id"));
+               sp.setTenLoai(rs.getString("name"));
                sp.setSerial(rs.getString("serial").trim());
+               
                sp.setStatus(rs.getString("status"));
                sp.setStartDate(rs.getString("start_date"));
-               sp.setEndDate(rs.getString("end_day"));
+               sp.setEndDate(rs.getString("end_date"));
                dssp.add(sp);
                
             }

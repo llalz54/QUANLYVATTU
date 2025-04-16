@@ -4,12 +4,18 @@
  */
 package com.mycompany.quanlyvattu;
 
+import ConDB.DBAccess;
+import DAO.NHOMSP_DATA;
 import DAO.NhapHang;
 import DTO.PHIEUNHAP;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -24,9 +30,25 @@ public class FormNhapHang extends javax.swing.JFrame {
     public FormNhapHang() {
         initComponents();
         loadDataTablePN();
+        loadCBDM(cbNhom);
     }
+ 
     SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
     private NhapHang pn_data = new NhapHang();
+    private NHOMSP_DATA nhomsp_data = new NHOMSP_DATA();
+    
+    private void loadCBDM(JComboBox cbox) {
+        cbox.removeAllItems();
+        try {
+            DBAccess acc = new DBAccess();
+            ResultSet rs = acc.Query("SELECT name FROM NhomSP");
+            while (rs.next()) {
+                cbox.addItem(rs.getString("name").trim());
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Lỗi loadCBDM!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

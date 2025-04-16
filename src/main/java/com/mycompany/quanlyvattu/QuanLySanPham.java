@@ -4,12 +4,21 @@
  */
 package com.mycompany.quanlyvattu;
 
+import ConDB.DBAccess;
+import DAO.NHOMSP_DATA;
 import DAO.SANPHAM_DATA;
 
 import DTO.SANPHAM;
+import java.security.interfaces.RSAKey;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,11 +30,13 @@ public class QuanLySanPham extends javax.swing.JFrame {
     /**
      * Creates new form QuanLySanPham
      */
-    public QuanLySanPham() {
+    public QuanLySanPham() throws SQLException {
         initComponents();
         loadDataTableSP();
+       
     }
     private SANPHAM_DATA sp_data = new SANPHAM_DATA();
+     private NHOMSP_DATA nhomsp_data = new NHOMSP_DATA();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,9 +52,18 @@ public class QuanLySanPham extends javax.swing.JFrame {
             for (SANPHAM sp : dssp) {
                 Vector vec = new Vector();
                 vec.add(sp.getProductID());
-                vec.add(sp.getCategoryID());
+                vec.add(sp.getTenLoai());
                 vec.add(sp.getSerial());
-                vec.add(sp.getStatus());
+                String trangThai;
+                String statusRaw = sp.getStatus(); // Giả sử getStatus trả về "1" hoặc "2"
+              if ("1".equals(statusRaw)) {
+                trangThai = "Đã bán";
+            } else if ("2".equals(statusRaw)) {
+                trangThai = "Đang tồn kho";
+            } else {
+                trangThai = "Đang bảo hành"; // fallback nếu giá trị bất ngờ
+            }
+                vec.add(trangThai);
                 vec.add(sp.getStartDate());
                 vec.add(sp.getEndDate());
               
@@ -52,6 +72,8 @@ public class QuanLySanPham extends javax.swing.JFrame {
             tbSP.setModel(dtm);
         }
     }
+
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -65,6 +87,12 @@ public class QuanLySanPham extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1200, 600));
+        setResizable(false);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("QUẢN LÍ SẢN PHẨM");
@@ -77,11 +105,11 @@ public class QuanLySanPham extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Loại", "Serial", "Trạng Thái", "Ngày Kích Hoạt", "Ngày Kết Thúc"
+                "ID", "Tên", "Serial", "Trạng Thái", "Ngày Kích Hoạt", "Ngày Kết Thúc"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -101,21 +129,20 @@ public class QuanLySanPham extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(403, 403, 403)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(646, Short.MAX_VALUE))
+                        .addComponent(tfTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(524, 524, 524)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(525, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -136,6 +163,12 @@ public class QuanLySanPham extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        
+            loadDataTableSP();
+        
+    }//GEN-LAST:event_formComponentShown
 
     /**
      * @param args the command line arguments
@@ -167,7 +200,11 @@ public class QuanLySanPham extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new QuanLySanPham().setVisible(true);
+                try {
+                    new QuanLySanPham().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(QuanLySanPham.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
