@@ -1,5 +1,6 @@
 
 package DAO;
+import ConDB.CONNECTION;
 import ConDB.DBAccess;
 import DTO.PHIEUNHAP;
 import java.sql.*;
@@ -43,7 +44,38 @@ public class NhapHang {
         } catch (SQLException e) {
         }
         return null;
+       
     }
+    
+
+    public static boolean add_PN(String maPN, String ngayNhap, String maNV) {
+        Connection conn = CONNECTION.getConnection();
+        try {
+            String sql = "INSERT INTO PHIEUNHAP values(?,?,?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maPN);
+            ps.setString(2, ngayNhap);
+            ps.setString(3, maNV);
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+            return true;
+        } catch (Exception e) {
+            System.out.println("Lỗi thêm PN!!!");
+        }
+        return false;
+    }
+
+    public PHIEUNHAP timPhieuNhap(String ma) {
+        for (PHIEUNHAP pn : listPN) {
+            if (ma.equals(pn.getCategoryID())) {
+                return pn;
+            }
+        }
+        return null;
+    }
+    
+    
     
    
             
