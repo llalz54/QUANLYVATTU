@@ -52,10 +52,6 @@ public class PHIEUNHAP {
         return idpn;
     }
 
-    public void setIdpn(int idpn) {
-        this.idpn = idpn;
-    }
-
     public int getUserID() {
         return userID;
     }

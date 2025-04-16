@@ -20,6 +20,12 @@ public class SANPHAM {
         this.endDate = endDate;
     }
 
+    public void setProductID(int productID) {
+        this.productID = productID;
+    }
+    
+    
+
     public int getProductID() {
         return productID;
     }
