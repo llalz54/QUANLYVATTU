@@ -4,6 +4,14 @@
  */
 package com.mycompany.quanlyvattu;
 
+import DAO.NhapHang;
+import DTO.PHIEUNHAP;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Admin
@@ -16,6 +24,8 @@ public class FormNhapHang extends javax.swing.JFrame {
     public FormNhapHang() {
         initComponents();
     }
+    SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+    private NhapHang pn_data = new NhapHang();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -43,7 +53,7 @@ public class FormNhapHang extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbCTNhapHang = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tbCTXuatHang = new javax.swing.JTable();
+        tbPN = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         tfTimKiem = new javax.swing.JTextField();
         btnLuu = new javax.swing.JButton();
@@ -158,7 +168,7 @@ public class FormNhapHang extends javax.swing.JFrame {
             tbCTNhapHang.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        tbCTXuatHang.setModel(new javax.swing.table.DefaultTableModel(
+        tbPN.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null},
@@ -184,7 +194,7 @@ public class FormNhapHang extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(tbCTXuatHang);
+        jScrollPane2.setViewportView(tbPN);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -313,7 +323,7 @@ public class FormNhapHang extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLuu)
                     .addComponent(btnThoat))
-                .addGap(0, 41, Short.MAX_VALUE))
+                .addGap(0, 100, Short.MAX_VALUE))
         );
 
         panelNhapHang.getAccessibleContext().setAccessibleName("lblNhapHang");
@@ -330,6 +340,29 @@ public class FormNhapHang extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ftxngayNhapActionPerformed
 
+     private void loadDataTablePN() {
+        Date date = new Date();
+        String ngay = format1.format(date);
+        DefaultTableModel dtm = (DefaultTableModel) tbPN.getModel();
+        dtm.setNumRows(0);
+        ArrayList<PHIEUNHAP> dspn = pn_data.sp_getListPN();
+        if (dspn != null) {
+            for (PHIEUNHAP pn : dspn) {
+                Vector vec = new Vector();
+                vec.add(pn.getIdpn());
+                vec.add(pn.getNgayNhap());
+                vec.add(pn.getCategoryID());
+                vec.add(pn.getGroup_id());
+                vec.add(pn.getQuantity());
+                vec.add(pn.getPrice());
+                vec.add(pn.getTongTien());
+                vec.add(pn.getSupplier());
+               
+                dtm.addRow(vec);
+            }
+            tbPN.setModel(dtm);
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -383,7 +416,7 @@ public class FormNhapHang extends javax.swing.JFrame {
     private javax.swing.JLabel lbSoLuong;
     private javax.swing.JPanel panelNhapHang;
     private javax.swing.JTable tbCTNhapHang;
-    private javax.swing.JTable tbCTXuatHang;
+    private javax.swing.JTable tbPN;
     private javax.swing.JTextField tfNCC;
     private javax.swing.JTextField tfTimKiem;
     private javax.swing.JTextField tfsoLuong;
