@@ -71,4 +71,8 @@ public class PHIEUNHAP_DATA {
     public static void updatePN(){
         
     }
+    
+    public static void create_TB_CTPN(int quantity){
+        
+    }
 }

@@ -1,13 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package com.mycompany.quanlyvattu;
 
-/**
- *
- * @author Admin
- */
+import javax.swing.table.DefaultTableModel;
+import DAO.OTHER_DATA;
 public class ChiTietNhapHang extends javax.swing.JFrame {
 
     /**
@@ -15,6 +10,35 @@ public class ChiTietNhapHang extends javax.swing.JFrame {
      */
     public ChiTietNhapHang() {
         initComponents();
+        OTHER_DATA.loadCBDM(cb_GrProduct);
+    }
+
+    private void create_TB_CTPN(int quantity) {
+        int column = 10;
+        int row = (int) Math.ceil((double) quantity / 10);
+
+        String[] columnNames = new String[column + 1];
+        for (int i = 0; i < column; i++) {
+            columnNames[i] = "" + (i + 1);
+        }
+
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                int cellIndex = rowIndex * column + columnIndex;
+                return cellIndex < quantity; // chỉ các ô trong số lượng cho phép mới được chỉnh
+            }
+        };
+
+        for (int i = 0; i < row; i++) {
+            model.addRow(new Object[column]);
+        }
+
+        tb_CTPN.setModel(model);
+    }
+    
+    private void load_Cb_Brand(){
+        
     }
 
     /**
@@ -26,90 +50,128 @@ public class ChiTietNhapHang extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField3 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        tb_CTPN = new javax.swing.JTable();
+        cb_GrProduct = new javax.swing.JComboBox<>();
+        cb_Brand = new javax.swing.JComboBox<>();
+        cb_Supplier = new javax.swing.JComboBox<>();
+        txt_Quantity = new javax.swing.JTextField();
+        txt_Quantity1 = new javax.swing.JTextField();
+        txt_Quantity2 = new javax.swing.JTextField();
+        btn_Confirm = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1000, 600));
 
-        jTextField1.setText("Nhóm sản phẩm");
-
-        jTextField2.setText("Hãng");
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tb_CTPN.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"
+                "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        jTable1.setOpaque(false);
-        jTable1.setPreferredSize(new java.awt.Dimension(790, 400));
-        jTable1.setRowHeight(40);
-        jTable1.setRowSelectionAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(25);
+        tb_CTPN.setOpaque(false);
+        tb_CTPN.setPreferredSize(new java.awt.Dimension(790, 400));
+        tb_CTPN.setRowHeight(40);
+        tb_CTPN.setRowSelectionAllowed(false);
+        tb_CTPN.setShowGrid(true);
+        jScrollPane1.setViewportView(tb_CTPN);
+        if (tb_CTPN.getColumnModel().getColumnCount() > 0) {
+            tb_CTPN.getColumnModel().getColumn(0).setResizable(false);
+            tb_CTPN.getColumnModel().getColumn(1).setResizable(false);
+            tb_CTPN.getColumnModel().getColumn(2).setResizable(false);
+            tb_CTPN.getColumnModel().getColumn(3).setResizable(false);
+            tb_CTPN.getColumnModel().getColumn(4).setResizable(false);
+            tb_CTPN.getColumnModel().getColumn(5).setResizable(false);
+            tb_CTPN.getColumnModel().getColumn(6).setResizable(false);
+            tb_CTPN.getColumnModel().getColumn(7).setResizable(false);
+            tb_CTPN.getColumnModel().getColumn(8).setResizable(false);
+            tb_CTPN.getColumnModel().getColumn(9).setResizable(false);
         }
 
-        jTextField3.setText("Nhà cung cấp");
+        cb_GrProduct.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Máy in" }));
+        cb_GrProduct.setBorder(javax.swing.BorderFactory.createTitledBorder("Nhóm sản phẩm"));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cb_Brand.setBorder(javax.swing.BorderFactory.createTitledBorder("Hãng"));
+
+        cb_Supplier.setBorder(javax.swing.BorderFactory.createTitledBorder("Nhà cung cấp"));
+
+        txt_Quantity.setBorder(javax.swing.BorderFactory.createTitledBorder("Số lượng"));
+
+        txt_Quantity1.setBorder(javax.swing.BorderFactory.createTitledBorder("Ngày nhập"));
+
+        txt_Quantity2.setBorder(javax.swing.BorderFactory.createTitledBorder("Giá nhập"));
+
+        btn_Confirm.setText("XÁC NHẬN");
+        btn_Confirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ConfirmActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 835, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(159, 159, 159)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(70, 70, 70)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(162, 162, 162)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 835, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(331, 331, 331)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cb_GrProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txt_Quantity, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cb_Supplier, javax.swing.GroupLayout.Alignment.LEADING, 0, 159, Short.MAX_VALUE)))
+                        .addGap(106, 106, 106)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_Quantity1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cb_Brand, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_Quantity2, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(61, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_Confirm)
+                .addGap(207, 207, 207))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cb_GrProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cb_Brand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btn_Confirm)
+                .addGap(1, 1, 1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cb_Supplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_Quantity1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_Quantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_Quantity2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 178, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_ConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ConfirmActionPerformed
+        // TODO add your handling code here:
+        int quantity = Integer.parseInt(txt_Quantity.getText());
+        create_TB_CTPN(quantity);
+    }//GEN-LAST:event_btn_ConfirmActionPerformed
 
     /**
      * @param args the command line arguments
@@ -147,11 +209,14 @@ public class ChiTietNhapHang extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton btn_Confirm;
+    private javax.swing.JComboBox<String> cb_Brand;
+    private javax.swing.JComboBox<String> cb_GrProduct;
+    private javax.swing.JComboBox<String> cb_Supplier;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTable tb_CTPN;
+    private javax.swing.JTextField txt_Quantity;
+    private javax.swing.JTextField txt_Quantity1;
+    private javax.swing.JTextField txt_Quantity2;
     // End of variables declaration//GEN-END:variables
 }
