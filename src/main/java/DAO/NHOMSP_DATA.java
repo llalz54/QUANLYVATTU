@@ -38,7 +38,8 @@ public class NHOMSP_DATA {
             return dssp;
         } catch (SQLException e) {
             System.out.println("Lỗi lấy danh sách nhóm sản phẩm!!!");
+            return null;
         }
-        return null;
+        
     }
 }
