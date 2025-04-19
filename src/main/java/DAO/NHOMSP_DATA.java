@@ -1,4 +1,3 @@
-
 package DAO;
 
 import ConDB.DBAccess;
@@ -13,31 +12,52 @@ import java.util.ArrayList;
  * @author Admin
  */
 public class NHOMSP_DATA {
-     private ArrayList<NHOMSP> listnhomSP = null;
-    
+
+    private ArrayList<NHOMSP> listnhomSP = null;
+
     public NHOMSP_DATA() {
         docListnhomSP();
     }
-    
+
     public void docListnhomSP() {
         listnhomSP = getListnhomSP();
     }
-    
+
     public ArrayList<NHOMSP> getListnhomSP() {
         try {
             DBAccess acc = new DBAccess();
-            ResultSet rs = acc.Query("SELECT name FROM NhomSP");
+            ResultSet rs = acc.Query("SELECT * FROM NhomSP");
             ArrayList<NHOMSP> dssp = new ArrayList<>();
             while (rs.next()) {
-              NHOMSP sp = new NHOMSP();
-               sp.setName(rs.getString("name"));
-               dssp.add(sp);
-               
+                NHOMSP gr = new NHOMSP();
+                gr.setGroupID(rs.getInt(1));
+                gr.setName(rs.getString(2).trim());
+                gr.setStatus(rs.getString(3));
+                dssp.add(gr);
+
             }
             acc.close();
             return dssp;
         } catch (SQLException e) {
             System.out.println("Lỗi lấy danh sách nhóm sản phẩm!!!");
+        }
+        return null;
+    }
+
+    public int name_to_ID(String name) {
+        for (NHOMSP gr : listnhomSP) {
+            if (name.equals(gr.getName())) {                
+                return gr.getGroupID();
+            }
+        }
+        return -1;
+    }
+
+    public String iD_to_name(int id) {
+        for (NHOMSP gr : listnhomSP) {
+            if (id==(gr.getGroupID())) {
+                return gr.getName();
+            }
         }
         return null;
     }

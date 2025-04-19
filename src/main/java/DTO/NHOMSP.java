@@ -18,6 +18,10 @@ public class NHOMSP {
         return groupID;
     }
 
+    public void setGroupID(int groupID) {
+        this.groupID = groupID;
+    }      
+
     public String getName() {
         return name;
     }
