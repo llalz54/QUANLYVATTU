@@ -113,6 +113,6 @@ public class SANPHAM_DATA {
         }
         return dssp;
     }
->>>>>>> 549dfbe3e0c6a6ae0901cf0630e998448572b95e
+
 }
     
