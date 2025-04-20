@@ -6,6 +6,7 @@ import DTO.SANPHAM;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -24,8 +25,9 @@ public class NHOMSP_DATA {
     }
 
     public ArrayList<NHOMSP> getListnhomSP() {
+        DBAccess acc = null;
         try {
-            DBAccess acc = new DBAccess();
+            acc = new DBAccess();
             ResultSet rs = acc.Query("SELECT * FROM NhomSP");
             ArrayList<NHOMSP> dssp = new ArrayList<>();
             while (rs.next()) {
@@ -34,15 +36,16 @@ public class NHOMSP_DATA {
                 gr.setName(rs.getString(2).trim());
                 gr.setStatus(rs.getString(3));
                 dssp.add(gr);
-
             }
-            acc.close();
             return dssp;
         } catch (SQLException e) {
             System.out.println("Lỗi lấy danh sách nhóm sản phẩm!!!");
             return null;
+        } finally {
+            if(acc != null) {
+                acc.close();
+            }
         }
-        
     }
 
     public int name_to_ID(String name) {

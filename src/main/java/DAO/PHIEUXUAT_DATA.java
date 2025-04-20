@@ -23,8 +23,10 @@ public class PHIEUXUAT_DATA {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
+        DBAccess dBAccess = null;
         try {
-           conn = CONNECTION.getConnection();
+            dBAccess = new DBAccess();
+           conn = dBAccess.getConnection();
            conn.setAutoCommit(false); // Bắt đầu transaction
 
         // 1. Kiểm tra serial hợp lệ
