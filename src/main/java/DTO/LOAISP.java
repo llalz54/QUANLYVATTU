@@ -1,5 +1,7 @@
 package DTO;
 
+import java.sql.ResultSet;
+
 public class LOAISP {
     private int categoryID;
     private int groupID;
@@ -8,6 +10,11 @@ public class LOAISP {
     private String status;
 
     public LOAISP() {
+    }
+    
+    public LOAISP(ResultSet rs) throws Exception{
+        this.categoryID = rs.getInt("category_id");
+        this.name = rs.getString("name");
     }
 
     public LOAISP(int categoryID, int groupID, String name, String brand, String status) {

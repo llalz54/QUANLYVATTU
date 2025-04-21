@@ -2,6 +2,7 @@
 package ConDB;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -58,8 +59,8 @@ public class DBAccess {
     }
 }
 
-    public Object getConnection() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Connection getConnection() {
+       return this.con;
     }
 
       
