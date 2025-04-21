@@ -139,12 +139,9 @@ public class ChiTietNhapHang extends javax.swing.JFrame {
             }
         });
 <<<<<<< HEAD
-<<<<<<< HEAD
 
 =======
 >>>>>>> master_vdt
-=======
->>>>>>> grandmaster_TS
         cb_GrProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb_GrProductActionPerformed(evt);
@@ -333,7 +330,6 @@ public class ChiTietNhapHang extends javax.swing.JFrame {
     }//GEN-LAST:event_cb_BrandActionPerformed
 <<<<<<< HEAD
 
-<<<<<<< HEAD
         /**
 =======
 /*
@@ -341,8 +337,6 @@ public class ChiTietNhapHang extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cb_GrProductActionPerformed
 */
-=======
->>>>>>> grandmaster_TS
     /**
 >>>>>>> master_vdt
      * @param args the command line arguments

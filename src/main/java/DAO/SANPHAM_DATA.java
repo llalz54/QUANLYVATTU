@@ -43,6 +43,7 @@ public class SANPHAM_DATA {
             return null;
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     }        
 
@@ -53,6 +54,11 @@ public class SANPHAM_DATA {
 
     public ArrayList<SANPHAM> getlistSP_TK() {
 >>>>>>> master_vdt
+=======
+    }
+
+    public ArrayList<SANPHAM> getlistSP_TK() {
+>>>>>>> grandmaster_TS
         try {
             DBAccess acc = new DBAccess();
             ResultSet rs = acc.Query("SELECT sp.*, c.name FROM SanPham sp  JOIN LoaiSP c ON sp.category_id = c.category_id where sp.status = 0");
@@ -113,6 +119,7 @@ public class SANPHAM_DATA {
         }
         return dssp;
     }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 
@@ -121,3 +128,6 @@ public class SANPHAM_DATA {
 =======
 }
 >>>>>>> master_vdt
+=======
+}
+>>>>>>> grandmaster_TS
