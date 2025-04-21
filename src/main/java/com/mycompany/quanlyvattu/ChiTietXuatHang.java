@@ -5,16 +5,20 @@ package com.mycompany.quanlyvattu;
  * @author Admin
  */
 import DAO.GroupItem;
+import DAO.UpperCase;
 import DAO.LOAISP_DATA;
 import DAO.PHIEUXUAT_DATA;
 import DAO.NHOMSP_DATA;
 import DTO.LOAISP;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class ChiTietXuatHang extends javax.swing.JFrame {
+
     private NHOMSP_DATA nhomsp_data = new NHOMSP_DATA();
     private LOAISP_DATA loaisp_data = new LOAISP_DATA();
     private ArrayList<LOAISP> loaisps;
@@ -27,7 +31,7 @@ public class ChiTietXuatHang extends javax.swing.JFrame {
         loadCBGroup();
         loadCBTenSP();
     }
-    
+
     public void loadCBGroup() {
         nhomsp_data.getListnhomSP().forEach(nhomSP -> {
             cb_GrProduct.addItem(nhomSP.getName());
@@ -125,6 +129,12 @@ public class ChiTietXuatHang extends javax.swing.JFrame {
         }
 
         tb_CTPX.setModel(model);
+        // Gán editor in hoa cho mỗi ô
+        UpperCase upperEditor = new UpperCase();
+        for (int i = 0; i < tb_CTPX.getColumnCount(); i++) {
+            tb_CTPX.getColumnModel().getColumn(i).setCellEditor(upperEditor);
+        }
+
     }
 
     @SuppressWarnings("unchecked")
