@@ -25,7 +25,7 @@ public class PHIEUXUAT_DATA {
 
         DBAccess dBAccess = null;
         try {
-            dBAccess = new DBAccess();
+           dBAccess = new DBAccess();
            conn = dBAccess.getConnection();
            conn.setAutoCommit(false); // Bắt đầu transaction
 
@@ -103,5 +103,4 @@ public class PHIEUXUAT_DATA {
         }
     }
 }
-
 }
