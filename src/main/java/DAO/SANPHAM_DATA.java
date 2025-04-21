@@ -1,4 +1,3 @@
-
 package DAO;
 
 import ConDB.DBAccess;
@@ -7,10 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- *
- * @author Admin
- */
+
 public class SANPHAM_DATA {
     private ArrayList<SANPHAM> listSP = null;
     
@@ -45,13 +41,10 @@ public class SANPHAM_DATA {
             System.out.println("Lỗi lấy danh sách sản phẩm!!!");
             return null;
         }
-<<<<<<< HEAD
-        return null;
-    }    
+
+    }        
+
     
-=======
-        
-    }
     public ArrayList<SANPHAM> getlistSP_TK(){
         try {
             DBAccess acc = new DBAccess();
@@ -113,6 +106,7 @@ public class SANPHAM_DATA {
         }
         return dssp;
     }
->>>>>>> 549dfbe3e0c6a6ae0901cf0630e998448572b95e
+
+
 }
-    
+
