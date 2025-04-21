@@ -133,14 +133,11 @@ public class ChiTietNhapHang extends javax.swing.JFrame {
 
         cb_GrProduct.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Máy in" }));
         cb_GrProduct.setBorder(javax.swing.BorderFactory.createTitledBorder("Nhóm sản phẩm"));
-<<<<<<< HEAD
         cb_GrProduct.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cb_GrProductMouseClicked(evt);
             }
         });
-=======
->>>>>>> 549dfbe3e0c6a6ae0901cf0630e998448572b95e
         cb_GrProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb_GrProductActionPerformed(evt);
@@ -243,7 +240,6 @@ public class ChiTietNhapHang extends javax.swing.JFrame {
         create_TB_CTPN(quantity);
     }//GEN-LAST:event_btn_ConfirmActionPerformed
 
-<<<<<<< HEAD
     private void btn_GhiPhieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_GhiPhieuActionPerformed
         // TODO add your handling code here:
         if (tb_CTPN.isEditing()) {
@@ -310,12 +306,12 @@ public class ChiTietNhapHang extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_GhiPhieuActionPerformed
 
-    private void cb_GrProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_GrProductActionPerformed
+    private void cb_GrProductActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:
         String group = cb_GrProduct.getSelectedItem() != null ? cb_GrProduct.getSelectedItem().toString().trim() : "";
         String brand = cb_Brand.getSelectedItem() != null ? cb_Brand.getSelectedItem().toString().trim() : "";
         loadCB_ListSP(group, brand);
-    }//GEN-LAST:event_cb_GrProductActionPerformed
+    }                                            
 
     private void cb_GrProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cb_GrProductMouseClicked
       
@@ -329,12 +325,6 @@ public class ChiTietNhapHang extends javax.swing.JFrame {
         loadCB_ListSP(group, brand);
     }//GEN-LAST:event_cb_BrandActionPerformed
 
-=======
-    private void cb_GrProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_GrProductActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cb_GrProductActionPerformed
-
->>>>>>> 549dfbe3e0c6a6ae0901cf0630e998448572b95e
     /**
      * @param args the command line arguments
      */

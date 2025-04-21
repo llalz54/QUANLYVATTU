@@ -4,7 +4,6 @@ package com.mycompany.quanlyvattu;
 import ConDB.DBAccess;
 import DAO.NHOMSP_DATA;
 import DAO.SANPHAM_DATA;
-
 import DTO.SANPHAM;
 import java.io.Serial;
 import java.security.interfaces.RSAKey;
@@ -40,8 +39,9 @@ public class QuanLySanPham extends javax.swing.JFrame {
       
        
     }
+
     private SANPHAM_DATA sp_data = new SANPHAM_DATA();
-     private NHOMSP_DATA nhomsp_data = new NHOMSP_DATA();
+    private NHOMSP_DATA nhomsp_data = new NHOMSP_DATA();
 
     /**
      * This method is called from within the constructor to initialize the form.
