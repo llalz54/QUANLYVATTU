@@ -8,6 +8,8 @@ public class PHIEUXUAT {
     private int price;
     private String ngayXuat;
     private String customer;
+    private String tenLoai;
+    private int tongTien;
 
     public PHIEUXUAT() {
     }
@@ -21,6 +23,20 @@ public class PHIEUXUAT {
         this.ngayXuat = ngayXuat;
         this.customer = customer;
     }
+
+    public int getTongTien() {
+        return quantity * price;
+    }
+
+    
+    public String getTenLoai() {
+        return tenLoai;
+    }
+
+    public void setTenLoai(String tenLoai) {
+        this.tenLoai = tenLoai;
+    }
+    
 
     public int getIdpx() {
         return idpx;
