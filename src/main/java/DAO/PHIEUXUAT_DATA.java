@@ -62,11 +62,10 @@ public class PHIEUXUAT_DATA {
         return dssp;
     }
   
-    public boolean xuatHang(int userId, int categoryId, int quantity, int price, String customer, String ngayXuat, List<String> listSerial) {
+    public boolean xuatHang(int userId, int categoryId, int quantity, int price, String customer, String ngayXuat, String startDate, String endDate, List<String> listSerial) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-
         DBAccess dBAccess = null;
         try {
            dBAccess = new DBAccess();
@@ -110,7 +109,7 @@ public class PHIEUXUAT_DATA {
 
         // 3. Thêm chi tiết serial và cập nhật trạng thái sản phẩm
         String sqlInsertCTPX = "INSERT INTO CTPX(idpx, serial) VALUES (?, ?)";
-        String sqlUpdateStatus = "UPDATE SanPham SET status = 1, start_date = ? WHERE serial = ?";
+        String sqlUpdateStatus = "UPDATE SanPham SET status = 1, start_date = ?, end_date = ? WHERE serial = ?";
         for (String serial : listSerial) {
             // Insert CTPX
             ps = conn.prepareStatement(sqlInsertCTPX);
@@ -120,11 +119,13 @@ public class PHIEUXUAT_DATA {
             ps.close();
 
             // Update status and day
-            ps = conn.prepareStatement(sqlUpdateStatus);
-            ps.setString(1, ngayXuat);
-            ps.setString(2, serial);
+             ps = conn.prepareStatement(sqlUpdateStatus);
+            ps.setString(1, startDate);
+            ps.setString(2, endDate);
+            ps.setString(3, serial);
             ps.executeUpdate();
             ps.close();
+
         }
 
         conn.commit(); // Thành công
