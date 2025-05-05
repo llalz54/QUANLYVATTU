@@ -112,6 +112,7 @@ public class QuanLySanPham extends javax.swing.JFrame {
    private void loadDataTableSPTheoTrangThai() {
     String selected = cbLocSP.getSelectedItem().toString();
     ArrayList<SANPHAM> dssp = null;
+
     switch (selected) {
         case "Tất cả":
             dssp = sp_data.getListSP();
