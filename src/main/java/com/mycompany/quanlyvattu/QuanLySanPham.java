@@ -76,7 +76,7 @@ public class QuanLySanPham extends javax.swing.JFrame {
         if (dssp != null) {
             for (SANPHAM sp : dssp) {
                 Vector vec = new Vector();
-                vec.add(sp.getProductID());
+               //vec.add(sp.getProductID());
                 vec.add(sp.getTenLoai());
                 vec.add(sp.getSerial());
                 String trangThai;
@@ -130,7 +130,7 @@ public class QuanLySanPham extends javax.swing.JFrame {
     if (dssp != null) {
         for (SANPHAM sp : dssp) {
             Vector<Object> vec = new Vector<>();
-            vec.add(sp.getProductID());
+           // vec.add(sp.getProductID());
             vec.add(sp.getTenLoai());
             vec.add(sp.getSerial());
             vec.add(convertStatus(sp.getStatus()));
@@ -149,7 +149,7 @@ public class QuanLySanPham extends javax.swing.JFrame {
         ArrayList<SANPHAM> dssp = sp_data.getSPtheoSerial(Serial);
         for (SANPHAM sp : dssp) {
             Vector vec = new Vector<>();
-            vec.add(sp.getProductID());
+          //  vec.add(sp.getProductID());
             vec.add(sp.getTenLoai());
             vec.add(sp.getSerial());
             vec.add(convertStatus(sp.getStatus()));
@@ -191,20 +191,20 @@ public class QuanLySanPham extends javax.swing.JFrame {
 
         tbSP.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Tên", "Serial", "Trạng Thái", "Ngày Kích Hoạt", "Ngày Kết Thúc"
+                "Tên", "Serial", "Trạng Thái", "Ngày Kích Hoạt", "Ngày Kết Thúc"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {

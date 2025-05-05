@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -33,6 +34,7 @@ public class ChiTietXuatHang extends javax.swing.JFrame {
         loadCBGroup();
         loadCBTenSP();
     }
+    
 
     public void loadCBGroup() {
         nhomsp_data.getListnhomSP().forEach(nhomSP -> {
