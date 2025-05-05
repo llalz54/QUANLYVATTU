@@ -292,7 +292,6 @@ public class ChiTietNhapHang extends javax.swing.JFrame {
             ((SQLServerPreparedStatement) pstmt).setStructured(1, "dbo.TYPE_CTPN", dt);
             pstmt.execute();
             pstmt.close();
-
             conn.commit();
             conn.setAutoCommit(true);
             conn.close();

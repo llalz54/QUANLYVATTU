@@ -10,10 +10,13 @@ import DAO.LOAISP_DATA;
 import DAO.PHIEUXUAT_DATA;
 import DAO.NHOMSP_DATA;
 import DTO.LOAISP;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -31,10 +34,11 @@ public class ChiTietXuatHang extends javax.swing.JFrame {
         loadCBGroup();
         loadCBTenSP();
     }
+    
 
     public void loadCBGroup() {
         nhomsp_data.getListnhomSP().forEach(nhomSP -> {
-            cb_GrProduct.addItem(nhomSP.getName());
+            cb_GrProduct1.addItem(nhomSP.getName());
         });
     }
 
@@ -45,8 +49,8 @@ public class ChiTietXuatHang extends javax.swing.JFrame {
      */
     public void loadCBTenSP() {
         cb_Brand.removeAllItems();
-        if (cb_GrProduct.getSelectedItem() != null) {
-            String groupName = String.valueOf(cb_GrProduct.getSelectedItem());
+        if (cb_GrProduct1.getSelectedItem() != null) {
+            String groupName = String.valueOf(cb_GrProduct1.getSelectedItem());
             this.loaisps = loaisp_data.getLoaiSP(groupName);
             this.loaisps.forEach(loaisp -> {
                 cb_Brand.addItem(loaisp.getName());
@@ -60,18 +64,31 @@ public class ChiTietXuatHang extends javax.swing.JFrame {
             int userId = 1;
             int categoryId = 0;
             for (LOAISP loaisp : loaisps) {
-                if (loaisp.getName() == cb_Brand.getSelectedItem()) {
+                if (loaisp.getName().equals(cb_Brand.getSelectedItem())) {
                     categoryId = loaisp.getCategoryID();
                     break;
                 }
             }
             int price = Integer.parseInt(tf_giaXuat.getText().trim());
             String customer = tf_khachHang.getText().trim();
-            String ngayXuat = tf_ngayXuat.getText().trim(); // định dạng yyyy-MM-dd
             int soLuong = Integer.parseInt(tf_soLuong.getText().trim());
-
             // Lấy danh sách serial từ bảng
             List<String> listSerial = new ArrayList<>();
+            //ngayXuat
+            LocalDate ngayXuat = LocalDate.now();
+            String ngayXuatStr = ngayXuat.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+            // Ngày bắt đầu bảo hành (start_date)
+            LocalDate startDate = LocalDate.parse(tf_ngayXuat.getText().trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+            // Lấy thời gian bảo hành từ comboBox
+            String selectedWarranty = (String) cb_Time.getSelectedItem(); // "12 tháng"
+            int months = Integer.parseInt(selectedWarranty.split(" ")[0]);
+
+            // Tính end_date
+            LocalDate endDate = startDate.plusMonths(months);
+            String endDateStr = endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
             DefaultTableModel model = (DefaultTableModel) tb_CTPX.getModel();
             int rowCount = model.getRowCount();
             int columnCount = model.getColumnCount();
@@ -92,8 +109,7 @@ public class ChiTietXuatHang extends javax.swing.JFrame {
 
             // Gọi xử lý
             PHIEUXUAT_DATA data = new PHIEUXUAT_DATA();
-            boolean ok = data.xuatHang(userId, categoryId, soLuong, price, customer, ngayXuat, listSerial);
-
+            boolean ok = data.xuatHang(userId, categoryId, soLuong, price, customer, ngayXuatStr, startDate.toString(), endDateStr, listSerial);
             if (ok) {
                 JOptionPane.showMessageDialog(null, "Xuất hàng thành công!");
                 model.setRowCount(0); // clear table
@@ -142,7 +158,6 @@ public class ChiTietXuatHang extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        cb_GrProduct = new javax.swing.JComboBox<>();
         cb_Brand = new javax.swing.JComboBox<>();
         tf_soLuong = new javax.swing.JTextField();
         tf_ngayXuat = new javax.swing.JTextField();
@@ -153,16 +168,11 @@ public class ChiTietXuatHang extends javax.swing.JFrame {
         btn_Luu = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tb_CTPX = new javax.swing.JTable();
+        cb_GrProduct1 = new javax.swing.JComboBox<>();
+        cb_Time = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        cb_GrProduct.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nhóm sản phẩm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-        cb_GrProduct.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cb_GrProductItemStateChanged(evt);
-            }
-        });
 
         cb_Brand.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tên SP", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
         cb_Brand.addActionListener(new java.awt.event.ActionListener() {
@@ -173,7 +183,7 @@ public class ChiTietXuatHang extends javax.swing.JFrame {
 
         tf_soLuong.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Số Lượng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
-        tf_ngayXuat.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Ngày Xuất", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        tf_ngayXuat.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Ngày Bảo Hành", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
         tf_giaXuat.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Giá Xuất", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
@@ -220,6 +230,16 @@ public class ChiTietXuatHang extends javax.swing.JFrame {
         tb_CTPX.setShowGrid(true);
         jScrollPane1.setViewportView(tb_CTPX);
 
+        cb_GrProduct1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nhóm sản phẩm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        cb_GrProduct1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cb_GrProduct1ItemStateChanged(evt);
+            }
+        });
+
+        cb_Time.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "12 tháng", "24 tháng", "36 tháng" }));
+        cb_Time.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("")), "Thời gian bảo hành", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -230,23 +250,28 @@ public class ChiTietXuatHang extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(392, 392, 392)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btn_Luu)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(23, 23, 23)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cb_GrProduct, 0, 159, Short.MAX_VALUE)
-                                    .addComponent(tf_soLuong)
-                                    .addComponent(tf_ngayXuat))
+                                    .addComponent(tf_soLuong, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+                                    .addComponent(tf_ngayXuat)
+                                    .addComponent(cb_GrProduct1, 0, 159, Short.MAX_VALUE))
                                 .addGap(50, 50, 50)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(cb_Brand, 0, 164, Short.MAX_VALUE)
                                     .addComponent(tf_giaXuat)
                                     .addComponent(tf_khachHang))
-                                .addGap(130, 130, 130)
-                                .addComponent(btn_XacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(392, 392, 392)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btn_Luu))
-                        .addGap(0, 318, Short.MAX_VALUE)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(209, 209, 209)
+                                        .addComponent(btn_XacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(36, 36, 36)
+                                        .addComponent(cb_Time, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 239, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -254,20 +279,20 @@ public class ChiTietXuatHang extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cb_GrProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
-                    .addComponent(cb_Brand))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cb_Brand, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cb_GrProduct1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cb_Time, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_XacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(78, 78, 78))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(35, 35, 35)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tf_soLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tf_giaXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(32, 32, 32)))
+                            .addComponent(tf_giaXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(btn_XacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tf_ngayXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tf_khachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -277,6 +302,8 @@ public class ChiTietXuatHang extends javax.swing.JFrame {
                 .addComponent(btn_Luu, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(62, Short.MAX_VALUE))
         );
+
+        tf_ngayXuat.getAccessibleContext().setAccessibleName("Ngày Bảo Hành");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -309,10 +336,9 @@ public class ChiTietXuatHang extends javax.swing.JFrame {
 
     }//GEN-LAST:event_cb_BrandActionPerformed
 
-    private void cb_GrProductItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_GrProductItemStateChanged
-        // TODO add your handling code here:
-        loadCBTenSP();
-    }//GEN-LAST:event_cb_GrProductItemStateChanged
+    private void cb_GrProduct1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_GrProduct1ItemStateChanged
+         loadCBTenSP();
+    }//GEN-LAST:event_cb_GrProduct1ItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -353,7 +379,8 @@ public class ChiTietXuatHang extends javax.swing.JFrame {
     private javax.swing.JButton btn_Luu;
     private javax.swing.JButton btn_XacNhan;
     private javax.swing.JComboBox<String> cb_Brand;
-    private javax.swing.JComboBox<String> cb_GrProduct;
+    private javax.swing.JComboBox<String> cb_GrProduct1;
+    private javax.swing.JComboBox<String> cb_Time;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

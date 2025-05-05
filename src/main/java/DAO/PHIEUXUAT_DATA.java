@@ -10,22 +10,65 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import ConDB.CONNECTION;
+import DTO.PHIEUXUAT;
+import java.util.ArrayList;
 
 /**
  *
  * @author Admin
  */
 public class PHIEUXUAT_DATA {
+     private ArrayList<PHIEUXUAT> listPX = null;
+
+    public PHIEUXUAT_DATA() {
+        docListPX();
+    }
+
+    public void docListPX() {
+        listPX = getListPX();
+    }
+
+    public ArrayList<PHIEUXUAT> getListPX() {
+        try {
+            DBAccess acc = new DBAccess();
+            ResultSet rs = acc.Query("SELECT px.*, c.name FROM PhieuXuat px  JOIN LoaiSP c ON px.category_id = c.category_id");
+            ArrayList<PHIEUXUAT> dssp = new ArrayList<>();
+            while (rs.next()) {
+                PHIEUXUAT px = new PHIEUXUAT();
+                px.setTenLoai(rs.getString("name").trim());
+                px.setQuantity(rs.getInt("quantity"));
+                px.setPrice(rs.getInt("price"));
+                px.setNgayXuat(rs.getString("ngayXuat"));
+                px.setCustomer(rs.getString("customer").trim());
+                dssp.add(px);
+
+            }
+            acc.close();
+            return dssp;
+        } catch (SQLException e) {
+            System.out.println("Lỗi lấy danh sách sản phẩm!!!");
+            return null;
+        }
+    }
+  public ArrayList<PHIEUXUAT> getSPtheoTen (String tenSP) {
+        ArrayList<PHIEUXUAT> allSP = getListPX();
+        ArrayList<PHIEUXUAT> dssp = new ArrayList<>();
+        for (PHIEUXUAT sp : allSP) {
+            String serial = sp.getTenLoai().toLowerCase();
+            if (serial.contains(tenSP.toLowerCase())) {
+                dssp.add(sp);
+            }
+        }
+        return dssp;
+    }
   
-  
-    public boolean xuatHang(int userId, int categoryId, int quantity, int price, String customer, String ngayXuat, List<String> listSerial) {
+    public boolean xuatHang(int userId, int categoryId, int quantity, int price, String customer, String ngayXuat, String startDate, String endDate, List<String> listSerial) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-
         DBAccess dBAccess = null;
         try {
-            dBAccess = new DBAccess();
+           dBAccess = new DBAccess();
            conn = dBAccess.getConnection();
            conn.setAutoCommit(false); // Bắt đầu transaction
 
@@ -66,7 +109,7 @@ public class PHIEUXUAT_DATA {
 
         // 3. Thêm chi tiết serial và cập nhật trạng thái sản phẩm
         String sqlInsertCTPX = "INSERT INTO CTPX(idpx, serial) VALUES (?, ?)";
-        String sqlUpdateStatus = "UPDATE SanPham SET status = 1 WHERE serial = ?";
+        String sqlUpdateStatus = "UPDATE SanPham SET status = 1, start_date = ?, end_date = ? WHERE serial = ?";
         for (String serial : listSerial) {
             // Insert CTPX
             ps = conn.prepareStatement(sqlInsertCTPX);
@@ -75,11 +118,14 @@ public class PHIEUXUAT_DATA {
             ps.executeUpdate();
             ps.close();
 
-            // Update status
-            ps = conn.prepareStatement(sqlUpdateStatus);
-            ps.setString(1, serial);
+            // Update status and day
+             ps = conn.prepareStatement(sqlUpdateStatus);
+            ps.setString(1, startDate);
+            ps.setString(2, endDate);
+            ps.setString(3, serial);
             ps.executeUpdate();
             ps.close();
+
         }
 
         conn.commit(); // Thành công
@@ -103,5 +149,4 @@ public class PHIEUXUAT_DATA {
         }
     }
 }
-
 }
