@@ -5,9 +5,11 @@ import java.sql.ResultSet;
 public class LOAISP {
     private int categoryID;
     private int groupID;
+    private String grName;
     private String name;
     private String brand;
     private String status;
+    private int soLuong;
 
     public LOAISP() {
     }
@@ -25,6 +27,10 @@ public class LOAISP {
         this.status = status;
     }
 
+    public void setCategoryID(int categoryID) {
+        this.categoryID = categoryID;
+    }
+    
     public int getCategoryID() {
         return categoryID;
     }
@@ -60,6 +66,21 @@ public class LOAISP {
     public void setStatus(String status) {
         this.status = status;
     }
-    
-    
+
+    public String getGrName() {
+        return grName;
+    }
+
+    public void setGrName(String grName) {
+        this.grName = grName;
+    }
+
+    public int getSoLuong() {
+        return soLuong;
+    }
+
+    public void setSoLuong(int soLuong) {
+        this.soLuong = soLuong;
+    }
+      
 }

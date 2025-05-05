@@ -7,6 +7,7 @@ import DAO.NHOMSP_DATA;
 import javax.swing.table.DefaultTableModel;
 import DAO.OTHER_DATA;
 import DAO.PHIEUNHAP_DATA;
+import DAO.Session;
 import com.microsoft.sqlserver.jdbc.SQLServerDataTable;
 import com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement;
 import java.sql.Connection;
@@ -133,18 +134,6 @@ public class ChiTietNhapHang extends javax.swing.JFrame {
 
         cb_GrProduct.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Máy in" }));
         cb_GrProduct.setBorder(javax.swing.BorderFactory.createTitledBorder("Nhóm sản phẩm"));
-        cb_GrProduct.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cb_GrProductMouseClicked(evt);
-            }
-        });
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> master_vdt
-=======
->>>>>>> grandmaster_TS
         cb_GrProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb_GrProductActionPerformed(evt);
@@ -258,7 +247,7 @@ public class ChiTietNhapHang extends javax.swing.JFrame {
         int quantity = Integer.parseInt(txt_Quantity.getText());
         int price = Integer.parseInt(txt_price.getText());
 
-        int user_id = 1;
+        int currentUserId = Session.getInstance().getUserId();
         int categoryID = gr_Data.name_to_ID(grName);
 
         Connection conn = CONNECTION.getConnection();
@@ -266,7 +255,7 @@ public class ChiTietNhapHang extends javax.swing.JFrame {
             conn.setAutoCommit(false);
             String sql_insertPN = "INSERT INTO PhieuNhap values(?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql_insertPN, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, user_id);
+            ps.setInt(1, currentUserId);
             ps.setInt(2, categoryID);
             ps.setInt(3, quantity);
             ps.setInt(4, price);
@@ -320,10 +309,6 @@ public class ChiTietNhapHang extends javax.swing.JFrame {
         loadCB_ListSP(group, brand);
     }                                            
 
-    private void cb_GrProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cb_GrProductMouseClicked
-      
-    }//GEN-LAST:event_cb_GrProductMouseClicked
-
     private void cb_BrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_BrandActionPerformed
         // TODO add your handling code here:
         String group = cb_GrProduct.getSelectedItem() != null ? cb_GrProduct.getSelectedItem().toString().trim() : "";
@@ -331,22 +316,14 @@ public class ChiTietNhapHang extends javax.swing.JFrame {
 
         loadCB_ListSP(group, brand);
     }//GEN-LAST:event_cb_BrandActionPerformed
-<<<<<<< HEAD
 
-<<<<<<< HEAD
-        /**
-=======
 /*
     private void cb_GrProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_GrProductActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cb_GrProductActionPerformed
 */
-=======
->>>>>>> grandmaster_TS
-    /**
->>>>>>> master_vdt
-     * @param args the command line arguments
-     */
+//     */ @param args the command line arguments
+//     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

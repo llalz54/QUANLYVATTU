@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
 public class SANPHAM_DATA {
 
     private ArrayList<SANPHAM> listSP = null;
@@ -41,24 +40,11 @@ public class SANPHAM_DATA {
         } catch (SQLException e) {
             System.out.println("Lỗi lấy danh sách sản phẩm!!!");
             return null;
-        }
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-    }        
-
+        }       
+    }
     
-    public ArrayList<SANPHAM> getlistSP_TK(){
-=======
-    }
 
     public ArrayList<SANPHAM> getlistSP_TK() {
->>>>>>> master_vdt
-=======
-    }
-
-    public ArrayList<SANPHAM> getlistSP_TK() {
->>>>>>> grandmaster_TS
         try {
             DBAccess acc = new DBAccess();
             ResultSet rs = acc.Query("SELECT sp.*, c.name FROM SanPham sp  JOIN LoaiSP c ON sp.category_id = c.category_id where sp.status = 0");
@@ -119,15 +105,5 @@ public class SANPHAM_DATA {
         }
         return dssp;
     }
-<<<<<<< HEAD
-
-<<<<<<< HEAD
 
 }
-
-=======
-}
->>>>>>> master_vdt
-=======
-}
->>>>>>> grandmaster_TS
