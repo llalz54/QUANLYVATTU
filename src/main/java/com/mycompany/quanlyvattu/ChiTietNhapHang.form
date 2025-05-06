@@ -44,7 +44,7 @@
               <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="cb_GrProduct" alignment="0" min="-2" pref="225" max="-2" attributes="0"/>
@@ -54,68 +54,67 @@
                           <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="txt_price" alignment="0" min="-2" pref="225" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="cb_Brand" min="-2" pref="221" max="-2" attributes="0"/>
-                                      <Component id="txt_Quantity" min="-2" pref="225" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace pref="183" max="32767" attributes="0"/>
-                                  <Component id="btn_Confirm" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                                  <Component id="cb_Brand" min="-2" pref="221" max="-2" attributes="0"/>
+                                  <Component id="txt_Quantity" min="-2" pref="225" max="-2" attributes="0"/>
                               </Group>
                           </Group>
+                          <EmptySpace pref="499" max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
                           <Component id="txt_ngayNhap" min="-2" pref="225" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="btn_GhiPhieu" min="-2" pref="90" max="-2" attributes="0"/>
+                          <EmptySpace min="226" pref="769" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="226" max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="403" max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="btn_GhiPhieu" min="-2" pref="90" max="-2" attributes="0"/>
+                      <Component id="btn_Confirm" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="234" max="-2" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="-2" pref="105" max="-2" attributes="0"/>
-                          <Component id="btn_Confirm" min="-2" pref="32" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="28" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="cb_GrProduct" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="cb_Brand" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txt_Quantity" min="-2" max="-2" attributes="0"/>
-                              <Component id="cb_Product" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                      </Group>
+                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="16" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="cb_GrProduct" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cb_Brand" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="btn_Confirm" min="-2" pref="32" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="txt_Quantity" min="-2" max="-2" attributes="0"/>
+                      <Component id="cb_Product" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="cb_Supplier" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txt_price" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                           <Component id="txt_ngayNhap" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Component id="jScrollPane1" min="-2" pref="343" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="btn_GhiPhieu" min="-2" pref="32" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="btn_GhiPhieu" min="-2" pref="32" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
           </Group>
@@ -129,7 +128,9 @@
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="H&#xe3;ng"/>
+                <TitledBorder title="H&#xe3;ng">
+                  <Font PropertyName="font" name="Segoe UI" size="12" style="1"/>
+                </TitledBorder>
               </Border>
             </Property>
           </Properties>
@@ -148,7 +149,9 @@
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Nh&#xe0; cung c&#x1ea5;p"/>
+                <TitledBorder title="Nh&#xe0; cung c&#x1ea5;p">
+                  <Font PropertyName="font" name="Segoe UI" size="12" style="1"/>
+                </TitledBorder>
               </Border>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
@@ -163,7 +166,9 @@
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="S&#x1ed1; l&#x1b0;&#x1ee3;ng"/>
+                <TitledBorder title="S&#x1ed1; l&#x1b0;&#x1ee3;ng">
+                  <Font PropertyName="font" name="Segoe UI" size="12" style="1"/>
+                </TitledBorder>
               </Border>
             </Property>
           </Properties>
@@ -172,7 +177,9 @@
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Ng&#xe0;y nh&#x1ead;p"/>
+                <TitledBorder title="Ng&#xe0;y nh&#x1ead;p">
+                  <Font PropertyName="font" name="Segoe UI" size="12" style="1"/>
+                </TitledBorder>
               </Border>
             </Property>
           </Properties>
@@ -181,14 +188,19 @@
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Gi&#xe1; nh&#x1ead;p"/>
+                <TitledBorder title="Gi&#xe1; nh&#x1ead;p">
+                  <Font PropertyName="font" name="Segoe UI" size="12" style="1"/>
+                </TitledBorder>
               </Border>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btn_Confirm">
           <Properties>
-            <Property name="text" type="java.lang.String" value="X&#xc1;C NH&#x1eac;N"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="X&#xe1;c Nh&#x1ead;n"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_ConfirmActionPerformed"/>
@@ -196,7 +208,10 @@
         </Component>
         <Component class="javax.swing.JButton" name="btn_GhiPhieu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="GHI PHI&#x1ebe;U"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Ghi Phi&#x1ebf;u"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_GhiPhieuActionPerformed"/>
@@ -300,7 +315,9 @@
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="S&#x1ea3;n ph&#x1ea9;m"/>
+                <TitledBorder title="S&#x1ea3;n ph&#x1ea9;m">
+                  <Font PropertyName="font" name="Segoe UI" size="12" style="1"/>
+                </TitledBorder>
               </Border>
             </Property>
           </Properties>
@@ -317,7 +334,9 @@
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Nh&#xf3;m s&#x1ea3;n ph&#x1ea9;m"/>
+                <TitledBorder title="Nh&#xf3;m s&#x1ea3;n ph&#x1ea9;m">
+                  <Font PropertyName="font" name="Segoe UI" size="12" style="1"/>
+                </TitledBorder>
               </Border>
             </Property>
           </Properties>
