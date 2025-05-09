@@ -34,6 +34,8 @@ public class ChiTietXuatHang extends javax.swing.JPanel {
         initComponents();
         loadCBGroup();
         loadCBTenSP();
+        
+        tf_ngayXuat.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
     
 
@@ -63,6 +65,7 @@ public class ChiTietXuatHang extends javax.swing.JPanel {
         try {
 
             int userId = Session.getInstance().getUserId();
+            System.out.println("id user = " + userId);
             int categoryId = 0;
             for (LOAISP loaisp : loaisps) {
                 if (loaisp.getName().equals(cb_Brand.getSelectedItem())) {

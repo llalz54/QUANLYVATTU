@@ -541,8 +541,10 @@ public class QuanLyXuatHang extends JPanel {
         });
         jScrollPane2.setViewportView(tbSerial);
         if (tbSerial.getColumnModel().getColumnCount() > 0) {
-            tbSerial.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tbSerial.getColumnModel().getColumn(0).setResizable(false);
+            tbSerial.getColumnModel().getColumn(0).setPreferredWidth(50);
             tbSerial.getColumnModel().getColumn(1).setResizable(false);
+            tbSerial.getColumnModel().getColumn(1).setPreferredWidth(150);
         }
 
         btn_Luu.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
