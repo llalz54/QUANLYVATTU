@@ -42,6 +42,11 @@ public class PHIEUXUAT {
         return idpx;
     }
 
+    public void setIdpx(int idpx) {
+        this.idpx = idpx;
+    }
+
+    
     public int getUserID() {
         return userID;
     }
