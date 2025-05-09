@@ -74,13 +74,18 @@ public class QuanLyXuatHang extends JPanel {
         // Nếu số lượng mới > số hàng hiện có → thêm dòng trống
         if (soLuongMoi > soLuongHienTai) {
             for (int i = soLuongHienTai; i < soLuongMoi; i++) {
-                model.addRow(new Object[]{""}); // Thêm dòng trống, thêm nhiều cột nếu cần
+                model.addRow(new Object[]{i + 1, ""}); // Thêm STT và Serial
             }
         } // Nếu số lượng mới < số hàng hiện có → xóa dòng dư
         else if (soLuongMoi < soLuongHienTai) {
             for (int i = soLuongHienTai - 1; i >= soLuongMoi; i--) {
                 model.removeRow(i);
             }
+        }
+
+        // Cập nhật lại STT cho các dòng còn lại
+        for (int i = 0; i < model.getRowCount(); i++) {
+            model.setValueAt(i + 1, i, 0); // Cập nhật cột STT (cột 0)
         }
     }
 
@@ -146,15 +151,16 @@ public class QuanLyXuatHang extends JPanel {
             }
             ps.close();
 
-            // Load danh sách serial theo dòng (1 cột)
-            String sqlCTPX = "SELECT serial FROM CTPX WHERE idpx = ?";
+            // Load danh sách serial theo dòng (2 cột: STT và Serial)
+            String sqlCTPX = "SELECT serial FROM CTPX WHERE idpx = ? ORDER BY serial";
             ps = acc.getConnection().prepareStatement(sqlCTPX);
             ps.setInt(1, idpx);
             rs = ps.executeQuery();
 
-            DefaultTableModel model = new DefaultTableModel(new Object[]{"Serial"}, 0);
+            DefaultTableModel model = new DefaultTableModel(new Object[]{"STT", "Serial"}, 0);
+            int stt = 1;
             while (rs.next()) {
-                model.addRow(new Object[]{rs.getString("serial")});
+                model.addRow(new Object[]{stt++, rs.getString("serial")});
             }
             tbSerial.setModel(model);
 
@@ -410,7 +416,7 @@ public class QuanLyXuatHang extends JPanel {
             int rowCount = model.getRowCount();
 
             for (int i = 0; i < rowCount; i++) {
-                Object value = model.getValueAt(i, 0); // Cột 0 là serial
+                Object value = model.getValueAt(i, 1); // Giờ Serial ở cột 1 (cột 2)
                 if (value != null) {
                     String serial = value.toString().trim();
                     if (!serial.isEmpty()) {
@@ -512,20 +518,17 @@ public class QuanLyXuatHang extends JPanel {
 
         tbSerial.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+
             },
             new String [] {
-                "Serial"
+                "STT", "Serial"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false
+                false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -537,6 +540,10 @@ public class QuanLyXuatHang extends JPanel {
             }
         });
         jScrollPane2.setViewportView(tbSerial);
+        if (tbSerial.getColumnModel().getColumnCount() > 0) {
+            tbSerial.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tbSerial.getColumnModel().getColumn(1).setResizable(false);
+        }
 
         btn_Luu.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btn_Luu.setText("Lưu");
