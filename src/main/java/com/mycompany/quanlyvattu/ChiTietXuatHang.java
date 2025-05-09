@@ -9,6 +9,7 @@ import DAO.UpperCase;
 import DAO.LOAISP_DATA;
 import DAO.PHIEUXUAT_DATA;
 import DAO.NHOMSP_DATA;
+import DAO.Session;
 import DTO.LOAISP;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -61,7 +62,7 @@ public class ChiTietXuatHang extends javax.swing.JPanel {
     public void thucHienXuatHang() {
         try {
 
-            int userId = 1;
+            int userId = Session.getInstance().getUserId();
             int categoryId = 0;
             for (LOAISP loaisp : loaisps) {
                 if (loaisp.getName().equals(cb_Brand.getSelectedItem())) {
