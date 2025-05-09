@@ -47,7 +47,7 @@ public class SANPHAM_DATA {
     public ArrayList<SANPHAM> getlistSP_TK() {
         try {
             DBAccess acc = new DBAccess();
-            ResultSet rs = acc.Query("SELECT sp.*, c.name FROM SanPham sp  JOIN LoaiSP c ON sp.category_id = c.category_id where sp.status = 0");
+            ResultSet rs = acc.Query("SELECT sp.*, c.name FROM SanPham sp  JOIN LoaiSP c ON sp.category_id = c.category_id where sp.status = 1");
             ArrayList<SANPHAM> dssp = new ArrayList<>();
             while (rs.next()) {
                 SANPHAM sp = new SANPHAM();
@@ -72,7 +72,7 @@ public class SANPHAM_DATA {
     public ArrayList<SANPHAM> getlistSP_DB() {
         try {
             DBAccess acc = new DBAccess();
-            ResultSet rs = acc.Query("SELECT sp.*, c.name FROM SanPham sp  JOIN LoaiSP c ON sp.category_id = c.category_id where sp.status = 1");
+            ResultSet rs = acc.Query("SELECT sp.*, c.name FROM SanPham sp  JOIN LoaiSP c ON sp.category_id = c.category_id where sp.status = 0");
             ArrayList<SANPHAM> dssp = new ArrayList<>();
             while (rs.next()) {
                 SANPHAM sp = new SANPHAM();

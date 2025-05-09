@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import com.mycompany.quanlyvattu.SuaXuatHang;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -28,7 +27,9 @@ import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -257,22 +258,43 @@ public class QuanLyXuatHang extends JPanel {
 
         try {
             conn = new DBAccess().getConnection();
-            conn.setAutoCommit(false); // bắt đầu transaction
+            conn.setAutoCommit(false);
 
-            for (String serial : listSerial) {
-                String sqlCheck = "SELECT * FROM SANPHAM WHERE serial = ? AND status = 0";
-                ps = conn.prepareStatement(sqlCheck);
-                ps.setString(1, serial);
-                rs = ps.executeQuery();
-                if (!rs.next()) {
-                    JOptionPane.showMessageDialog(null, "Serial không hợp lệ hoặc đã được xuất: " + serial);
-                    conn.rollback();
-                    return false;
-                }
-                ps.close();
+            // 1. Lấy danh sách serial cũ trong CTPX
+            Set<String> oldSerialSet = new HashSet<>();
+            String sqlOldSerials = "SELECT serial FROM CTPX WHERE idpx = ?";
+            ps = conn.prepareStatement(sqlOldSerials);
+            ps.setInt(1, idpx);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                oldSerialSet.add(rs.getString("serial").trim());
             }
+            ps.close();
+            rs.close();
 
-            // 1. Cập nhật thông tin phiếu xuất
+            // 2. Tìm các serial bị xóa (có trong oldSerialSet nhưng không có trong listSerial mới)
+            Set<String> deletedSerials = new HashSet<>(oldSerialSet);
+            deletedSerials.removeAll(listSerial);
+
+            // 3. Kiểm tra serial mới
+            String sqlCheck = "SELECT * FROM SanPham WHERE serial = ? AND status = 1";
+            PreparedStatement psCheck = conn.prepareStatement(sqlCheck);
+            for (String serial : listSerial) {
+                if (!oldSerialSet.contains(serial)) {
+                    psCheck.setString(1, serial);
+                    rs = psCheck.executeQuery();
+                    if (!rs.next()) {
+                        JOptionPane.showMessageDialog(null, "Serial không hợp lệ hoặc đã được xuất: " + serial);
+                        conn.rollback();
+                        psCheck.close();
+                        return false;
+                    }
+                    rs.close();
+                }
+            }
+            psCheck.close();
+
+            // 4. Cập nhật phiếu xuất
             String updatePX = "UPDATE PhieuXuat SET user_id=?, category_id=?, quantity=?, price=?, customer=?, ngayXuat=? WHERE idpx=?";
             ps = conn.prepareStatement(updatePX);
             ps.setInt(1, userId);
@@ -285,30 +307,40 @@ public class QuanLyXuatHang extends JPanel {
             ps.executeUpdate();
             ps.close();
 
-            // 2. Xóa CTPX cũ
+            // 5. Xóa CTPX cũ
             String deleteCTPX = "DELETE FROM CTPX WHERE idpx=?";
             ps = conn.prepareStatement(deleteCTPX);
             ps.setInt(1, idpx);
             ps.executeUpdate();
             ps.close();
 
-            // 3. Chèn lại CTPX mới và cập nhật sản phẩm
+            // 6. Chèn CTPX mới và update Sản phẩm
             String insertCTPX = "INSERT INTO CTPX(idpx, serial) VALUES (?, ?)";
-            String updateSP = "UPDATE SanPham SET status = 1, start_date = ?, end_date = ? WHERE serial = ?";
+            String updateSP = "UPDATE SanPham SET status = 0, start_date = ?, end_date = ? WHERE serial = ?";
             for (String serial : listSerial) {
-                // insert CTPX
                 ps = conn.prepareStatement(insertCTPX);
                 ps.setInt(1, idpx);
                 ps.setString(2, serial);
                 ps.executeUpdate();
                 ps.close();
 
-                // update SanPham
                 ps = conn.prepareStatement(updateSP);
                 ps.setString(1, startDate);
                 ps.setString(2, endDate);
                 ps.setString(3, serial);
                 ps.executeUpdate();
+                ps.close();
+            }
+
+            // 7. Cập nhật status = 1 cho các serial bị xóa
+            if (!deletedSerials.isEmpty()) {
+                String updateDeletedSP = "UPDATE SanPham SET status = 1, start_date = NULL, end_date = NULL WHERE serial = ?";
+                ps = conn.prepareStatement(updateDeletedSP);
+                for (String serial : deletedSerials) {
+                    ps.setString(1, serial);
+                    ps.addBatch();
+                }
+                ps.executeBatch();
                 ps.close();
             }
 
@@ -334,8 +366,8 @@ public class QuanLyXuatHang extends JPanel {
                 }
                 if (conn != null) {
                     conn.setAutoCommit(true);
+                    conn.close();
                 }
-                conn.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }

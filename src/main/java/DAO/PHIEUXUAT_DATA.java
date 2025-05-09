@@ -89,7 +89,7 @@ public class PHIEUXUAT_DATA {
 
             // 1. Kiểm tra serial hợp lệ
             for (String serial : listSerial) {
-                String sqlCheck = "SELECT * FROM SanPham WHERE serial = ? AND status = 0";
+                String sqlCheck = "SELECT * FROM SanPham WHERE serial = ? AND status = 1";
                 ps = conn.prepareStatement(sqlCheck);
                 ps.setString(1, serial);
                 rs = ps.executeQuery();
@@ -124,7 +124,7 @@ public class PHIEUXUAT_DATA {
 
             // 3. Thêm chi tiết serial và cập nhật trạng thái sản phẩm
             String sqlInsertCTPX = "INSERT INTO CTPX(idpx, serial) VALUES (?, ?)";
-            String sqlUpdateStatus = "UPDATE SanPham SET status = 1, start_date = ?, end_date = ? WHERE serial = ?";
+            String sqlUpdateStatus = "UPDATE SanPham SET status = 0, start_date = ?, end_date = ? WHERE serial = ?";
             for (String serial : listSerial) {
                 // Insert CTPX
                 ps = conn.prepareStatement(sqlInsertCTPX);
