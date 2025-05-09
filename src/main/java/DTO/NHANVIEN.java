@@ -3,14 +3,14 @@ package DTO;
 public class NHANVIEN {
     private int userId;
     private String hoTen;
-    private int status;
+    private String status;
     private String userName;
     private String passWord;
     
     public NHANVIEN() {   
     }
 
-    public NHANVIEN(int userId, String hoTen, int status, String userName, String passWord) {
+    public NHANVIEN(int userId, String hoTen, String status, String userName, String passWord) {
         this.userId = userId;
         this.hoTen = hoTen;
         this.status = status;
@@ -30,11 +30,11 @@ public class NHANVIEN {
         this.hoTen = hoTen;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

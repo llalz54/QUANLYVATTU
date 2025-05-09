@@ -4,11 +4,16 @@
  */
 package com.mycompany.quanlyvattu;
 
+import ConDB.DBAccess;
 import DAO.LOAISP_DATA;
+import DAO.NHOMSP_DATA;
 import DAO.OTHER_DATA;
 import DTO.LOAISP;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -24,28 +29,124 @@ public class QuanLyTonKho extends javax.swing.JFrame {
         initComponents();
         OTHER_DATA.loadCBDM(cb_GrProduct);
         OTHER_DATA.load_Cb_Brand(cb_Brand);
+        loadCB_Status();
     }
 
     private LOAISP_DATA loaisp_data = new LOAISP_DATA();
+    private NHOMSP_DATA nhomsp_data = new NHOMSP_DATA();
     private OTHER_DATA other_data = new OTHER_DATA();
+
+    private String action_QLLSP = "";
+    private int current_cateID;
+
+    private String convertStatus(String status) {
+        String trangThai;
+        switch (status) {
+            case "0":
+                trangThai = "Bị xoá";
+                break;
+            case "1":
+                trangThai = "Đang bán";
+                break;
+            default:
+                trangThai = "Không xác định";
+                break;
+        }
+        return trangThai;
+    }
+    
+    private String convertTrangThai(String trangThai){
+        String status;
+        switch (trangThai) {
+            case "Bị xoá":
+                status = "0";
+                break;
+            case "Đang bán":
+                status = "1";
+                break;
+            default:
+                status = "-1";
+                break;
+        }
+        return status;
+    }
+
+    private void loadCB_Status() {
+        cb_Status.removeAllItems();
+        try {
+            DBAccess acc = new DBAccess();
+            ResultSet rs = acc.Query("SELECT DISTINCT status FROM LoaiSP");
+            while (rs.next()) {
+                String status = rs.getString("status").trim();
+                String trangThai = convertStatus(status);
+                cb_Status.addItem(trangThai);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Lỗi loadCB_Status!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void loadDataTable_DSLSP(String grName, String brand) {
         loaisp_data.docListLoaiSP();
         DefaultTableModel dtm = (DefaultTableModel) tb_DSSP.getModel();
         dtm.setNumRows(0);
         ArrayList<LOAISP> dssp = loaisp_data.getDS_LoaiSP(grName, brand);
-        int n=1;
+        int n = 1;
         for (LOAISP sp : dssp) {
             Vector vec = new Vector();
             vec.add(n);
             vec.add(sp.getName());
             vec.add(sp.getBrand());
-            vec.add(sp.getStatus());
+            String status = convertStatus(sp.getStatus());
+            vec.add(status);
             vec.add(sp.getSoLuong());
             dtm.addRow(vec);
             n++;
         }
         tb_DSSP.setModel(dtm);
+    }
+
+    private void loadDataTable_DSTonKho(int categoryID) {
+        DefaultTableModel dtm = (DefaultTableModel) tb_DSTonKho.getModel();
+        dtm.setNumRows(0);
+        String query
+                = "SELECT \n"
+                + "    fp.ngayNhap,\n"
+                + "    sp.serial,\n"
+                + "	fp.supplier,\n"
+                + "    fp.price\n"
+                + "FROM SanPham sp\n"
+                + "CROSS APPLY (\n"
+                + "    SELECT TOP 1\n"
+                + "        pn.ngayNhap,\n"
+                + "        pn.price,\n"
+                + "        pn.supplier\n"
+                + "    FROM CTPN ct\n"
+                + "    INNER JOIN PhieuNhap pn ON ct.idpn = pn.idpn\n"
+                + "    WHERE ct.serial   = sp.serial\n"
+                + "    ORDER BY pn.ngayNhap ASC\n"
+                + ") AS fp\n"
+                + "WHERE sp.status= '1'\n"
+                + "  AND sp.category_id = " + categoryID + "\n"
+                + "ORDER BY fp.ngayNhap ASC;";
+        try {
+            int n = 1;
+            DBAccess acc = new DBAccess();
+            ResultSet rs = acc.Query(query);
+            while (rs.next()) {
+                Vector vec = new Vector();
+                vec.add(n);
+                vec.add(rs.getString(1).trim());
+                vec.add(rs.getString(2).trim());
+                vec.add(rs.getString(3).trim());
+                vec.add(rs.getString(4).trim());
+                dtm.addRow(vec);
+                n++;
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi lấy danh sách sản phẩm tồn kho!");
+        }
+        tb_DSTonKho.setModel(dtm);
     }
 
     /**
@@ -61,10 +162,15 @@ public class QuanLyTonKho extends javax.swing.JFrame {
         tb_DSSP = new javax.swing.JTable();
         cb_GrProduct = new javax.swing.JComboBox<>();
         cb_Brand = new javax.swing.JComboBox<>();
-        txt_ngayNhap = new javax.swing.JTextField();
-        txt_ngayNhap1 = new javax.swing.JTextField();
+        txt_Name = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tb_DSTonKho = new javax.swing.JTable();
+        btn_Create = new javax.swing.JButton();
+        btn_Update = new javax.swing.JButton();
+        btn_Delete = new javax.swing.JButton();
+        btn_Save = new javax.swing.JButton();
+        cb_Status = new javax.swing.JComboBox<>();
+        btn_getListProduct = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1200, 600));
@@ -80,6 +186,11 @@ public class QuanLyTonKho extends javax.swing.JFrame {
                 "STT", "Tên sản phẩm", "Thương hiệu", "Trạng thái", "Số lượng"
             }
         ));
+        tb_DSSP.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tb_DSSPMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tb_DSSP);
         if (tb_DSSP.getColumnModel().getColumnCount() > 0) {
             tb_DSSP.getColumnModel().getColumn(0).setPreferredWidth(10);
@@ -94,6 +205,7 @@ public class QuanLyTonKho extends javax.swing.JFrame {
             }
         });
 
+        cb_Brand.setEditable(true);
         cb_Brand.setBorder(javax.swing.BorderFactory.createTitledBorder("Hãng"));
         cb_Brand.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,11 +213,9 @@ public class QuanLyTonKho extends javax.swing.JFrame {
             }
         });
 
-        txt_ngayNhap.setBorder(javax.swing.BorderFactory.createTitledBorder("Tên"));
+        txt_Name.setBorder(javax.swing.BorderFactory.createTitledBorder("Tên"));
 
-        txt_ngayNhap1.setBorder(javax.swing.BorderFactory.createTitledBorder("Trạng thái"));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tb_DSTonKho.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -113,10 +223,62 @@ public class QuanLyTonKho extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "STT", "Serial", "Trạng thái", "Ngày bắt đầu", "Ngày kết thúc"
+                "STT", "Ngày nhập", "Serial", "Nhà cung cấp", "Giá nhập"
             }
-        ));
-        jScrollPane2.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tb_DSTonKho);
+        if (tb_DSTonKho.getColumnModel().getColumnCount() > 0) {
+            tb_DSTonKho.getColumnModel().getColumn(0).setResizable(false);
+            tb_DSTonKho.getColumnModel().getColumn(1).setResizable(false);
+            tb_DSTonKho.getColumnModel().getColumn(2).setResizable(false);
+            tb_DSTonKho.getColumnModel().getColumn(3).setResizable(false);
+            tb_DSTonKho.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        btn_Create.setText("THÊM");
+        btn_Create.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_CreateActionPerformed(evt);
+            }
+        });
+
+        btn_Update.setText("SỬA");
+        btn_Update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_UpdateActionPerformed(evt);
+            }
+        });
+
+        btn_Delete.setText("XOÁ");
+        btn_Delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_DeleteActionPerformed(evt);
+            }
+        });
+
+        btn_Save.setText("GHI");
+        btn_Save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_SaveActionPerformed(evt);
+            }
+        });
+
+        cb_Status.setBorder(javax.swing.BorderFactory.createTitledBorder("Trạng thái"));
+
+        btn_getListProduct.setText("Lấy danh sách tồn kho");
+        btn_getListProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_getListProductActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -128,13 +290,23 @@ public class QuanLyTonKho extends javax.swing.JFrame {
                     .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(100, 100, 100)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cb_GrProduct, 0, 302, Short.MAX_VALUE)
-                            .addComponent(cb_Brand, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txt_ngayNhap)
-                            .addComponent(txt_ngayNhap1))))
-                .addContainerGap(80, Short.MAX_VALUE))
+                        .addGap(106, 106, 106)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btn_Create)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btn_Update)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btn_Delete)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btn_Save))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(cb_GrProduct, 0, 302, Short.MAX_VALUE)
+                                .addComponent(cb_Brand, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txt_Name))
+                            .addComponent(cb_Status, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_getListProduct))))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -146,9 +318,17 @@ public class QuanLyTonKho extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(cb_Brand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(txt_ngayNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txt_Name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(txt_ngayNhap1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cb_Status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btn_Create)
+                            .addComponent(btn_Update)
+                            .addComponent(btn_Delete)
+                            .addComponent(btn_Save))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_getListProduct))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -171,6 +351,107 @@ public class QuanLyTonKho extends javax.swing.JFrame {
         String brand = cb_Brand.getSelectedItem() != null ? cb_Brand.getSelectedItem().toString().trim() : "";
         loadDataTable_DSLSP(groupName, brand);
     }//GEN-LAST:event_cb_BrandActionPerformed
+
+    private void btn_CreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CreateActionPerformed
+        // TODO add your handling code here:
+        action_QLLSP = "create";
+        txt_Name.setText("");
+        txt_Name.setEditable(true);
+        cb_Status.setEnabled(false);
+    }//GEN-LAST:event_btn_CreateActionPerformed
+
+    private void btn_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_DeleteActionPerformed
+        // TODO add your handling code here:
+        action_QLLSP = "delete";
+        txt_Name.setEditable(false);
+    }//GEN-LAST:event_btn_DeleteActionPerformed
+
+    private void btn_UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_UpdateActionPerformed
+        // TODO add your handling code here:
+        action_QLLSP = "update";
+        int i = tb_DSSP.getSelectedRow();
+        if (i<0) {
+            JOptionPane.showMessageDialog(this, "Chọn sản phẩm để sửa", "Input warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+        DefaultTableModel dtm = (DefaultTableModel) tb_DSSP.getModel();
+        String cateName = dtm.getValueAt(i, 1).toString();
+        current_cateID = loaisp_data.name_to_ID(cateName);
+        }
+    }//GEN-LAST:event_btn_UpdateActionPerformed
+
+    private void btn_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SaveActionPerformed
+        // TODO add your handling code here:
+        try {
+            String grName = cb_GrProduct.getSelectedItem().toString();
+            int grID = nhomsp_data.name_to_ID(grName);
+            String brand = cb_Brand.getSelectedItem().toString();
+            String name = txt_Name.getText().trim();
+            String trangThai = cb_Status.getSelectedItem().toString();
+            String status = convertTrangThai(trangThai);
+            if (action_QLLSP.equals("create")) {
+                boolean check = true;
+//                if (name.matches("[\\w ]+") == false) {
+//                    JOptionPane.showMessageDialog(this, "Nhập tên sản phẩm bị lỗi ký tự!", "Input warning", JOptionPane.WARNING_MESSAGE);
+//                    check = false;
+//                }
+                if (loaisp_data.checkName_LSP(name) == true) {
+                    JOptionPane.showMessageDialog(this, "Tên sản phẩm bị trùng!", "Input warning", JOptionPane.WARNING_MESSAGE);
+                    check = false;
+                }
+                if (check == true) {
+                    loaisp_data.create_LSP(grID, name, "1", brand);
+                    loadDataTable_DSLSP(grName, brand);
+                }
+            } else if (action_QLLSP.equals("update")) {
+                boolean check = true;
+                //regex sau                
+                if (check == true) {
+                    loaisp_data.update_LSP(current_cateID, grID, name, status, brand);
+                    loadDataTable_DSLSP(grName, brand);
+                }
+            } else if (action_QLLSP.equals("delete")) {
+                boolean check = true;
+                int i = tb_DSSP.getSelectedRow();
+                if (i < 0) {
+                    JOptionPane.showMessageDialog(this, "Chọn sản phẩm để xoá", "Input warning", JOptionPane.WARNING_MESSAGE);
+                    check = false;
+                }
+                if (check == true) {
+                    int cateID = loaisp_data.name_to_ID(name);
+                    loaisp_data.delete_LSP(cateID);
+                    loadDataTable_DSLSP(grName, brand);
+                    txt_Name.setEditable(true);
+                    txt_Name.setText("");
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi ghi sản phẩm", "ERROR!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btn_SaveActionPerformed
+
+    private void btn_getListProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_getListProductActionPerformed
+        // TODO add your handling code here:
+        int row = tb_DSSP.getSelectedRow();
+        if (row > -1) {
+            try {
+                String proName = txt_Name.getText().trim();
+                int cateID = loaisp_data.name_to_ID(proName);
+                loadDataTable_DSTonKho(cateID);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Lỗi lấy danh sách sản phẩm tồn kho!", "Input warning", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Chưa chọn sản phẩm để lấy danh sách tồn kho!", "Input warning", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btn_getListProductActionPerformed
+
+    private void tb_DSSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_DSSPMouseClicked
+        // TODO add your handling code here:
+        int i = tb_DSSP.getSelectedRow();
+        DefaultTableModel dtm = (DefaultTableModel) tb_DSSP.getModel();
+        txt_Name.setText(dtm.getValueAt(i, 1).toString());
+        cb_Status.setSelectedItem(dtm.getValueAt(i, 3).toString());
+    }//GEN-LAST:event_tb_DSSPMouseClicked
 
     /**
      * @param args the command line arguments
@@ -208,13 +489,18 @@ public class QuanLyTonKho extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_Create;
+    private javax.swing.JButton btn_Delete;
+    private javax.swing.JButton btn_Save;
+    private javax.swing.JButton btn_Update;
+    private javax.swing.JButton btn_getListProduct;
     private javax.swing.JComboBox<String> cb_Brand;
     private javax.swing.JComboBox<String> cb_GrProduct;
+    private javax.swing.JComboBox<String> cb_Status;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable tb_DSSP;
-    private javax.swing.JTextField txt_ngayNhap;
-    private javax.swing.JTextField txt_ngayNhap1;
+    private javax.swing.JTable tb_DSTonKho;
+    private javax.swing.JTextField txt_Name;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,11 +1,15 @@
 package DAO;
 
+import ConDB.CONNECTION;
 import ConDB.DBAccess;
 import DTO.LOAISP;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -79,9 +83,9 @@ public class LOAISP_DATA {
             }
         }
     }
-    
+
     public ArrayList<LOAISP> getDS_LoaiSP(String groupName, String brand) {
-        
+
         ArrayList<LOAISP> dssp = new ArrayList<>();
         for (LOAISP sp : listLoaiSP) {
             if (groupName.contains(sp.getGrName()) && brand.contains(sp.getBrand())) {
@@ -90,4 +94,106 @@ public class LOAISP_DATA {
         }
         return dssp;
     }
+
+    public static void create_LSP(int grID, String name, String status, String brand) {
+        Connection conn = CONNECTION.getConnection();
+        String sql = "insert into LoaiSP values(?,?,?,?)";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, grID);
+            ps.setString(2, name);
+            ps.setString(3, status);
+            ps.setString(4, brand);
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+            JOptionPane.showMessageDialog(null, "Thêm loại sản phẩm thành công!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Lỗi thêm loại sản phẩm!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static void update_LSP(int cateID, int grID, String name, String status, String brand) {
+        Connection conn = CONNECTION.getConnection();
+        String sql = "UPDATE LoaiSP SET group_id='" + grID + "', name='" + name + "', status='" + status + "', brand='" + brand + "'  where category_id='" + cateID + "'";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+            JOptionPane.showMessageDialog(null, "Sửa sản phẩm thành công!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Lỗi sửa sản phẩm!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static void delete_LSP(int cateID) {
+        Connection conn = CONNECTION.getConnection();
+        if (check_HDLSP(cateID) == false) {
+            String sql = "DELETE FROM LoaiSP WHERE category_id='" + cateID + "'";
+            try {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.executeUpdate();
+                ps.close();
+                conn.close();
+                JOptionPane.showMessageDialog(null, "Xoá loại sản phẩm thành công!");
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Lỗi khi xoá loại sản phẩm!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            String sql1 = "UPDATE LoaiSP SET status='0' WHERE category_id='" + cateID + "'";
+            try {
+                PreparedStatement ps1 = conn.prepareStatement(sql1);
+                ps1.executeUpdate();
+                ps1.close();
+                conn.close();
+                JOptionPane.showMessageDialog(null, "Dòng sản phẩm này đã được ghi phiếu nhập => Thay đổi trạng thái!");
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Lỗi cập nhật trạng thái sản phẩm!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }    
+    
+    private static boolean check_HDLSP(int cateID) {
+        Connection conn = CONNECTION.getConnection();
+        String sql = "SELECT category_id FROM PhieuNhap WHERE category_id ='" + cateID + "'";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+
+        } catch (Exception e) {
+            System.out.println("Lỗi hàm kiểm tra hoạt động loại sản phẩm!");
+        }
+        return false;
+    }
+
+    public boolean checkName_LSP(String name) {
+        boolean check = false;
+        try {
+            DBAccess acc = new DBAccess();
+            ResultSet rs = acc.Query("SELECT name FROM LoaiSP WHERE name ='" + name + "'");
+            if (rs.next()) {
+                check = true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi kiểm tra trùng name");
+        }
+        return check;
+    }
+
+    public int name_to_ID(String name) {
+        for (LOAISP sp : listLoaiSP) {
+            if (name.equals(sp.getName())) {
+                return sp.getCategoryID();
+            }
+        }
+        return -1;
+    }
+
 }
