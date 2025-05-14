@@ -469,7 +469,7 @@ public class QuanLyXuatHang extends JPanel {
     public void suaXuatHang() {
         try {
 
-            int userId = 1;
+            int userId = Session.getInstance().getUserId();
             int categoryId = 0;
             for (LOAISP loaisp : loaisps) {
                 if (loaisp.getName().equals(cb_Brand.getSelectedItem())) {
