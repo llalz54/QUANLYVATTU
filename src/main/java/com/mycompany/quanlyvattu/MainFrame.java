@@ -51,6 +51,7 @@ public class MainFrame extends javax.swing.JFrame {
         lblDSXuat = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         panelShow = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -58,7 +59,6 @@ public class MainFrame extends javax.swing.JFrame {
         panelMenu.setPreferredSize(new java.awt.Dimension(300, 700));
 
         lblNhapHang.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblNhapHang.setIcon(new javax.swing.ImageIcon("C:\\Users\\Admin\\Downloads\\plus.png")); // NOI18N
         lblNhapHang.setText("NHẬP HÀNG");
         lblNhapHang.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -73,7 +73,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         lblXuatHang.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblXuatHang.setIcon(new javax.swing.ImageIcon("C:\\Users\\Admin\\Downloads\\cash-on-delivery.png")); // NOI18N
         lblXuatHang.setText("XUẤT HÀNG");
         lblXuatHang.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -88,7 +87,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         lblSanPham.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblSanPham.setIcon(new javax.swing.ImageIcon("C:\\Users\\Admin\\Downloads\\box.png")); // NOI18N
         lblSanPham.setText("SẢN PHẨM");
         lblSanPham.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -103,7 +101,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         lblTonKho.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblTonKho.setIcon(new javax.swing.ImageIcon("C:\\Users\\Admin\\Downloads\\warehouse.png")); // NOI18N
         lblTonKho.setText("TỒN KHO");
         lblTonKho.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -118,7 +115,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         lblDSXuat.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblDSXuat.setIcon(new javax.swing.ImageIcon("C:\\Users\\Admin\\Downloads\\checklist.png")); // NOI18N
         lblDSXuat.setText("DS HÀNG XUẤT");
         lblDSXuat.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -135,7 +131,16 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setText("CÔNG TY CP KTTM NAM TRUNG");
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Admin\\Downloads\\logo03-7049.png")); // NOI18N
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 66, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout panelMenuLayout = new javax.swing.GroupLayout(panelMenu);
         panelMenu.setLayout(panelMenuLayout);
@@ -154,7 +159,9 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(panelMenuLayout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(jLabel6)))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMenuLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel1)
@@ -167,17 +174,22 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(lblNhapHang)
-                .addGap(32, 32, 32)
+                .addGap(76, 76, 76)
                 .addComponent(lblXuatHang)
                 .addGap(35, 35, 35)
                 .addComponent(lblSanPham)
-                .addGap(38, 38, 38)
-                .addComponent(lblTonKho)
-                .addGap(38, 38, 38)
+                .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelMenuLayout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(lblTonKho))
+                    .addGroup(panelMenuLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblDSXuat)
-                .addContainerGap(202, Short.MAX_VALUE))
+                .addGap(63, 63, 63)
+                .addComponent(lblNhapHang)
+                .addContainerGap(198, Short.MAX_VALUE))
         );
 
         panelShow.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -326,6 +338,7 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblDSXuat;
     private javax.swing.JLabel lblNhapHang;
     private javax.swing.JLabel lblSanPham;
