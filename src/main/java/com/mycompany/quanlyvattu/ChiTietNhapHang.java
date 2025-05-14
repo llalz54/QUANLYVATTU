@@ -103,7 +103,7 @@ public class ChiTietNhapHang extends JPanel {
         panelNhapHang.setBackground(new java.awt.Color(255, 255, 255));
         panelNhapHang.setPreferredSize(new java.awt.Dimension(1000, 700));
 
-        cb_Brand.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cb_Brand.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         cb_Brand.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Hãng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
         cb_Brand.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,7 +112,7 @@ public class ChiTietNhapHang extends JPanel {
         });
 
         cb_Supplier.setEditable(true);
-        cb_Supplier.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cb_Supplier.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         cb_Supplier.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nhà cung cấp", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
         cb_Supplier.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -175,10 +175,10 @@ public class ChiTietNhapHang extends JPanel {
             tb_CTPN.getColumnModel().getColumn(9).setResizable(false);
         }
 
-        cb_Product.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cb_Product.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         cb_Product.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sản phẩm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
-        cb_GrProduct.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cb_GrProduct.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         cb_GrProduct.setMaximumRowCount(10);
         cb_GrProduct.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nhóm sản phẩm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
         cb_GrProduct.addActionListener(new java.awt.event.ActionListener() {
