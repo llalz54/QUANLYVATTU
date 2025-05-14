@@ -16,6 +16,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFormattedTextField;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -25,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Admin
  */
-public class QuanLySanPham extends javax.swing.JFrame {
+public class QuanLySanPham extends JPanel {
 
     /**
      * Creates new form QuanLySanPham
@@ -75,7 +76,7 @@ public class QuanLySanPham extends javax.swing.JFrame {
         if (dssp != null) {
             for (SANPHAM sp : dssp) {
                 Vector vec = new Vector();
-                //vec.add(sp.getProductID());
+               //vec.add(sp.getProductID());
                 vec.add(sp.getTenLoai());
                 vec.add(sp.getSerial());
                 String trangThai;
@@ -98,6 +99,7 @@ public class QuanLySanPham extends javax.swing.JFrame {
     }
 
     private String convertStatus(String status) {
+
         switch (status) {
             case "1":
                 return "Đã bán";
@@ -105,60 +107,58 @@ public class QuanLySanPham extends javax.swing.JFrame {
                 return "Tồn kho";
             default:
                 return "Tất cả";
-        }
+}
     }
 
-    private void loadDataTableSPTheoTrangThai() {
-        String selected = cbLocSP.getSelectedItem().toString();
-        ArrayList<SANPHAM> dssp = null;
+   private void loadDataTableSPTheoTrangThai() {
+    String selected = cbLocSP.getSelectedItem().toString();
+    ArrayList<SANPHAM> dssp = null;
 
-        switch (selected) {
-            case "Tất cả":
-                dssp = sp_data.getListSP();
-                break;
-            case "Tồn kho":
-                dssp = sp_data.getlistSP_TK();
-                break;
-            case "Đã bán":
-                dssp = sp_data.getlistSP_DB();
-                break;
-        }
-
-        DefaultTableModel dtm = (DefaultTableModel) tbSP.getModel();
-        dtm.setRowCount(0); // Xóa dữ liệu cũ
-
-        if (dssp != null) {
-            for (SANPHAM sp : dssp) {
-                Vector<Object> vec = new Vector<>();
-                // vec.add(sp.getProductID());
-                vec.add(sp.getTenLoai());
-                vec.add(sp.getSerial());
-                vec.add(convertStatus(sp.getStatus()));
-                vec.add(sp.getStartDate());
-                vec.add(sp.getEndDate());
-
-                dtm.addRow(vec);
-            }
-        }
+    switch (selected) {
+        case "Tất cả":
+            dssp = sp_data.getListSP();
+            break;
+        case "Tồn kho":
+            dssp = sp_data.getlistSP_TK();
+            break;
+        case "Đã bán":
+            dssp = sp_data.getlistSP_DB();
+            break;
     }
 
+    DefaultTableModel dtm = (DefaultTableModel) tbSP.getModel();
+    dtm.setRowCount(0); // Xóa dữ liệu cũ
 
- 
+    if (dssp != null) {
+        for (SANPHAM sp : dssp) {
+            Vector<Object> vec = new Vector<>();
+           // vec.add(sp.getProductID());
+            vec.add(sp.getTenLoai());
+            vec.add(sp.getSerial());
+            vec.add(convertStatus(sp.getStatus()));
+            vec.add(sp.getStartDate());
+            vec.add(sp.getEndDate());
+
+            dtm.addRow(vec);
+        }
+    }
+   }
+
     private void loadTable_TheoSerial(String Serial) {
         DefaultTableModel dtm = (DefaultTableModel) tbSP.getModel();
         dtm.setNumRows(0);
-//        ArrayList<SANPHAM> dssp = sp_data.getSPtheoSerial(Serial);
-//        for (SANPHAM sp : dssp) {
-//            Vector vec = new Vector<>();
-//            //  vec.add(sp.getProductID());
-//            vec.add(sp.getTenLoai());
-//            vec.add(sp.getSerial());
-//            vec.add(convertStatus(sp.getStatus()));
-//            vec.add(sp.getStartDate());
-//            vec.add(sp.getEndDate());
-//
-//            dtm.addRow(vec);
-//        }
+        ArrayList<SANPHAM> dssp = sp_data.getSPtheoSerial(Serial);
+        for (SANPHAM sp : dssp) {
+            Vector vec = new Vector<>();
+          //  vec.add(sp.getProductID());
+            vec.add(sp.getTenLoai());
+            vec.add(sp.getSerial());
+            vec.add(convertStatus(sp.getStatus()));
+            vec.add(sp.getStartDate());
+            vec.add(sp.getEndDate());
+
+            dtm.addRow(vec);
+        }
         tbSP.setModel(dtm);
     }
 
@@ -174,17 +174,16 @@ public class QuanLySanPham extends javax.swing.JFrame {
         tfTimKiem = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         cbLocSP = new javax.swing.JComboBox<>();
-        btnThoat = new javax.swing.JButton();
         btnTim = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1200, 600));
-        setResizable(false);
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
             }
         });
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(1000, 700));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("QUẢN LÍ SẢN PHẨM");
@@ -236,9 +235,6 @@ public class QuanLySanPham extends javax.swing.JFrame {
             }
         });
 
-        btnThoat.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnThoat.setText("Thoát");
-
         btnTim.setText("Tìm");
         btnTim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -252,53 +248,49 @@ public class QuanLySanPham extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tfTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnTim, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbLocSP, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 323, Short.MAX_VALUE)
-                .addComponent(btnThoat, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addComponent(cbLocSP, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(400, 400, 400)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(218, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(119, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGap(90, 90, 90)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(cbLocSP, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnThoat, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnTim))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
@@ -359,7 +351,6 @@ public class QuanLySanPham extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnThoat;
     private javax.swing.JButton btnTim;
     private javax.swing.JComboBox<String> cbLocSP;
     private javax.swing.JLabel jLabel1;

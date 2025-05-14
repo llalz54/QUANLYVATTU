@@ -16,14 +16,14 @@ public class CONNECTION {
             return null;
         }
     }
-    public static void main(String[] args) {
-        Connection conn = CONNECTION.getConnection();
-        if (conn != null) {
-            System.out.println("Kết nối thành công từ hàm main!");
-        } else {
-            System.out.println("Kết nối thất bại từ hàm main.");
-        }
-    }
+//    public static void main(String[] args) {
+//        Connection conn = CONNECTION.getConnection();
+//        if (conn != null) {
+//            System.out.println("Kết nối thành công từ hàm main!");
+//        } else {
+//            System.out.println("Kết nối thất bại từ hàm main.");
+//        }
+//    }
 }
 
     

@@ -40,9 +40,8 @@ public class SANPHAM_DATA {
         } catch (SQLException e) {
             System.out.println("Lỗi lấy danh sách sản phẩm!!!");
             return null;
-        }       
+        }
     }
-    
 
     public ArrayList<SANPHAM> getlistSP_TK() {
         try {
@@ -100,6 +99,18 @@ public class SANPHAM_DATA {
         for (SANPHAM sp : allSP) {
             int category = sp.getCategoryID();
             if (categoryID == category) {
+                dssp.add(sp);
+            }
+        }
+        return dssp;
+    }
+
+    public ArrayList<SANPHAM> getSPtheoSerial(String Serial) {
+        ArrayList<SANPHAM> allSP = getListSP();
+        ArrayList<SANPHAM> dssp = new ArrayList<>();
+        for (SANPHAM sp : allSP) {
+            String serial = sp.getSerial().toLowerCase();
+            if (serial.contains(Serial.toLowerCase())) {
                 dssp.add(sp);
             }
         }
