@@ -242,19 +242,78 @@ public class QuanLyXuatHang extends JPanel {
             tbPX.getColumnModel().getColumn(0).setWidth(0);
         }
     }
+//XOÁ XUẤT HÀNG
 
-//    private void loadCBDM(JComboBox cbox) {
-//        cbox.removeAllItems();
-//        try {
-//            DBAccess acc = new DBAccess();
-//            ResultSet rs = acc.Query("SELECT name FROM NhomSP");
-//            while (rs.next()) {
-//                cbox.addItem(rs.getString("name").trim());
-//            }
-//        } catch (SQLException e) {
-//            JOptionPane.showMessageDialog(null, "Lỗi loadCBDM!", "ERROR!", JOptionPane.ERROR_MESSAGE);
-//        }
-//    }
+    public boolean xoaPhieuXuat(int idpx) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = new DBAccess().getConnection();
+            conn.setAutoCommit(false);
+
+            // 1. Cập nhật status = 1 cho tất cả serial trong phiếu xuất
+            String updateSerial = "UPDATE SanPham SET status = 1, start_date = NULL, end_date = NULL "
+                    + "WHERE serial IN (SELECT serial FROM CTPX WHERE idpx = ?)";
+            ps = conn.prepareStatement(updateSerial);
+            ps.setInt(1, idpx);
+            int updatedRows = ps.executeUpdate();
+            ps.close();
+
+            // 2. Xóa chi tiết phiếu xuất
+            String deleteCTPX = "DELETE FROM CTPX WHERE idpx = ?";
+            ps = conn.prepareStatement(deleteCTPX);
+            ps.setInt(1, idpx);
+            ps.executeUpdate();
+            ps.close();
+
+            // 3. Xóa phiếu xuất
+            String deletePX = "DELETE FROM PhieuXuat WHERE idpx = ?";
+            ps = conn.prepareStatement(deletePX);
+            ps.setInt(1, idpx);
+            int deletedRows = ps.executeUpdate();
+            ps.close();
+
+            conn.commit();
+
+            if (deletedRows > 0) {
+                JOptionPane.showMessageDialog(this, "Đã xóa phiếu xuất và cập nhật " + updatedRows + " serial về trạng thái chưa xuất!");
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy phiếu xuất để xóa!");
+                return false;
+            }
+        } catch (Exception e) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(this, "Lỗi khi xóa phiếu xuất: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+                if (conn != null) {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    //SỬA XUẤT HÀNG
     public boolean updateXuatHang(int idpx, int userId, int categoryId, int quantity, int price,
             String customer, String ngayXuat,
             String startDate, String endDate,
@@ -278,13 +337,39 @@ public class QuanLyXuatHang extends JPanel {
             }
             ps.close();
             rs.close();
+            // 2. Kiểm tra serial mới có thuộc category_id đúng không
+            String sqlCheckSerial = "SELECT category_id FROM SanPham WHERE serial = ?";
+            ps = conn.prepareStatement(sqlCheckSerial);
 
-            // 2. Tìm các serial bị xóa (có trong oldSerialSet nhưng không có trong listSerial mới)
+            for (String serial : listSerial) {
+                if (!oldSerialSet.contains(serial)) {
+                    ps.setString(1, serial);
+                    rs = ps.executeQuery();
+                    if (rs.next()) {
+                        int serialCategoryId = rs.getInt("category_id");
+                        if (serialCategoryId != categoryId) {
+                            JOptionPane.showMessageDialog(null,
+                                    "Serial " + serial + " không thuộc loại sản phẩm này!\n"
+                                    + "Vui lòng nhập serial đúng cho " + cb_Brand.getSelectedItem());
+                            conn.rollback();
+                            return false;
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Serial " + serial + " không tồn tại!");
+                        conn.rollback();
+                        return false;
+                    }
+                    rs.close();
+                }
+            }
+            ps.close();
+
+            // 3. Tìm các serial bị xóa (có trong oldSerialSet nhưng không có trong listSerial mới)
             Set<String> deletedSerials = new HashSet<>(oldSerialSet);
             deletedSerials.removeAll(listSerial);
 
-            // 3. Kiểm tra serial mới
-            String sqlCheck = "SELECT * FROM SanPham WHERE serial = ? AND status = 1";
+            // 4. Kiểm tra serial mới
+            String sqlCheck = "SELECT * FROM SanPham WHERE serial = ? AND status = 1 ";
             PreparedStatement psCheck = conn.prepareStatement(sqlCheck);
             for (String serial : listSerial) {
                 if (!oldSerialSet.contains(serial)) {
@@ -301,7 +386,7 @@ public class QuanLyXuatHang extends JPanel {
             }
             psCheck.close();
 
-            // 4. Cập nhật phiếu xuất
+            // 5. Cập nhật phiếu xuất
             String updatePX = "UPDATE PhieuXuat SET user_id=?, category_id=?, quantity=?, price=?, customer=?, ngayXuat=? WHERE idpx=?";
             ps = conn.prepareStatement(updatePX);
             ps.setInt(1, userId);
@@ -314,14 +399,14 @@ public class QuanLyXuatHang extends JPanel {
             ps.executeUpdate();
             ps.close();
 
-            // 5. Xóa CTPX cũ
+            // 6. Xóa CTPX cũ
             String deleteCTPX = "DELETE FROM CTPX WHERE idpx=?";
             ps = conn.prepareStatement(deleteCTPX);
             ps.setInt(1, idpx);
             ps.executeUpdate();
             ps.close();
 
-            // 6. Chèn CTPX mới và update Sản phẩm
+            // 7. Chèn CTPX mới và update Sản phẩm
             String insertCTPX = "INSERT INTO CTPX(idpx, serial) VALUES (?, ?)";
             String updateSP = "UPDATE SanPham SET status = 0, start_date = ?, end_date = ? WHERE serial = ?";
             for (String serial : listSerial) {
@@ -339,7 +424,7 @@ public class QuanLyXuatHang extends JPanel {
                 ps.close();
             }
 
-            // 7. Cập nhật status = 1 cho các serial bị xóa
+            // 8. Cập nhật status = 1 cho các serial bị xóa
             if (!deletedSerials.isEmpty()) {
                 String updateDeletedSP = "UPDATE SanPham SET status = 1, start_date = NULL, end_date = NULL WHERE serial = ?";
                 ps = conn.prepareStatement(updateDeletedSP);
@@ -384,7 +469,7 @@ public class QuanLyXuatHang extends JPanel {
     public void suaXuatHang() {
         try {
 
-            int userId = Session.getInstance().getUserId();
+            int userId = 1;
             int categoryId = 0;
             for (LOAISP loaisp : loaisps) {
                 if (loaisp.getName().equals(cb_Brand.getSelectedItem())) {
@@ -463,6 +548,7 @@ public class QuanLyXuatHang extends JPanel {
         tf_khachHang = new javax.swing.JTextField();
         cb_GrProduct1 = new javax.swing.JComboBox<>();
         cb_Time = new javax.swing.JComboBox<>();
+        btnXoa = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -590,6 +676,13 @@ public class QuanLyXuatHang extends JPanel {
         cb_Time.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "12 tháng", "24 tháng", "36 tháng" }));
         cb_Time.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("")), "Thời gian bảo hành", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
+        btnXoa.setText("Xoá");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -601,14 +694,18 @@ public class QuanLyXuatHang extends JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27)
                         .addComponent(tfTim, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnTim, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                        .addComponent(btnTim, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnXoa)
+                        .addGap(100, 100, 100)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -634,7 +731,8 @@ public class QuanLyXuatHang extends JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfTim, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnTim))
+                    .addComponent(btnTim)
+                    .addComponent(btnXoa))
                 .addGap(26, 26, 26)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 608, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -679,7 +777,22 @@ public class QuanLyXuatHang extends JPanel {
     }//GEN-LAST:event_tbPXComponentShown
 
     private void btn_LuuActionPerformed(java.awt.event.ActionEvent evt) {
-        suaXuatHang();
+        int selectedRow = tbPX.getSelectedRow();
+        if (selectedRow >= 0) {
+            int idpx = Integer.parseInt(tbPX.getValueAt(selectedRow, 0).toString());
+
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    "Bạn có chắc chắn muốn sửa phiếu xuất này?",
+                    "Xác nhận sửa",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                suaXuatHang();
+                loadDataTableSP(); // Tải lại danh sách phiếu xuất
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn phiếu xuất cần xóa!");
+        }
     }
 
     private void cb_BrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_BrandActionPerformed
@@ -693,6 +806,29 @@ public class QuanLyXuatHang extends JPanel {
     private void cb_GrProduct1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_GrProduct1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cb_GrProduct1ActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {
+        int selectedRow = tbPX.getSelectedRow();
+        if (selectedRow >= 0) {
+            int idpx = Integer.parseInt(tbPX.getValueAt(selectedRow, 0).toString());
+
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    "Bạn có chắc chắn muốn xóa phiếu xuất này?\nTất cả serial sẽ được chuyển về trạng thái chưa xuất.",
+                    "Xác nhận xóa",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                boolean success = xoaPhieuXuat(idpx);
+                if (success) {
+                    loadDataTableSP(); // Tải lại danh sách phiếu xuất
+                    DefaultTableModel model = (DefaultTableModel) tbSerial.getModel();
+                    model.setRowCount(0); // Xóa dữ liệu bảng serial
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn phiếu xuất cần xóa!");
+        }
+    }
 
     private void tf_soLuongActionPerformed(java.awt.event.ActionEvent evt) {
         capNhatBangSerialTheoSoLuong();
@@ -747,6 +883,7 @@ public class QuanLyXuatHang extends JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTim;
+    private javax.swing.JButton btnXoa;
     private javax.swing.JButton btn_Luu;
     private javax.swing.JComboBox<String> cb_Brand;
     private javax.swing.JComboBox<String> cb_GrProduct1;
