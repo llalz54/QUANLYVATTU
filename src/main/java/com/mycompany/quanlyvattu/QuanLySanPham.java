@@ -81,9 +81,9 @@ public class QuanLySanPham extends JPanel {
                 vec.add(sp.getSerial());
                 String trangThai;
                 String statusRaw = sp.getStatus(); // Giả sử getStatus trả về "1" hoặc "2"
-                if ("1".equals(statusRaw)) {
+                if ("0".equals(statusRaw)) {
                     trangThai = "Đã bán";
-                } else if ("0".equals(statusRaw)) {
+                } else if ("1".equals(statusRaw)) {
                     trangThai = "Tồn kho";
                 } else {
                     trangThai = "Đang bảo hành"; // fallback nếu giá trị bất ngờ
@@ -101,9 +101,9 @@ public class QuanLySanPham extends JPanel {
     private String convertStatus(String status) {
 
         switch (status) {
-            case "1":
-                return "Đã bán";
             case "0":
+                return "Đã bán";
+            case "1":
                 return "Tồn kho";
             default:
                 return "Tất cả";
