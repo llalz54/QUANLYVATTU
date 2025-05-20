@@ -209,7 +209,6 @@ public class QuanLyXuatHang extends JPanel {
             vec.add(vnFormat.format(sp.getTongTien())); // định dạng tổng tiền
             vec.add(sp.getNgayXuat());
             vec.add(sp.getCustomer());
-
             dtm.addRow(vec);
         }
         tbPX.setModel(dtm);

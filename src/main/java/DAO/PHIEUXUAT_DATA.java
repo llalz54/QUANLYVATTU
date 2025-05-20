@@ -65,12 +65,13 @@ public class PHIEUXUAT_DATA {
         return serials;
     }
 
-    public ArrayList<PHIEUXUAT> getSPtheoTen(String tenSP) {
+    public ArrayList<PHIEUXUAT> getSPtheoTen(String key) {
         ArrayList<PHIEUXUAT> allSP = getListPX();
         ArrayList<PHIEUXUAT> dssp = new ArrayList<>();
         for (PHIEUXUAT sp : allSP) {
-            String serial = sp.getTenLoai().toLowerCase();
-            if (serial.contains(tenSP.toLowerCase())) {
+            String tenSP = sp.getTenLoai().toLowerCase();
+            String kH = sp.getCustomer().toLowerCase();
+            if (tenSP.contains(key.toLowerCase()) || kH.contains(key.toLowerCase())) {
                 dssp.add(sp);
             }
         }
