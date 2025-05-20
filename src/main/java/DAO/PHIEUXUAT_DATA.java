@@ -78,7 +78,7 @@ public class PHIEUXUAT_DATA {
     }
 
    public boolean xuatHang(int userId, int categoryId, int quantity, int price, 
-        String customer, String ngayXuat, String startDate, String endDate, 
+        String customer,String address,String NYC, String ghiChu, String ngayXuat, String startDate, String endDate, 
         List<String> listSerial) {
     
     Connection conn = null;
@@ -92,7 +92,7 @@ public class PHIEUXUAT_DATA {
         conn.setAutoCommit(false); // Bắt đầu transaction
 
         // 1. Kiểm tra serial hợp lệ và thuộc đúng category
-        String sqlCheck = "SELECT category_id, status FROM SanPham WHERE serial = ?";
+        String sqlCheck = "SELECT supplier_id, category_id, status FROM SanPham WHERE serial = ?";
         ps = conn.prepareStatement(sqlCheck);
         
         for (String serial : listSerial) {
@@ -106,6 +106,7 @@ public class PHIEUXUAT_DATA {
             }
             
             int serialCategoryId = rs.getInt("category_id");
+            int serialNCC = rs.getInt("supplier_id");
             int status = rs.getInt("status");
             
             // Kiểm tra category_id
@@ -116,6 +117,7 @@ public class PHIEUXUAT_DATA {
                 conn.rollback();
                 return false;
             }
+            
             
             // Kiểm tra trạng thái
             if (status != 1) {
@@ -131,7 +133,7 @@ public class PHIEUXUAT_DATA {
 
         // 2. Insert vào bảng PhieuXuat
         String sqlInsertPX = "INSERT INTO PhieuXuat(user_id, category_id, quantity, " +
-                           "price, ngayXuat, customer) VALUES (?, ?, ?, ?, ?, ?)";
+                           "price, ngayXuat, customer, address, NYCau, ghiChu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         ps = conn.prepareStatement(sqlInsertPX, Statement.RETURN_GENERATED_KEYS);
         ps.setInt(1, userId);
         ps.setInt(2, categoryId);
@@ -139,6 +141,9 @@ public class PHIEUXUAT_DATA {
         ps.setDouble(4, price);
         ps.setString(5, ngayXuat);
         ps.setString(6, customer);
+        ps.setString(7, address);
+        ps.setString(8,NYC);
+        ps.setString(9, ghiChu);
         ps.executeUpdate();
 
         // Lấy ID vừa insert

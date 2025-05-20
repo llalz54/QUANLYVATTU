@@ -233,7 +233,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void lblXuatHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblXuatHangMouseClicked
         lblXuatHang.setOpaque(true); // Để màu nền có hiệu lực  
-        showPanel(new ChiTietXuatHang());
+        showPanel(new XuatHang());
     }//GEN-LAST:event_lblXuatHangMouseClicked
 
     private void lblSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblSanPhamMouseClicked
