@@ -103,6 +103,19 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         pn_OpenSupplier.setBackground(new java.awt.Color(89, 168, 105));
+        pn_OpenSupplier.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                pn_OpenSupplierMouseMoved(evt);
+            }
+        });
+        pn_OpenSupplier.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pn_OpenSupplierMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                pn_OpenSupplierMouseExited(evt);
+            }
+        });
 
         lb_Supplier.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lb_Supplier.setForeground(new java.awt.Color(255, 255, 255));
@@ -125,17 +138,25 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         pn_OpenNhap.setBackground(new java.awt.Color(89, 168, 105));
+        pn_OpenNhap.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                pn_OpenNhapMouseMoved(evt);
+            }
+        });
+        pn_OpenNhap.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pn_OpenNhapMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                pn_OpenNhapMouseExited(evt);
+            }
+        });
 
         lblNhapHang.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblNhapHang.setForeground(new java.awt.Color(255, 255, 255));
         lblNhapHang.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblNhapHang.setIcon(new javax.swing.ImageIcon("C:\\Users\\Admin\\Desktop\\QUANLYVATTU\\src\\main\\java\\com\\mycompany\\quanlyvattu\\images\\import.png")); // NOI18N
         lblNhapHang.setText("NHẬP HÀNG");
-        lblNhapHang.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblNhapHangMouseClicked(evt);
-            }
-        });
 
         javax.swing.GroupLayout pn_OpenNhapLayout = new javax.swing.GroupLayout(pn_OpenNhap);
         pn_OpenNhap.setLayout(pn_OpenNhapLayout);
@@ -154,6 +175,19 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         pn_OpenPhieuNhap.setBackground(new java.awt.Color(89, 168, 105));
+        pn_OpenPhieuNhap.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                pn_OpenPhieuNhapMouseMoved(evt);
+            }
+        });
+        pn_OpenPhieuNhap.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pn_OpenPhieuNhapMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                pn_OpenPhieuNhapMouseExited(evt);
+            }
+        });
 
         lb_PhieuNhap.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lb_PhieuNhap.setForeground(new java.awt.Color(255, 255, 255));
@@ -176,6 +210,19 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         pn_OpenXuat.setBackground(new java.awt.Color(89, 168, 105));
+        pn_OpenXuat.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                pn_OpenXuatMouseMoved(evt);
+            }
+        });
+        pn_OpenXuat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pn_OpenXuatMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                pn_OpenXuatMouseExited(evt);
+            }
+        });
 
         lblXuatHang.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblXuatHang.setForeground(new java.awt.Color(255, 255, 255));
@@ -198,6 +245,19 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         pn_OpenPhieuXuat.setBackground(new java.awt.Color(89, 168, 105));
+        pn_OpenPhieuXuat.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                pn_OpenPhieuXuatMouseMoved(evt);
+            }
+        });
+        pn_OpenPhieuXuat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pn_OpenPhieuXuatMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                pn_OpenPhieuXuatMouseExited(evt);
+            }
+        });
 
         lb_PhieuXuat.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lb_PhieuXuat.setForeground(new java.awt.Color(255, 255, 255));
@@ -220,6 +280,19 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         pn_Logout.setBackground(new java.awt.Color(89, 168, 105));
+        pn_Logout.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                pn_LogoutMouseMoved(evt);
+            }
+        });
+        pn_Logout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pn_LogoutMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                pn_LogoutMouseExited(evt);
+            }
+        });
 
         lb_Logout.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lb_Logout.setForeground(new java.awt.Color(255, 255, 255));
@@ -294,23 +367,15 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lblNhapHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblNhapHangMouseClicked
-        lblNhapHang.setOpaque(true); // Để màu nền có hiệu lực
-        showPanel(new ChiTietNhapHang());
 
-    }//GEN-LAST:event_lblNhapHangMouseClicked
-
-<<<<<<< HEAD
     private void pn_OpenSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenSPMouseClicked
         // TODO add your handling code here:
         showPanel(new QuanLyKho());
     }//GEN-LAST:event_pn_OpenSPMouseClicked
-=======
+
     private void lblXuatHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblXuatHangMouseClicked
-        lblXuatHang.setOpaque(true); // Để màu nền có hiệu lực  
-        showPanel(new XuatHang());
+
     }//GEN-LAST:event_lblXuatHangMouseClicked
->>>>>>> 7ac434840aa55c5eb6f50734fb791cca5b3e700d
 
     private void pn_OpenSPMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenSPMouseExited
         // TODO add your handling code here:
@@ -321,6 +386,94 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         pn_OpenSP.setBackground(clickColor);
     }//GEN-LAST:event_pn_OpenSPMouseMoved
+
+    private void pn_OpenSupplierMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenSupplierMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_pn_OpenSupplierMouseClicked
+
+    private void pn_OpenSupplierMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenSupplierMouseExited
+        // TODO add your handling code here:
+        pn_OpenSupplier.setBackground(defaultColor);
+    }//GEN-LAST:event_pn_OpenSupplierMouseExited
+
+    private void pn_OpenSupplierMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenSupplierMouseMoved
+        // TODO add your handling code here:
+        pn_OpenSupplier.setBackground(clickColor);
+    }//GEN-LAST:event_pn_OpenSupplierMouseMoved
+
+    private void pn_OpenNhapMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenNhapMouseClicked
+        // TODO add your handling code here:
+        showPanel(new ChiTietNhapHang());
+    }//GEN-LAST:event_pn_OpenNhapMouseClicked
+
+    private void pn_OpenNhapMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenNhapMouseExited
+        // TODO add your handling code here:
+        pn_OpenNhap.setBackground(defaultColor);
+    }//GEN-LAST:event_pn_OpenNhapMouseExited
+
+    private void pn_OpenNhapMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenNhapMouseMoved
+        // TODO add your handling code here:
+        pn_OpenPhieuNhap.setBackground(clickColor);
+    }//GEN-LAST:event_pn_OpenNhapMouseMoved
+
+    private void pn_OpenPhieuNhapMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenPhieuNhapMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pn_OpenPhieuNhapMouseClicked
+
+    private void pn_OpenPhieuNhapMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenPhieuNhapMouseExited
+        // TODO add your handling code here:
+        pn_OpenPhieuNhap.setBackground(defaultColor);
+    }//GEN-LAST:event_pn_OpenPhieuNhapMouseExited
+
+    private void pn_OpenPhieuNhapMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenPhieuNhapMouseMoved
+        // TODO add your handling code here:
+        pn_OpenPhieuNhap.setBackground(clickColor);
+    }//GEN-LAST:event_pn_OpenPhieuNhapMouseMoved
+
+    private void pn_OpenXuatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenXuatMouseClicked
+        // TODO add your handling code here:
+        showPanel(new XuatHang());
+    }//GEN-LAST:event_pn_OpenXuatMouseClicked
+
+    private void pn_OpenXuatMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenXuatMouseExited
+        // TODO add your handling code here:
+        pn_OpenXuat.setBackground(defaultColor);
+    }//GEN-LAST:event_pn_OpenXuatMouseExited
+
+    private void pn_OpenXuatMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenXuatMouseMoved
+        // TODO add your handling code here:
+        pn_OpenXuat.setBackground(clickColor);
+    }//GEN-LAST:event_pn_OpenXuatMouseMoved
+
+    private void pn_OpenPhieuXuatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenPhieuXuatMouseClicked
+        // TODO add your handling code here:
+        showPanel(new QuanLyXuatHang());
+    }//GEN-LAST:event_pn_OpenPhieuXuatMouseClicked
+
+    private void pn_OpenPhieuXuatMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenPhieuXuatMouseExited
+        // TODO add your handling code here:
+        pn_OpenPhieuXuat.setBackground(defaultColor);
+    }//GEN-LAST:event_pn_OpenPhieuXuatMouseExited
+
+    private void pn_OpenPhieuXuatMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenPhieuXuatMouseMoved
+        // TODO add your handling code here:
+        pn_OpenPhieuXuat.setBackground(clickColor);
+    }//GEN-LAST:event_pn_OpenPhieuXuatMouseMoved
+
+    private void pn_LogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_LogoutMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pn_LogoutMouseClicked
+
+    private void pn_LogoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_LogoutMouseExited
+        // TODO add your handling code here:
+        pn_Logout.setBackground(defaultColor);
+    }//GEN-LAST:event_pn_LogoutMouseExited
+
+    private void pn_LogoutMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_LogoutMouseMoved
+        // TODO add your handling code here:
+        pn_Logout.setBackground(clickColor);
+    }//GEN-LAST:event_pn_LogoutMouseMoved
 
     /**
      * @param args the command line arguments

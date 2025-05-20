@@ -131,6 +131,11 @@
               <Color blue="69" green="a8" red="59" type="rgb"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="pn_OpenSupplierMouseMoved"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pn_OpenSupplierMouseClicked"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pn_OpenSupplierMouseExited"/>
+          </Events>
 
           <Layout>
             <DimensionLayout dim="0">
@@ -172,6 +177,11 @@
               <Color blue="69" green="a8" red="59" type="rgb"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="pn_OpenNhapMouseMoved"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pn_OpenNhapMouseClicked"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pn_OpenNhapMouseExited"/>
+          </Events>
 
           <Layout>
             <DimensionLayout dim="0">
@@ -207,9 +217,6 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="NH&#x1eac;P H&#xc0;NG"/>
               </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblNhapHangMouseClicked"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -219,6 +226,11 @@
               <Color blue="69" green="a8" red="59" type="rgb"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="pn_OpenPhieuNhapMouseMoved"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pn_OpenPhieuNhapMouseClicked"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pn_OpenPhieuNhapMouseExited"/>
+          </Events>
 
           <Layout>
             <DimensionLayout dim="0">
@@ -260,6 +272,11 @@
               <Color blue="69" green="a8" red="59" type="rgb"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="pn_OpenXuatMouseMoved"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pn_OpenXuatMouseClicked"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pn_OpenXuatMouseExited"/>
+          </Events>
 
           <Layout>
             <DimensionLayout dim="0">
@@ -301,6 +318,11 @@
               <Color blue="69" green="a8" red="59" type="rgb"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="pn_OpenPhieuXuatMouseMoved"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pn_OpenPhieuXuatMouseClicked"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pn_OpenPhieuXuatMouseExited"/>
+          </Events>
 
           <Layout>
             <DimensionLayout dim="0">
@@ -342,6 +364,11 @@
               <Color blue="69" green="a8" red="59" type="rgb"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="pn_LogoutMouseMoved"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pn_LogoutMouseClicked"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pn_LogoutMouseExited"/>
+          </Events>
 
           <Layout>
             <DimensionLayout dim="0">
