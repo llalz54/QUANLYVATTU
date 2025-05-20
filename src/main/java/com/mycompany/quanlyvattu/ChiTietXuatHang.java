@@ -87,6 +87,9 @@ public class ChiTietXuatHang extends javax.swing.JPanel {
             }
             int price = Integer.parseInt(tf_giaXuat.getText().trim());
             String customer = tf_khachHang.getText().trim();
+            String address = tf_khachHang.getText().trim();
+            String NYC = tf_khachHang.getText().trim();
+            String ghiChu = tf_khachHang.getText().trim();
             int soLuong = Integer.parseInt(tf_soLuong.getText().trim());
             // Lấy danh sách serial từ bảng
             List<String> listSerial = new ArrayList<>();
@@ -122,7 +125,7 @@ public class ChiTietXuatHang extends javax.swing.JPanel {
 
             // Gọi xử lý
             PHIEUXUAT_DATA data = new PHIEUXUAT_DATA();
-            boolean ok = data.xuatHang(userId, categoryId, soLuong, price, customer, ngayXuatStr, startDate.toString(), endDateStr, listSerial);
+            boolean ok = data.xuatHang(userId, categoryId, soLuong, price, customer,address, NYC,ghiChu, ngayXuatStr, startDate.toString(), endDateStr, listSerial);
             if (ok) {
                 JOptionPane.showMessageDialog(null, "Xuất hàng thành công!");
                 clearForm(); // clear table
