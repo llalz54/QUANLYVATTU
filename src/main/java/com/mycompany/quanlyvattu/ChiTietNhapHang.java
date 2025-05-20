@@ -119,7 +119,8 @@ public class ChiTietNhapHang extends JPanel {
         txt_Quantity.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txt_Quantity.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Số lượng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
-        txt_ngayNhap.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ngày nhập", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        txt_ngayNhap.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        txt_ngayNhap.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ngày nhập", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
         txt_price.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txt_price.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Giá nhập", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
@@ -355,11 +356,6 @@ public class ChiTietNhapHang extends JPanel {
         loadCB_ListSP(group, brand);
     }//GEN-LAST:event_cb_BrandActionPerformed
 
-/*
-    private void cb_GrProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_GrProductActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cb_GrProductActionPerformed
-*/
 //     */ @param args the command line arguments
 //     */
     public static void main(String args[]) {
