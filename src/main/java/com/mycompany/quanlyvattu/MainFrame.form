@@ -147,7 +147,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\Admin\Downloads\products.png"/>
+                  <Image iconType="3" name="/com/mycompany/quanlyvattu/images/products.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="S&#x1ea2;N PH&#x1ea8;M"/>
               </Properties>
@@ -193,7 +193,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\Admin\Downloads\supplier.png"/>
+                  <Image iconType="3" name="/com/mycompany/quanlyvattu/images/supplier.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="NH&#xc0; CUNG C&#x1ea4;P"/>
               </Properties>
@@ -242,7 +242,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\Admin\Downloads\import.png"/>
+                  <Image iconType="3" name="/com/mycompany/quanlyvattu/images/import.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="NH&#x1eac;P H&#xc0;NG"/>
               </Properties>
@@ -288,7 +288,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\Admin\Downloads\requirement.png"/>
+                  <Image iconType="3" name="/com/mycompany/quanlyvattu/images/requirement.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="PHI&#x1ebe;U NH&#x1eac;P"/>
               </Properties>
@@ -338,7 +338,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\Admin\Downloads\tracking.png"/>
+                  <Image iconType="3" name="/com/mycompany/quanlyvattu/images/tracking.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="XU&#x1ea4;T H&#xc0;NG"/>
               </Properties>
@@ -384,7 +384,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\Admin\Downloads\checklist (1).png"/>
+                  <Image iconType="3" name="/com/mycompany/quanlyvattu/images/checklist (1).png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="PHI&#x1ebe;U XU&#x1ea4;T"/>
               </Properties>
@@ -430,7 +430,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\Admin\Downloads\logout.png"/>
+                  <Image iconType="3" name="/com/mycompany/quanlyvattu/images/logout.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x102;NG XU&#x1ea4;T"/>
               </Properties>

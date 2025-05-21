@@ -89,7 +89,7 @@ public class MainFrame extends javax.swing.JFrame {
         lblSanPham.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblSanPham.setForeground(new java.awt.Color(255, 255, 255));
         lblSanPham.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSanPham.setIcon(new javax.swing.ImageIcon("C:\\Users\\Admin\\Downloads\\products.png")); // NOI18N
+        lblSanPham.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/quanlyvattu/images/products.png"))); // NOI18N
         lblSanPham.setText("SẢN PHẨM");
 
         javax.swing.GroupLayout pn_OpenSPLayout = new javax.swing.GroupLayout(pn_OpenSP);
@@ -126,7 +126,7 @@ public class MainFrame extends javax.swing.JFrame {
         lb_Supplier.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lb_Supplier.setForeground(new java.awt.Color(255, 255, 255));
         lb_Supplier.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lb_Supplier.setIcon(new javax.swing.ImageIcon("C:\\Users\\Admin\\Downloads\\supplier.png")); // NOI18N
+        lb_Supplier.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/quanlyvattu/images/supplier.png"))); // NOI18N
         lb_Supplier.setText("NHÀ CUNG CẤP");
 
         javax.swing.GroupLayout pn_OpenSupplierLayout = new javax.swing.GroupLayout(pn_OpenSupplier);
@@ -161,7 +161,7 @@ public class MainFrame extends javax.swing.JFrame {
         lblNhapHang.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblNhapHang.setForeground(new java.awt.Color(255, 255, 255));
         lblNhapHang.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblNhapHang.setIcon(new javax.swing.ImageIcon("C:\\Users\\Admin\\Downloads\\import.png")); // NOI18N
+        lblNhapHang.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/quanlyvattu/images/import.png"))); // NOI18N
         lblNhapHang.setText("NHẬP HÀNG");
 
         javax.swing.GroupLayout pn_OpenNhapLayout = new javax.swing.GroupLayout(pn_OpenNhap);
@@ -198,7 +198,7 @@ public class MainFrame extends javax.swing.JFrame {
         lb_PhieuNhap.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lb_PhieuNhap.setForeground(new java.awt.Color(255, 255, 255));
         lb_PhieuNhap.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lb_PhieuNhap.setIcon(new javax.swing.ImageIcon("C:\\Users\\Admin\\Downloads\\requirement.png")); // NOI18N
+        lb_PhieuNhap.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/quanlyvattu/images/requirement.png"))); // NOI18N
         lb_PhieuNhap.setText("PHIẾU NHẬP");
 
         javax.swing.GroupLayout pn_OpenPhieuNhapLayout = new javax.swing.GroupLayout(pn_OpenPhieuNhap);
@@ -233,7 +233,7 @@ public class MainFrame extends javax.swing.JFrame {
         lblXuatHang.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblXuatHang.setForeground(new java.awt.Color(255, 255, 255));
         lblXuatHang.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblXuatHang.setIcon(new javax.swing.ImageIcon("C:\\Users\\Admin\\Downloads\\tracking.png")); // NOI18N
+        lblXuatHang.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/quanlyvattu/images/tracking.png"))); // NOI18N
         lblXuatHang.setText("XUẤT HÀNG");
 
         javax.swing.GroupLayout pn_OpenXuatLayout = new javax.swing.GroupLayout(pn_OpenXuat);
@@ -271,7 +271,7 @@ public class MainFrame extends javax.swing.JFrame {
         lb_PhieuXuat.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lb_PhieuXuat.setForeground(new java.awt.Color(255, 255, 255));
         lb_PhieuXuat.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lb_PhieuXuat.setIcon(new javax.swing.ImageIcon("C:\\Users\\Admin\\Downloads\\checklist (1).png")); // NOI18N
+        lb_PhieuXuat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/quanlyvattu/images/checklist (1).png"))); // NOI18N
         lb_PhieuXuat.setText("PHIẾU XUẤT");
 
         javax.swing.GroupLayout pn_OpenPhieuXuatLayout = new javax.swing.GroupLayout(pn_OpenPhieuXuat);
@@ -306,7 +306,7 @@ public class MainFrame extends javax.swing.JFrame {
         lb_Logout.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lb_Logout.setForeground(new java.awt.Color(255, 255, 255));
         lb_Logout.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lb_Logout.setIcon(new javax.swing.ImageIcon("C:\\Users\\Admin\\Downloads\\logout.png")); // NOI18N
+        lb_Logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/quanlyvattu/images/logout.png"))); // NOI18N
         lb_Logout.setText("ĐĂNG XUẤT");
 
         javax.swing.GroupLayout pn_LogoutLayout = new javax.swing.GroupLayout(pn_Logout);
@@ -500,9 +500,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_pn_OpenPhieuXuatMouseMoved
 
     private void pn_LogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_LogoutMouseClicked
-         Login main = new Login();
-                main.setVisible(true);
-                this.setVisible(false);
+        Login main = new Login();
+        main.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_pn_LogoutMouseClicked
 
     private void pn_LogoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_LogoutMouseExited
