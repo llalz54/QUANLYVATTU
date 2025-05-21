@@ -300,17 +300,17 @@ public class MainFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_lblNhapHangMouseClicked
 
-<<<<<<< HEAD
+
     private void pn_OpenSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenSPMouseClicked
         // TODO add your handling code here:
         showPanel(new QuanLyKho());
     }//GEN-LAST:event_pn_OpenSPMouseClicked
-=======
+
     private void lblXuatHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblXuatHangMouseClicked
         lblXuatHang.setOpaque(true); // Để màu nền có hiệu lực  
         showPanel(new XuatHang());
     }//GEN-LAST:event_lblXuatHangMouseClicked
->>>>>>> 7ac434840aa55c5eb6f50734fb791cca5b3e700d
+
 
     private void pn_OpenSPMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenSPMouseExited
         // TODO add your handling code here:

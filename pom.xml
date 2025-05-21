@@ -35,5 +35,11 @@
             <artifactId>AbsoluteLayout</artifactId>
             <version>RELEASE250</version>
         </dependency>
+        <dependency>
+            <groupId>org.openurp.people</groupId>
+            <artifactId>openurp-people-contact</artifactId>
+            <version>0.0.8</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 </project>
