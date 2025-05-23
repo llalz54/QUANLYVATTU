@@ -152,8 +152,8 @@ public class LOAISP_DATA {
                 JOptionPane.showMessageDialog(null, "Lỗi cập nhật trạng thái sản phẩm!", "ERROR!", JOptionPane.ERROR_MESSAGE);
             }
         }
-    }    
-    
+    }
+
     private static boolean check_HDLSP(int cateID) {
         Connection conn = CONNECTION.getConnection();
         String sql = "SELECT category_id FROM PhieuNhap WHERE category_id ='" + cateID + "'";
@@ -194,6 +194,24 @@ public class LOAISP_DATA {
             }
         }
         return -1;
+    }
+
+    public int getCategoryIdByName(String tenLoai) {
+        int categoryId = -1;
+        try (Connection conn = new DBAccess().getConnection()) {
+            String sql = "SELECT category_id FROM LOAISP WHERE name = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, tenLoai);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                categoryId = rs.getInt("category_id");
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return categoryId;
     }
 
 }

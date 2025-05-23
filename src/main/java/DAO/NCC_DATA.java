@@ -1,4 +1,3 @@
-
 package DAO;
 
 import ConDB.CONNECTION;
@@ -16,8 +15,9 @@ import javax.swing.JOptionPane;
  * @author Admin
  */
 public class NCC_DATA {
+
     private ArrayList<NCC> listNCC = null;
-    
+
     public NCC_DATA() {
         docListNCC();
     }
@@ -45,11 +45,12 @@ public class NCC_DATA {
             System.out.println("Lỗi lấy danh sách nhóm sản phẩm!!!");
             return null;
         } finally {
-            if(acc != null) {
+            if (acc != null) {
                 acc.close();
             }
         }
     }
+
     
     public static void create_Supplier (String name, String MST, String address){
         Connection conn = CONNECTION.getConnection();
@@ -126,5 +127,20 @@ public class NCC_DATA {
             System.out.println("Lỗi hàm kiểm tra hoạt động Nhà cung cấp!");
         }
         return false;
+    }
+
+    public int getNCCId(String name) {
+        try (Connection conn = new DBAccess().getConnection()) {
+            String sql = "SELECT supplier_id FROM NCC WHERE name = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("supplier_id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 }

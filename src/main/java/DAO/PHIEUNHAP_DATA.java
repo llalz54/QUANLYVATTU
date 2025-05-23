@@ -22,23 +22,22 @@ public class PHIEUNHAP_DATA {
     
     public ArrayList<PHIEUNHAP> getListPN() {
         try {
-            DBAccess acc = new DBAccess();
-            ResultSet rs = acc.Query("SELECT * FROM PHIEUNHAP");
-            ArrayList<PHIEUNHAP> dspn = new ArrayList<>();
+           DBAccess acc = new DBAccess();
+            ResultSet rs = acc.Query("SELECT pn.*, c.name AS tenLoai, s.name AS tenNCC FROM PhieuNhap pn  JOIN LoaiSP c ON pn.category_id = c.category_id JOIN NCC s on pn.supplier_id = s.supplier_id");
+            ArrayList<PHIEUNHAP> dssp = new ArrayList<>();
             while (rs.next()) {
-                PHIEUNHAP pn = new PHIEUNHAP();
+                PHIEUNHAP px = new PHIEUNHAP();
+                px.setIdpn(rs.getInt("idpn"));
+                px.setTenLoai(rs.getString("tenLoai").trim());
+                px.setQuantity(rs.getInt("quantity"));
+                px.setPrice(rs.getInt("price"));
+                px.setNgayNhap(rs.getString("ngayNhap"));
+                px.setSupplier(rs.getString("tenNCC").trim());
+                dssp.add(px);
 
-                pn.setIdpn(rs.getInt(1));
-                pn.setUserID(rs.getInt(2));
-                pn.setCategoryID(rs.getInt(3));
-                pn.setQuantity(rs.getInt(4));
-                pn.setPrice(rs.getInt(5));
-                pn.setNgayNhap(rs.getString(6).trim());
-                pn.setSupplier(rs.getString(7).trim());
-                dspn.add(pn);
             }
             acc.close();
-            return dspn;
+            return dssp;
         } catch (SQLException e) {
             System.out.println("Lỗi lấy danh sách phiếu nhập!!!");
         }
@@ -74,5 +73,17 @@ public class PHIEUNHAP_DATA {
     
     public static void create_TB_CTPN(int quantity){
         
+    }
+    public ArrayList<PHIEUNHAP> getSPtheoTen(String key) {
+        ArrayList<PHIEUNHAP> allSP = getListPN();
+        ArrayList<PHIEUNHAP> dssp = new ArrayList<>();
+        for (PHIEUNHAP sp : allSP) {
+            String tenSP = sp.getTenLoai().toLowerCase();
+           
+            if (tenSP.contains(key.toLowerCase()) ) {
+                dssp.add(sp);
+            }
+        }
+        return dssp;
     }
 }

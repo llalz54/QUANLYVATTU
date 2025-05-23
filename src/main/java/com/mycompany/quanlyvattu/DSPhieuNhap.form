@@ -64,23 +64,17 @@
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="tf_giaXuat" alignment="1" min="-2" pref="232" max="-2" attributes="0"/>
-                                  <Component id="tf_NYCau" min="-2" pref="232" max="-2" attributes="0"/>
-                                  <Component id="tf_soLuong" min="-2" pref="232" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="tf_soLuong" alignment="1" min="-2" pref="232" max="-2" attributes="0"/>
+                                  <Component id="tf_ngayNhap" alignment="0" min="-2" pref="232" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                                  <Component id="tf_ngayXuat" min="-2" pref="232" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="tf_NYCau" min="-2" pref="232" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="tf_ghiChu" min="-2" pref="232" max="-2" attributes="0"/>
-                              <Component id="cb_Time" min="-2" pref="230" max="-2" attributes="0"/>
-                              <Component id="tf_khachHang" min="-2" pref="230" max="-2" attributes="0"/>
-                              <Component id="tf_diaChi" alignment="0" min="-2" pref="230" max="-2" attributes="0"/>
+                              <Component id="tf_ghiChu" alignment="1" min="-2" pref="232" max="-2" attributes="0"/>
+                              <Component id="tf_giaNhap" alignment="1" min="-2" pref="232" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                       </Group>
@@ -93,7 +87,7 @@
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="10" max="32767" attributes="0"/>
                           <Component id="jLabel1" min="-2" pref="27" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -105,34 +99,26 @@
                           <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Component id="jScrollPane1" min="-2" pref="516" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="tf_NYCau" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="tf_ghiChu" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="tf_NYCau" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="cb_Time" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="tf_giaNhap" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="tf_soLuong" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="tf_ngayNhap" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="tf_khachHang" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="tf_giaXuat" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="tf_diaChi" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="tf_ngayXuat" alignment="3" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jScrollPane2" min="-2" pref="304" max="-2" attributes="0"/>
+                          <Component id="jScrollPane2" min="-2" pref="347" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="btn_Luu" min="-2" pref="31" max="-2" attributes="0"/>
-                  <EmptySpace pref="42" max="32767" attributes="0"/>
+                  <EmptySpace pref="51" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -144,7 +130,7 @@
               <Font name="Segoe UI" size="18" style="1"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="DANH S&#xc1;CH PHI&#x1ebe;U XU&#x1ea4;T"/>
+            <Property name="text" type="java.lang.String" value="DANH S&#xc1;CH PHI&#x1ebe;U NH&#x1eac;P"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -154,7 +140,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="tbPX">
+            <Component class="javax.swing.JTable" name="tbPN">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="14" style="0"/>
@@ -166,8 +152,8 @@
                     <Column editable="false" title="S&#x1ed1; L&#x1b0;&#x1ee3;ng" type="java.lang.String"/>
                     <Column editable="false" title="&#x110;&#x1a1;n Gi&#xe1;" type="java.lang.String"/>
                     <Column editable="false" title="Th&#xe0;nh Ti&#x1ec1;n" type="java.lang.String"/>
-                    <Column editable="false" title="Ng&#xe0;y Xu&#x1ea5;t" type="java.lang.Object"/>
-                    <Column editable="false" title="Kh&#xe1;ch H&#xe0;ng" type="java.lang.Object"/>
+                    <Column editable="false" title="Ng&#xe0;y Nh&#x1ead;p" type="java.lang.String"/>
+                    <Column editable="false" title="Nh&#xe0; Cung C&#x1ea5;p" type="java.lang.String"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -214,8 +200,8 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbPXMouseClicked"/>
-                <EventHandler event="componentShown" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="tbPXComponentShown"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbPNMouseClicked"/>
+                <EventHandler event="componentShown" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="tbPNComponentShown"/>
               </Events>
             </Component>
           </SubComponents>
@@ -305,14 +291,14 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tf_soLuongActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="tf_ngayXuat">
+        <Component class="javax.swing.JTextField" name="tf_ngayNhap">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="0"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Ng&#xe0;y B&#x1ea3;o H&#xe0;nh">
+                <TitledBorder title="Ng&#xe0;y Nh&#x1ead;p">
                   <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder/>
                   </Border>
@@ -322,67 +308,19 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="tf_giaXuat">
+        <Component class="javax.swing.JTextField" name="tf_giaNhap">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="0"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Gi&#xe1; Xu&#x1ea5;t">
+                <TitledBorder title="Gi&#xe1; Nh&#x1ead;p">
                   <Font PropertyName="font" name="Segoe UI" size="16" style="1"/>
                 </TitledBorder>
               </Border>
             </Property>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="tf_khachHang">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="14" style="0"/>
-            </Property>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Kh&#xe1;ch H&#xe0;ng">
-                  <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder/>
-                  </Border>
-                  <Font PropertyName="font" name="Segoe UI" size="16" style="1"/>
-                </TitledBorder>
-              </Border>
-            </Property>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="cb_Time">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="14" style="0"/>
-            </Property>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="3">
-                <StringItem index="0" value="12 th&#xe1;ng"/>
-                <StringItem index="1" value="24 th&#xe1;ng"/>
-                <StringItem index="2" value="36 th&#xe1;ng"/>
-              </StringArray>
-            </Property>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Th&#x1edd;i gian b&#x1ea3;o h&#xe0;nh">
-                  <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder>
-                      <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                        <TitledBorder/>
-                      </Border>
-                    </TitledBorder>
-                  </Border>
-                  <Font PropertyName="font" name="Segoe UI" size="16" style="1"/>
-                </TitledBorder>
-              </Border>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="btnXoa">
           <Properties>
@@ -394,23 +332,6 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXoaActionPerformed"/>
           </Events>
-        </Component>
-        <Component class="javax.swing.JTextField" name="tf_diaChi">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="14" style="0"/>
-            </Property>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="&#x110;&#x1ecb;a Ch&#x1ec9;">
-                  <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder/>
-                  </Border>
-                  <Font PropertyName="font" name="Segoe UI" size="16" style="1"/>
-                </TitledBorder>
-              </Border>
-            </Property>
-          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="tf_ghiChu">
           <Properties>
@@ -436,7 +357,7 @@
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Ng&#x1b0;&#x1edd;i Y&#xea;u C&#x1ea7;u Xu&#x1ea5;t">
+                <TitledBorder title="Ng&#x1b0;&#x1edd;i Y&#xea;u C&#x1ea7;u Nh&#x1ead;p">
                   <Font PropertyName="font" name="Segoe UI" size="16" style="1"/>
                 </TitledBorder>
               </Border>
