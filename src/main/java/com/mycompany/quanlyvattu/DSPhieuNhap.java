@@ -2,11 +2,14 @@ package com.mycompany.quanlyvattu;
 
 import ConDB.DBAccess;
 import DAO.LOAISP_DATA;
+import DAO.NCC_DATA;
 import DAO.NHOMSP_DATA;
+import DAO.PHIEUNHAP_DATA;
 import DAO.PHIEUXUAT_DATA;
 import DAO.Session;
 import DAO.UpperCase;
 import DTO.LOAISP;
+import DTO.PHIEUNHAP;
 import DTO.PHIEUXUAT;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,19 +41,20 @@ import java.util.logging.Logger;
  *
  * @author Admin
  */
-public class QuanLyXuatHang extends JPanel {
+public class DSPhieuNhap extends JPanel {
 
     private ArrayList<LOAISP> loaisps;
     private NHOMSP_DATA nhomsp_data = new NHOMSP_DATA();
     private LOAISP_DATA loaisp_data = new LOAISP_DATA();
     private PHIEUXUAT_DATA px_data = new PHIEUXUAT_DATA();
+    private PHIEUNHAP_DATA pn_data = new PHIEUNHAP_DATA();
+    private NCC_DATA ncc_data = new NCC_DATA();
 
-    public QuanLyXuatHang() {
+    public DSPhieuNhap() {
 
         initComponents();
         loadDataTableSP();
         customControls();
-        
 
     }
 
@@ -90,72 +94,48 @@ public class QuanLyXuatHang extends JPanel {
 
 //    public void loadCBGroup() {
 //        nhomsp_data.getListnhomSP().forEach(nhomSP -> {
-//            cb_Product2.addItem(nhomSP.getName());
+//            cb_GrProduct1.addItem(nhomSP.getName());
 //        });
 //    }
 //
 //    public void loadCBTenSP() {
-//        cb_LoaiSP.removeAllItems();
-//        if (cb_Product2.getSelectedItem() != null) {
-//            String groupName = String.valueOf(cb_Product2.getSelectedItem());
+//        cb_Brand.removeAllItems();
+//        if (cb_GrProduct1.getSelectedItem() != null) {
+//            String groupName = String.valueOf(cb_GrProduct1.getSelectedItem());
 //            this.loaisps = loaisp_data.getLoaiSP(groupName);
 //            this.loaisps.forEach(loaisp -> {
-//                cb_LoaiSP.addItem(loaisp.getName());
+//                cb_Brand.addItem(loaisp.getName());
 //            });
 //        }
 //    }
-
-    private void loadChiTietPhieuXuat(int idpx) {
+    private void loadChiTietPhieuNhap(int idpn) {
         try {
-            System.out.println("idpx: " + idpx);
+            System.out.println("idpx: " + idpn);
             DBAccess acc = new DBAccess();
 
             // Lấy thông tin phiếu xuất, nhóm SP, loại SP
-            String sqlPhieu = "SELECT px.*, n.name AS group_name, l.name AS category_name "
-                    + "FROM PhieuXuat px "
-                    + "JOIN LoaiSP l ON px.category_id = l.category_id "
+            String sqlPhieu = "SELECT pn.*, n.name AS group_name, l.name AS category_name "
+                    + "FROM PhieuNhap pn "
+                    + "JOIN LoaiSP l ON pn.category_id = l.category_id "
                     + "JOIN NhomSP n ON l.group_id = n.group_id "
-                    + "WHERE px.idpx = ?";
+                    + "WHERE pn.idpn = ?";
             PreparedStatement ps = acc.getConnection().prepareStatement(sqlPhieu);
-            ps.setInt(1, idpx);
+            ps.setInt(1, idpn);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-               
                 tf_NYCau.setText(rs.getString("NYCau"));
                 tf_ghiChu.setText(rs.getString("ghiChu"));
                 tf_soLuong.setText(rs.getString("quantity"));
-                tf_giaXuat.setText(rs.getString("price"));
-                tf_khachHang.setText(rs.getString("customer"));
-                tf_diaChi.setText(rs.getString("address"));
-            }
-            ps.close();
-
-            // Lấy 1 serial đầu tiên để xem start_date, end_date
-            String sqlFirstSerial = "SELECT TOP 1 sp.start_date, sp.end_date "
-                    + "FROM CTPX ct JOIN SanPham sp ON ct.serial = sp.serial "
-                    + "WHERE ct.idpx = ?";
-            ps = acc.getConnection().prepareStatement(sqlFirstSerial);
-            ps.setInt(1, idpx);
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                String startDate = rs.getString("start_date");
-                String endDate = rs.getString("end_date");
-                tf_ngayXuat.setText(startDate);  // Ngày bảo hành bắt đầu
-
-                // Tính thời gian bảo hành từ start -> end (tính theo tháng)
-                LocalDate start = LocalDate.parse(startDate);
-                LocalDate end = LocalDate.parse(endDate);
-                long months = ChronoUnit.MONTHS.between(start, end);
-                cb_Time.setSelectedItem(months + " tháng");
+                tf_giaNhap.setText(rs.getString("price"));
+                tf_ngayNhap.setText(rs.getString("ngayNhap"));
             }
             ps.close();
 
             // Load danh sách serial theo dòng (2 cột: STT và Serial)
-            String sqlCTPX = "SELECT serial FROM CTPX WHERE idpx = ? ORDER BY serial";
+            String sqlCTPX = "SELECT serial FROM CTPN WHERE idpn = ? ORDER BY serial";
             ps = acc.getConnection().prepareStatement(sqlCTPX);
-            ps.setInt(1, idpx);
+            ps.setInt(1, idpn);
             rs = ps.executeQuery();
 
             DefaultTableModel model = new DefaultTableModel(new Object[]{"STT", "Serial"}, 0);
@@ -197,54 +177,54 @@ public class QuanLyXuatHang extends JPanel {
 
     private void loadTable_TheoTen(String tenSP) {
         NumberFormat vnFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
-        DefaultTableModel dtm = (DefaultTableModel) tbPX.getModel();
+        DefaultTableModel dtm = (DefaultTableModel) tbPN.getModel();
         dtm.setNumRows(0);
-        ArrayList<PHIEUXUAT> dssp = px_data.getSPtheoTen(tenSP);
-        for (PHIEUXUAT sp : dssp) {
+        ArrayList<PHIEUNHAP> dssp = pn_data.getSPtheoTen(tenSP);
+        for (PHIEUNHAP sp : dssp) {
             Vector vec = new Vector();
-            vec.add(sp.getIdpx());
+            vec.add(sp.getIdpn());
             vec.add(sp.getTenLoai());
             vec.add(sp.getQuantity());
             vec.add(vnFormat.format(sp.getPrice()));// định dạng đơn giá
             vec.add(vnFormat.format(sp.getTongTien())); // định dạng tổng tiền
-            vec.add(sp.getNgayXuat());
-            vec.add(sp.getCustomer());
+            vec.add(sp.getNgayNhap());
+            vec.add(sp.getSupplier());
             dtm.addRow(vec);
         }
-        tbPX.setModel(dtm);
+        tbPN.setModel(dtm);
         // Ẩn cột idpx (giả sử là cột đầu tiên - index 0)
-        tbPX.getColumnModel().getColumn(0).setMinWidth(0);
-        tbPX.getColumnModel().getColumn(0).setMaxWidth(0);
-        tbPX.getColumnModel().getColumn(0).setWidth(0);
+        tbPN.getColumnModel().getColumn(0).setMinWidth(0);
+        tbPN.getColumnModel().getColumn(0).setMaxWidth(0);
+        tbPN.getColumnModel().getColumn(0).setWidth(0);
     }
 
     private void loadDataTableSP() {
         NumberFormat vnFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
-        DefaultTableModel dtm = (DefaultTableModel) tbPX.getModel();
+        DefaultTableModel dtm = (DefaultTableModel) tbPN.getModel();
         dtm.setNumRows(0);
-        ArrayList<PHIEUXUAT> dssp = px_data.getListPX();
+        ArrayList<PHIEUNHAP> dssp = pn_data.getListPN();
         if (dssp != null) {
-            for (PHIEUXUAT sp : dssp) {
+            for (PHIEUNHAP sp : dssp) {
                 Vector vec = new Vector();
-                vec.add(sp.getIdpx());
+                vec.add(sp.getIdpn());
                 vec.add(sp.getTenLoai());
                 vec.add(sp.getQuantity());
                 vec.add(vnFormat.format(sp.getPrice()));// định dạng đơn giá
                 vec.add(vnFormat.format(sp.getTongTien())); // định dạng tổng tiền
-                vec.add(sp.getNgayXuat());
-                vec.add(sp.getCustomer());
+                vec.add(sp.getNgayNhap());
+                vec.add(sp.getSupplier());
                 dtm.addRow(vec);
             }
-            tbPX.setModel(dtm);
+            tbPN.setModel(dtm);
             // Ẩn cột idpx (giả sử là cột đầu tiên - index 0)
-            tbPX.getColumnModel().getColumn(0).setMinWidth(0);
-            tbPX.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbPX.getColumnModel().getColumn(0).setWidth(0);
+            tbPN.getColumnModel().getColumn(0).setMinWidth(0);
+            tbPN.getColumnModel().getColumn(0).setMaxWidth(0);
+            tbPN.getColumnModel().getColumn(0).setWidth(0);
         }
     }
 //XOÁ XUẤT HÀNG
 
-    public boolean xoaPhieuXuat(int idpx) {
+    public boolean xoaPhieuNhap(int idpn) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -253,35 +233,64 @@ public class QuanLyXuatHang extends JPanel {
             conn = new DBAccess().getConnection();
             conn.setAutoCommit(false);
 
-            // 1. Cập nhật status = 1 cho tất cả serial trong phiếu xuất
-            String updateSerial = "UPDATE SanPham SET status = 1, start_date = NULL, end_date = NULL "
-                    + "WHERE serial IN (SELECT serial FROM CTPX WHERE idpx = ?)";
-            ps = conn.prepareStatement(updateSerial);
-            ps.setInt(1, idpx);
-            int updatedRows = ps.executeUpdate();
+           // 1. Lấy danh sách serial cũ từ CTPN
+            List<String> serialCu = new ArrayList<>();
+            String sqlGetSerialCu = "SELECT serial FROM CTPN WHERE idpn = ?";
+            ps = conn.prepareStatement(sqlGetSerialCu);
+            ps.setInt(1, idpn);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                serialCu.add(rs.getString("serial"));
+            }
             ps.close();
+            rs.close();
 
-            // 2. Xóa chi tiết phiếu xuất
-            String deleteCTPX = "DELETE FROM CTPX WHERE idpx = ?";
-            ps = conn.prepareStatement(deleteCTPX);
-            ps.setInt(1, idpx);
-            ps.executeUpdate();
-            ps.close();
+            // 2. Kiểm tra nếu có serial cũ đã được xuất thì không cho sửa
+            for (String serial : serialCu) {
+                String sqlCheckXuat = "SELECT * FROM CTPX WHERE serial = ?";
+                ps = conn.prepareStatement(sqlCheckXuat);
+                ps.setString(1, serial);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    JOptionPane.showMessageDialog(null, "Serial " + serial + " đã được xuất hàng. Không thể xoá!");
+                    conn.rollback();
+                    return false;
+                }
+                ps.close();
+                rs.close();
+            }
+            // 2. Xóa chi tiết phiếu nhập
+            for (String serial : serialCu) {
+                // Xoá CTPN
+                String sqlDeleteCTPN = "DELETE FROM CTPN WHERE idpn = ? AND serial = ?";
+                ps = conn.prepareStatement(sqlDeleteCTPN);
+                ps.setInt(1, idpn);
+                ps.setString(2, serial);
+                ps.executeUpdate();
+                ps.close();
 
-            // 3. Xóa phiếu xuất
-            String deletePX = "DELETE FROM PhieuXuat WHERE idpx = ?";
-            ps = conn.prepareStatement(deletePX);
-            ps.setInt(1, idpx);
+                // Xoá SanPham
+                String sqlDeleteSP = "DELETE FROM SanPham WHERE serial = ?";
+                ps = conn.prepareStatement(sqlDeleteSP);
+                ps.setString(1, serial);
+                ps.executeUpdate();
+                ps.close();
+            }
+
+            // 3. Xóa phiếu nhập
+            String deletePN = "DELETE FROM PhieuNhap WHERE idpn = ?";
+            ps = conn.prepareStatement(deletePN);
+            ps.setInt(1, idpn);
             int deletedRows = ps.executeUpdate();
             ps.close();
 
             conn.commit();
 
             if (deletedRows > 0) {
-                JOptionPane.showMessageDialog(this, "Đã xóa phiếu xuất và cập nhật " + updatedRows + " serial về trạng thái chưa xuất!");
+                JOptionPane.showMessageDialog(this, "Đã xóa phiếu nhập ");
                 return true;
             } else {
-                JOptionPane.showMessageDialog(this, "Không tìm thấy phiếu xuất để xóa!");
+                JOptionPane.showMessageDialog(this, "Không tìm thấy phiếu nhập để xóa!");
                 return false;
             }
         } catch (Exception e) {
@@ -313,134 +322,115 @@ public class QuanLyXuatHang extends JPanel {
         }
     }
 
-    //SỬA XUẤT HÀNG
-    public boolean updateXuatHang(int idpx, int userId, int categoryId, int quantity, int price,String NYC, String ghiChu,
-            String customer,String diaChi, String ngayXuat,
-            String startDate, String endDate,
-            List<String> listSerial) {
+    //SỬA NHẬP HÀNG
+    public boolean suaPhieuNhap(int idpn, int userId, int categoryId, int quantity, int price,
+            int supplierId, String ngayNhap,String NYC, String ghiChu, List<String> listSerial) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
             conn = new DBAccess().getConnection();
-            conn.setAutoCommit(false);
+            conn.setAutoCommit(false); // bắt đầu transaction
 
-            // 1. Lấy danh sách serial cũ trong CTPX
-            Set<String> oldSerialSet = new HashSet<>();
-            String sqlOldSerials = "SELECT serial FROM CTPX WHERE idpx = ?";
-            ps = conn.prepareStatement(sqlOldSerials);
-            ps.setInt(1, idpx);
+            // 1. Lấy danh sách serial cũ từ CTPN
+            List<String> serialCu = new ArrayList<>();
+            String sqlGetSerialCu = "SELECT serial FROM CTPN WHERE idpn = ?";
+            ps = conn.prepareStatement(sqlGetSerialCu);
+            ps.setInt(1, idpn);
             rs = ps.executeQuery();
             while (rs.next()) {
-                oldSerialSet.add(rs.getString("serial").trim());
+                serialCu.add(rs.getString("serial"));
             }
             ps.close();
             rs.close();
-            // 2. Kiểm tra serial mới có thuộc category_id đúng không
-            String sqlCheckSerial = "SELECT category_id FROM SanPham WHERE serial = ?";
-            ps = conn.prepareStatement(sqlCheckSerial);
 
-            for (String serial : listSerial) {
-                if (!oldSerialSet.contains(serial)) {
-                    ps.setString(1, serial);
-                    rs = ps.executeQuery();
-                    if (rs.next()) {
-                        int serialCategoryId = rs.getInt("category_id");
-                        if (serialCategoryId != categoryId) {
-                            JOptionPane.showMessageDialog(null,
-                                    "Serial " + serial + " không thuộc loại sản phẩm này!\n"
-                                    + "Vui lòng nhập serial đúng cho " );
-                            conn.rollback();
-                            return false;
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Serial " + serial + " không tồn tại!");
-                        conn.rollback();
-                        return false;
-                    }
-                    rs.close();
+            // 2. Kiểm tra nếu có serial cũ đã được xuất thì không cho sửa
+            for (String serial : serialCu) {
+                String sqlCheckXuat = "SELECT * FROM CTPX WHERE serial = ?";
+                ps = conn.prepareStatement(sqlCheckXuat);
+                ps.setString(1, serial);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    JOptionPane.showMessageDialog(null, "Serial " + serial + " đã được xuất hàng. Không thể sửa!");
+                    conn.rollback();
+                    return false;
                 }
+                ps.close();
+                rs.close();
             }
-            ps.close();
 
-            // 3. Tìm các serial bị xóa (có trong oldSerialSet nhưng không có trong listSerial mới)
-            Set<String> deletedSerials = new HashSet<>(oldSerialSet);
-            deletedSerials.removeAll(listSerial);
-
-            // 4. Kiểm tra serial mới
-            String sqlCheck = "SELECT * FROM SanPham WHERE serial = ? AND status = 1 ";
-            PreparedStatement psCheck = conn.prepareStatement(sqlCheck);
+            // 3. Kiểm tra serial mới không trùng với bảng SanPham
             for (String serial : listSerial) {
-                if (!oldSerialSet.contains(serial)) {
-                    psCheck.setString(1, serial);
-                    rs = psCheck.executeQuery();
-                    if (!rs.next()) {
-                        JOptionPane.showMessageDialog(null, "Serial không hợp lệ hoặc đã được xuất: " + serial);
-                        conn.rollback();
-                        psCheck.close();
-                        return false;
-                    }
-                    rs.close();
+                String sqlCheck = "SELECT * FROM SanPham WHERE serial = ?";
+                ps = conn.prepareStatement(sqlCheck);
+                ps.setString(1, serial);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    JOptionPane.showMessageDialog(null, "Serial bị trùng trong hệ thống: " + serial);
+                    conn.rollback();
+                    return false;
                 }
+                ps.close();
+                rs.close();
             }
-            psCheck.close();
 
-            // 5. Cập nhật phiếu xuất
-            String updatePX = "UPDATE PhieuXuat SET user_id=?, category_id=?, quantity=?, price=?,NYCau=?, ghiChu=?, customer=?,address=?, ngayXuat=? WHERE idpx=?";
-            ps = conn.prepareStatement(updatePX);
+            // 4. Cập nhật phiếu nhập
+            String sqlUpdatePN = "UPDATE PhieuNhap SET user_id=?, category_id=?,supplier_id=?, quantity=?, price=?,  ngayNhap=?, NYCau=?, ghiChu=?, WHERE idpn=?";
+            ps = conn.prepareStatement(sqlUpdatePN);
             ps.setInt(1, userId);
             ps.setInt(2, categoryId);
-            ps.setInt(3, quantity);
-            ps.setInt(4, price);
-            ps.setString(5, NYC);
-            ps.setString(6, ghiChu);
-            ps.setString(7, customer);
-            ps.setString(8, diaChi);
-            ps.setString(9, ngayXuat);
-            ps.setInt(10, idpx);
+            ps.setInt(3, supplierId);
+            ps.setInt(4, quantity);
+            ps.setInt(5, price);   
+            ps.setString(6, ngayNhap);
+            ps.setString(7, NYC);
+            ps.setString(8, ghiChu);
+            ps.setInt(9, idpn);
             ps.executeUpdate();
             ps.close();
 
-            // 6. Xóa CTPX cũ
-            String deleteCTPX = "DELETE FROM CTPX WHERE idpx=?";
-            ps = conn.prepareStatement(deleteCTPX);
-            ps.setInt(1, idpx);
-            ps.executeUpdate();
-            ps.close();
-
-            // 7. Chèn CTPX mới và update Sản phẩm
-            String insertCTPX = "INSERT INTO CTPX(idpx, serial) VALUES (?, ?)";
-            String updateSP = "UPDATE SanPham SET status = 0, start_date = ?, end_date = ? WHERE serial = ?";
-            for (String serial : listSerial) {
-                ps = conn.prepareStatement(insertCTPX);
-                ps.setInt(1, idpx);
+            // 5. Xoá serial cũ trong CTPN và bảng SanPham
+            for (String serial : serialCu) {
+                // Xoá CTPN
+                String sqlDeleteCTPN = "DELETE FROM CTPN WHERE idpn = ? AND serial = ?";
+                ps = conn.prepareStatement(sqlDeleteCTPN);
+                ps.setInt(1, idpn);
                 ps.setString(2, serial);
                 ps.executeUpdate();
                 ps.close();
 
-                ps = conn.prepareStatement(updateSP);
-                ps.setString(1, startDate);
-                ps.setString(2, endDate);
-                ps.setString(3, serial);
+                // Xoá SanPham
+                String sqlDeleteSP = "DELETE FROM SanPham WHERE serial = ?";
+                ps = conn.prepareStatement(sqlDeleteSP);
+                ps.setString(1, serial);
                 ps.executeUpdate();
                 ps.close();
             }
 
-            // 8. Cập nhật status = 1 cho các serial bị xóa
-            if (!deletedSerials.isEmpty()) {
-                String updateDeletedSP = "UPDATE SanPham SET status = 1, start_date = NULL, end_date = NULL WHERE serial = ?";
-                ps = conn.prepareStatement(updateDeletedSP);
-                for (String serial : deletedSerials) {
-                    ps.setString(1, serial);
-                    ps.addBatch();
-                }
-                ps.executeBatch();
+            // 6. Thêm lại serial mới vào CTPN và SanPham
+            for (String serial : listSerial) {
+                // CTPN
+                String sqlInsertCTPN = "INSERT INTO CTPN(idpn, serial) VALUES (?, ?)";
+                ps = conn.prepareStatement(sqlInsertCTPN);
+                ps.setInt(1, idpn);
+                ps.setString(2, serial);
+                ps.executeUpdate();
+                ps.close();
+
+                // SanPham
+                String sqlInsertSP = "INSERT INTO SanPham(serial, category_id, supplier_id, status) VALUES (?, ?, ?, 1)";
+                ps = conn.prepareStatement(sqlInsertSP);
+                ps.setString(1, serial);
+                ps.setInt(2, categoryId);
+                ps.setInt(3, supplierId);
+                ps.executeUpdate();
                 ps.close();
             }
 
             conn.commit();
             return true;
+
         } catch (Exception e) {
             try {
                 if (conn != null) {
@@ -451,16 +441,19 @@ public class QuanLyXuatHang extends JPanel {
             }
             e.printStackTrace();
             return false;
+
         } finally {
             try {
-                if (ps != null) {
-                    ps.close();
-                }
                 if (rs != null) {
                     rs.close();
                 }
+                if (ps != null) {
+                    ps.close();
+                }
                 if (conn != null) {
                     conn.setAutoCommit(true);
+                }
+                if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException ex) {
@@ -468,37 +461,28 @@ public class QuanLyXuatHang extends JPanel {
             }
         }
     }
+    
 
-    public void suaXuatHang() {
+    public void suaNhapHang() {
         try {
 
             int userId = 1;
-            int selectedRow = tbPX.getSelectedRow();
-            String name = tbPX.getValueAt(selectedRow, 1).toString();
+            int selectedRow = tbPN.getSelectedRow();
+            String name = tbPN.getValueAt(selectedRow, 1).toString();
             int categoryId = loaisp_data.getCategoryIdByName(name);
-            System.out.println("category "+ categoryId);
-            int price = Integer.parseInt(tf_giaXuat.getText().trim());
+            
+            String ncc = tbPN.getValueAt(selectedRow, 6).toString();
+            int ncc_id = ncc_data.getNCCId(ncc);
+            int price = Integer.parseInt(tf_giaNhap.getText().trim());
             String NYC = tf_NYCau.getText().trim();
             String ghiChu = tf_ghiChu.getText().trim();
-            String customer = tf_khachHang.getText().trim();
-            String address = tf_diaChi.getText().trim();
+
             int soLuong = Integer.parseInt(tf_soLuong.getText().trim());
             // Lấy danh sách serial từ bảng
             List<String> listSerial = new ArrayList<>();
-            //ngayXuat
-            LocalDate ngayXuat = LocalDate.now();
-            String ngayXuatStr = ngayXuat.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            //ngayNhap
 
-            // Ngày bắt đầu bảo hành (start_date)
-            LocalDate startDate = LocalDate.parse(tf_ngayXuat.getText().trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
-            // Lấy thời gian bảo hành từ comboBox
-            String selectedWarranty = (String) cb_Time.getSelectedItem(); // "12 tháng"
-            int months = Integer.parseInt(selectedWarranty.split(" ")[0]);
-
-            // Tính end_date
-            LocalDate endDate = startDate.plusMonths(months);
-            String endDateStr = endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            LocalDate ngayNhapStr = LocalDate.parse(tf_ngayNhap.getText().trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
             DefaultTableModel model = (DefaultTableModel) tbSerial.getModel();
             int rowCount = model.getRowCount();
@@ -514,8 +498,9 @@ public class QuanLyXuatHang extends JPanel {
             }
 
             // Gọi xử lý
-            int idpx = Integer.parseInt(tbPX.getValueAt(selectedRow, 0).toString()); // Cột 0 là idpx
-            boolean ok = updateXuatHang(idpx, userId, categoryId, soLuong, price,NYC, ghiChu, customer,address, ngayXuatStr, startDate.toString(), endDateStr, listSerial);
+
+            int idpn = Integer.parseInt(tbPN.getValueAt(selectedRow, 0).toString()); // Cột 0 là idpx
+            boolean ok = suaPhieuNhap(idpn, userId, categoryId,ncc_id, soLuong, price, NYC, ghiChu, ngayNhapStr.toString(), listSerial);
             if (ok) {
                 JOptionPane.showMessageDialog(null, "Sửa thành công!");
                 model.setRowCount(0); // clear table
@@ -536,7 +521,7 @@ public class QuanLyXuatHang extends JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbPX = new javax.swing.JTable();
+        tbPN = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
         tfTim = new javax.swing.JTextField();
         btnTim = new javax.swing.JButton();
@@ -544,21 +529,18 @@ public class QuanLyXuatHang extends JPanel {
         tbSerial = new javax.swing.JTable();
         btn_Luu = new javax.swing.JButton();
         tf_soLuong = new javax.swing.JTextField();
-        tf_ngayXuat = new javax.swing.JTextField();
-        tf_giaXuat = new javax.swing.JTextField();
-        tf_khachHang = new javax.swing.JTextField();
-        cb_Time = new javax.swing.JComboBox<>();
+        tf_ngayNhap = new javax.swing.JTextField();
+        tf_giaNhap = new javax.swing.JTextField();
         btnXoa = new javax.swing.JButton();
-        tf_diaChi = new javax.swing.JTextField();
         tf_ghiChu = new javax.swing.JTextField();
         tf_NYCau = new javax.swing.JTextField();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("DANH SÁCH PHIẾU XUẤT");
+        jLabel1.setText("DANH SÁCH PHIẾU NHẬP");
 
-        tbPX.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tbPX.setModel(new javax.swing.table.DefaultTableModel(
+        tbPN.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tbPN.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -566,11 +548,11 @@ public class QuanLyXuatHang extends JPanel {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Tên", "Số Lượng", "Đơn Giá", "Thành Tiền", "Ngày Xuất", "Khách Hàng"
+                "ID", "Tên", "Số Lượng", "Đơn Giá", "Thành Tiền", "Ngày Nhập", "Nhà Cung Cấp"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false
@@ -584,17 +566,17 @@ public class QuanLyXuatHang extends JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tbPX.addMouseListener(new java.awt.event.MouseAdapter() {
+        tbPN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbPXMouseClicked(evt);
+                tbPNMouseClicked(evt);
             }
         });
-        tbPX.addComponentListener(new java.awt.event.ComponentAdapter() {
+        tbPN.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
-                tbPXComponentShown(evt);
+                tbPNComponentShown(evt);
             }
         });
-        jScrollPane1.setViewportView(tbPX);
+        jScrollPane1.setViewportView(tbPN);
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel8.setText("Tìm kiếm :");
@@ -654,18 +636,11 @@ public class QuanLyXuatHang extends JPanel {
             }
         });
 
-        tf_ngayXuat.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tf_ngayXuat.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Ngày Bảo Hành", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
+        tf_ngayNhap.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tf_ngayNhap.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Ngày Nhập", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
 
-        tf_giaXuat.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tf_giaXuat.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Giá Xuất", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
-
-        tf_khachHang.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tf_khachHang.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Khách Hàng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
-
-        cb_Time.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        cb_Time.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "12 tháng", "24 tháng", "36 tháng" }));
-        cb_Time.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("")), "Thời gian bảo hành", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
+        tf_giaNhap.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tf_giaNhap.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Giá Nhập", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
 
         btnXoa.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         btnXoa.setText("Xoá");
@@ -674,9 +649,6 @@ public class QuanLyXuatHang extends JPanel {
                 btnXoaActionPerformed(evt);
             }
         });
-
-        tf_diaChi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tf_diaChi.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Địa Chỉ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
 
         tf_ghiChu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tf_ghiChu.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ghi Chú", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
@@ -687,7 +659,7 @@ public class QuanLyXuatHang extends JPanel {
         });
 
         tf_NYCau.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tf_NYCau.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Người Yêu Cầu Xuất", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
+        tf_NYCau.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Người Yêu Cầu Nhập", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 16))); // NOI18N
         tf_NYCau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tf_NYCauActionPerformed(evt);
@@ -724,20 +696,15 @@ public class QuanLyXuatHang extends JPanel {
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(29, 29, 29)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(tf_giaXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(tf_NYCau, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(tf_soLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(tf_ngayXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(tf_soLuong, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tf_ngayNhap, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tf_NYCau, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tf_ghiChu, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cb_Time, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tf_khachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tf_diaChi, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tf_ghiChu, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tf_giaNhap, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(14, 14, 14))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -745,7 +712,7 @@ public class QuanLyXuatHang extends JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(10, Short.MAX_VALUE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -756,27 +723,21 @@ public class QuanLyXuatHang extends JPanel {
                         .addGap(26, 26, 26)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
+                        .addGap(52, 52, 52)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tf_NYCau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tf_ghiChu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                            .addComponent(tf_ghiChu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tf_NYCau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cb_Time, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tf_giaNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tf_soLuong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tf_ngayNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tf_khachHang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tf_giaXuat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tf_diaChi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tf_ngayXuat))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_Luu, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -795,9 +756,9 @@ public class QuanLyXuatHang extends JPanel {
         loadTable_TheoTen(tfTim.getText().trim());
     }//GEN-LAST:event_btnTimActionPerformed
 
-    private void tbPXComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tbPXComponentShown
+    private void tbPNComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tbPNComponentShown
         loadDataTableSP();
-    }//GEN-LAST:event_tbPXComponentShown
+    }//GEN-LAST:event_tbPNComponentShown
 
     private void tf_ghiChuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_ghiChuActionPerformed
         // TODO add your handling code here:
@@ -808,38 +769,38 @@ public class QuanLyXuatHang extends JPanel {
     }//GEN-LAST:event_tf_NYCauActionPerformed
 
     private void btn_LuuActionPerformed(java.awt.event.ActionEvent evt) {
-        int selectedRow = tbPX.getSelectedRow();
+        int selectedRow = tbPN.getSelectedRow();
         if (selectedRow >= 0) {
-            int idpx = Integer.parseInt(tbPX.getValueAt(selectedRow, 0).toString());
+            int idpn = Integer.parseInt(tbPN.getValueAt(selectedRow, 0).toString());
 
             int confirm = JOptionPane.showConfirmDialog(this,
-                    "Bạn có chắc chắn muốn sửa phiếu xuất này?",
+                    "Bạn có chắc chắn muốn sửa phiếu nhập này?",
                     "Xác nhận sửa",
                     JOptionPane.YES_NO_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
-                suaXuatHang();
-                loadDataTableSP(); // Tải lại danh sách phiếu xuất
+                suaNhapHang();
+                loadDataTableSP(); // Tải lại danh sách phiếu nhập
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn phiếu xuất cần xóa!");
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn phiếu nhập cần sửa!");
         }
     }
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {
-        int selectedRow = tbPX.getSelectedRow();
+        int selectedRow = tbPN.getSelectedRow();
         if (selectedRow >= 0) {
-            int idpx = Integer.parseInt(tbPX.getValueAt(selectedRow, 0).toString());
+            int idpn = Integer.parseInt(tbPN.getValueAt(selectedRow, 0).toString());
 
             int confirm = JOptionPane.showConfirmDialog(this,
-                    "Bạn có chắc chắn muốn xóa phiếu xuất này?\nTất cả serial sẽ được chuyển về trạng thái chưa xuất.",
+                    "Bạn có chắc chắn muốn xóa phiếu nhập này?",
                     "Xác nhận xóa",
                     JOptionPane.YES_NO_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
-                boolean success = xoaPhieuXuat(idpx);
+                boolean success = xoaPhieuNhap(idpn);
                 if (success) {
-                    loadDataTableSP(); // Tải lại danh sách phiếu xuất
+                    loadDataTableSP(); // Tải lại danh sách phiếu nhập
                     DefaultTableModel model = (DefaultTableModel) tbSerial.getModel();
                     model.setRowCount(0); // Xóa dữ liệu bảng serial
                 }
@@ -853,15 +814,15 @@ public class QuanLyXuatHang extends JPanel {
         capNhatBangSerialTheoSoLuong();
     }
 
-    private void tbPXMouseClicked(java.awt.event.MouseEvent evt) {
+    private void tbPNMouseClicked(java.awt.event.MouseEvent evt) {
 
-        int selectedRow = tbPX.getSelectedRow();
+        int selectedRow = tbPN.getSelectedRow();
         if (selectedRow >= 0) {
-            int idpx = Integer.parseInt(tbPX.getValueAt(selectedRow, 0).toString()); // Cột 0 là idpx
-            System.out.println("CLICKED idpx = " + idpx); // ✅ để test có click không
+            int idpn = Integer.parseInt(tbPN.getValueAt(selectedRow, 0).toString()); // Cột 0 là idpx
+            System.out.println("CLICKED idpn = " + idpn); // ✅ để test có click không
 
             // Gọi form sửa hoặc load dữ liệu
-            loadChiTietPhieuXuat(idpx); // hoặc gọi form mới: new SuaXuatHang(idpx)
+            loadChiTietPhieuNhap(idpn); // hoặc gọi form mới: new SuaXuatHang(idpx)
         }
     }
 
@@ -882,20 +843,21 @@ public class QuanLyXuatHang extends JPanel {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QuanLyXuatHang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DSPhieuNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QuanLyXuatHang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DSPhieuNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QuanLyXuatHang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DSPhieuNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QuanLyXuatHang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DSPhieuNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new QuanLyXuatHang().setVisible(true);
+                new DSPhieuNhap().setVisible(true);
             }
         });
     }
@@ -904,21 +866,18 @@ public class QuanLyXuatHang extends JPanel {
     private javax.swing.JButton btnTim;
     private javax.swing.JButton btnXoa;
     private javax.swing.JButton btn_Luu;
-    private javax.swing.JComboBox<String> cb_Time;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable tbPX;
+    private javax.swing.JTable tbPN;
     private javax.swing.JTable tbSerial;
     private javax.swing.JTextField tfTim;
     private javax.swing.JTextField tf_NYCau;
-    private javax.swing.JTextField tf_diaChi;
     private javax.swing.JTextField tf_ghiChu;
-    private javax.swing.JTextField tf_giaXuat;
-    private javax.swing.JTextField tf_khachHang;
-    private javax.swing.JTextField tf_ngayXuat;
+    private javax.swing.JTextField tf_giaNhap;
+    private javax.swing.JTextField tf_ngayNhap;
     private javax.swing.JTextField tf_soLuong;
     // End of variables declaration//GEN-END:variables
 }

@@ -108,11 +108,13 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="tf_giaXuat" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="tf_NYC" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="tf_ghiChu" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="tf_soLuong" alignment="1" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="tf_giaXuat" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="tf_NYC" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="tf_ghiChu" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                       </Group>

@@ -456,7 +456,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_pn_OpenNhapMouseMoved
 
     private void pn_OpenPhieuNhapMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenPhieuNhapMouseClicked
-        showPanel(new ChiTietNhapHang());
+        showPanel(new DSPhieuNhap());
     }//GEN-LAST:event_pn_OpenPhieuNhapMouseClicked
 
     private void pn_OpenPhieuNhapMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenPhieuNhapMouseExited

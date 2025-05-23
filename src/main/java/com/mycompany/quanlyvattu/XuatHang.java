@@ -9,6 +9,8 @@ import DAO.SANPHAM_DATA;
 import DTO.LOAISP;
 import DTO.NCC;
 import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -258,13 +260,15 @@ public class XuatHang extends javax.swing.JPanel {
         });
 
         // Bắt sự kiện click vào header để chọn tất cả
-        tb_SerialNCC.getTableHeader().addMouseListener(new java.awt.event.MouseAdapter() {
+        tb_SerialNCC.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 int col = tb_SerialNCC.columnAtPoint(e.getPoint());
                 if (col == 3) {
                     boolean newState = !headerCheckBox.isSelected();
                     headerCheckBox.setSelected(newState);
+
+                    String selectedNCC = cb_NCC1.getSelectedItem().toString(); // NCC đang chọn
 
                     int max = 0;
                     try {
@@ -276,17 +280,19 @@ public class XuatHang extends javax.swing.JPanel {
 
                     int count = 0;
                     for (int i = 0; i < model.getRowCount(); i++) {
-                        if (count < max) {
-                            model.setValueAt(newState, i, 3);
-                            if (newState) {
+                        String nccRow = model.getValueAt(i, 2).toString(); // Cột NCC
+
+                        if (nccRow.equals(selectedNCC)) {
+                            if (count < max && newState) {
+                                model.setValueAt(true, i, 3);
                                 count++;
+                            } else {
+                                model.setValueAt(false, i, 3);
                             }
-                        } else {
-                            model.setValueAt(false, i, 3);
                         }
                     }
 
-                    tb_SerialNCC.getTableHeader().repaint();
+                    tb_SerialNCC.getTableHeader().repaint(); // cập nhật lại header
                 }
             }
         });
@@ -585,11 +591,12 @@ public class XuatHang extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tf_giaXuat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tf_NYC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tf_ghiChu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tf_soLuong))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tf_soLuong, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(tf_giaXuat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tf_NYC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tf_ghiChu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
@@ -698,22 +705,22 @@ public class XuatHang extends javax.swing.JPanel {
     }//GEN-LAST:event_tf_giaXuatKeyTyped
 
     private void btn_LuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_LuuActionPerformed
-         if (tb_SerialConfirm.isEditing()) {
-        tb_SerialConfirm.getCellEditor().stopCellEditing();
-    }
+        if (tb_SerialConfirm.isEditing()) {
+            tb_SerialConfirm.getCellEditor().stopCellEditing();
+        }
 
-    int confirm = JOptionPane.showConfirmDialog(
-        this,
-        "Bạn chắc chắn muốn lưu?",
-        "Xác nhận lưu",
-        JOptionPane.YES_NO_OPTION
-    );
+        int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Bạn chắc chắn muốn lưu?",
+                "Xác nhận lưu",
+                JOptionPane.YES_NO_OPTION
+        );
 
-    if (confirm == JOptionPane.YES_OPTION) {
-        thucHienXuatHang();
-    } else {
-        JOptionPane.showMessageDialog(this, "Đã hủy lưu!");
-    }
+        if (confirm == JOptionPane.YES_OPTION) {
+            thucHienXuatHang();
+        } else {
+            JOptionPane.showMessageDialog(this, "Đã hủy lưu!");
+        }
     }//GEN-LAST:event_btn_LuuActionPerformed
 
     /**
