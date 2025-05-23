@@ -7,6 +7,7 @@ package DTO;
  */
 public class NCC {
     private int supplier_id;
+    private String fullName;
     private String name;
     private String MST;
     private String diaChi;
@@ -29,6 +30,8 @@ public class NCC {
     public void setSupplier_id(int supplier_id) {
         this.supplier_id = supplier_id;
     }
+    
+    
 
     public String getName() {
         return name;
