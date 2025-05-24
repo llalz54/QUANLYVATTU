@@ -164,11 +164,10 @@ public class QuanLyKho extends javax.swing.JPanel {
         cb_Status = new javax.swing.JComboBox<>();
         pn_ChucNangQLSP = new javax.swing.JPanel();
         btn_Create = new javax.swing.JButton();
-        btn_Update = new javax.swing.JButton();
         btn_delete = new javax.swing.JButton();
         btn_Save = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        txt_Name = new javax.swing.JTextArea();
+        btn_Update = new javax.swing.JButton();
+        txt_Name = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tb_DSSP_Serial = new javax.swing.JTable();
         pn_TimKiem = new javax.swing.JPanel();
@@ -277,6 +276,7 @@ public class QuanLyKho extends javax.swing.JPanel {
         pn_ChucNangQLSP.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chức năng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
 
         btn_Create.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_Create.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/quanlyvattu/images/plus (2).png"))); // NOI18N
         btn_Create.setText("Thêm");
         btn_Create.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -284,15 +284,8 @@ public class QuanLyKho extends javax.swing.JPanel {
             }
         });
 
-        btn_Update.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btn_Update.setText("Sửa");
-        btn_Update.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_UpdateActionPerformed(evt);
-            }
-        });
-
         btn_delete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/quanlyvattu/images/delete (1).png"))); // NOI18N
         btn_delete.setText("Xoá");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -301,10 +294,20 @@ public class QuanLyKho extends javax.swing.JPanel {
         });
 
         btn_Save.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_Save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/quanlyvattu/images/save (1).png"))); // NOI18N
         btn_Save.setText("Ghi");
         btn_Save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_SaveActionPerformed(evt);
+            }
+        });
+
+        btn_Update.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_Update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/quanlyvattu/images/updated.png"))); // NOI18N
+        btn_Update.setText("Sửa");
+        btn_Update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_UpdateActionPerformed(evt);
             }
         });
 
@@ -313,77 +316,82 @@ public class QuanLyKho extends javax.swing.JPanel {
         pn_ChucNangQLSPLayout.setHorizontalGroup(
             pn_ChucNangQLSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pn_ChucNangQLSPLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_Create)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btn_Update)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btn_delete)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btn_Save)
-                .addGap(20, 20, 20))
+                .addGap(24, 24, 24)
+                .addGroup(pn_ChucNangQLSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_Create, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_Update, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pn_ChucNangQLSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_Save, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18))
         );
         pn_ChucNangQLSPLayout.setVerticalGroup(
             pn_ChucNangQLSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pn_ChucNangQLSPLayout.createSequentialGroup()
-                .addGap(0, 9, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(pn_ChucNangQLSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_Create)
+                    .addComponent(btn_delete))
+                .addGap(18, 18, 18)
+                .addGroup(pn_ChucNangQLSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_Update)
-                    .addComponent(btn_delete)
-                    .addComponent(btn_Save)))
+                    .addComponent(btn_Save))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        txt_Name.setColumns(20);
         txt_Name.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txt_Name.setRows(5);
         txt_Name.setBorder(javax.swing.BorderFactory.createTitledBorder("Tên"));
-        jScrollPane3.setViewportView(txt_Name);
 
         javax.swing.GroupLayout pn_QLSPLayout = new javax.swing.GroupLayout(pn_QLSP);
         pn_QLSP.setLayout(pn_QLSPLayout);
         pn_QLSPLayout.setHorizontalGroup(
             pn_QLSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pn_QLSPLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(pn_QLSPLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(pn_QLSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pn_QLSPLayout.createSequentialGroup()
-                        .addComponent(lb_QLSP)
-                        .addGap(143, 143, 143))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pn_QLSPLayout.createSequentialGroup()
-                        .addGroup(pn_QLSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cb_Brand, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cb_GrProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cb_Status, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(57, 57, 57))))
-            .addComponent(pn_ChucNangQLSP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(pn_QLSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pn_QLSPLayout.createSequentialGroup()
+                                .addComponent(lb_QLSP)
+                                .addGap(143, 143, 143))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pn_QLSPLayout.createSequentialGroup()
+                                .addComponent(cb_Brand, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(57, 57, 57))))
+                    .addGroup(pn_QLSPLayout.createSequentialGroup()
+                        .addComponent(txt_Name)
+                        .addGap(57, 57, 57))
+                    .addGroup(pn_QLSPLayout.createSequentialGroup()
+                        .addGroup(pn_QLSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cb_Status, 0, 333, Short.MAX_VALUE)
+                            .addComponent(cb_GrProduct, javax.swing.GroupLayout.Alignment.TRAILING, 0, 333, Short.MAX_VALUE)
+                            .addComponent(pn_ChucNangQLSP, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         pn_QLSPLayout.setVerticalGroup(
             pn_QLSPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pn_QLSPLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lb_QLSP)
-                .addGap(26, 26, 26)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addComponent(cb_GrProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(cb_Brand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(95, 95, 95)
+                .addComponent(txt_Name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(cb_Status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addComponent(pn_ChucNangQLSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addComponent(pn_ChucNangQLSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        add(pn_QLSP, new org.netbeans.lib.awtextra.AbsoluteConstraints(828, 0, -1, 497));
+        add(pn_QLSP, new org.netbeans.lib.awtextra.AbsoluteConstraints(828, 0, -1, 510));
 
         tb_DSSP_Serial.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "Ngày nhập", "Serial", "Nhà cung cấp", "Giá nhập", "Ngày kích hoạt", "Ngày kết thúc"
@@ -398,8 +406,16 @@ public class QuanLyKho extends javax.swing.JPanel {
             }
         });
         jScrollPane2.setViewportView(tb_DSSP_Serial);
+        if (tb_DSSP_Serial.getColumnModel().getColumnCount() > 0) {
+            tb_DSSP_Serial.getColumnModel().getColumn(0).setResizable(false);
+            tb_DSSP_Serial.getColumnModel().getColumn(1).setResizable(false);
+            tb_DSSP_Serial.getColumnModel().getColumn(2).setResizable(false);
+            tb_DSSP_Serial.getColumnModel().getColumn(3).setResizable(false);
+            tb_DSSP_Serial.getColumnModel().getColumn(4).setResizable(false);
+            tb_DSSP_Serial.getColumnModel().getColumn(5).setResizable(false);
+        }
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 503, 1224, 291));
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 514, 1224, 280));
 
         pn_TimKiem.setBackground(new java.awt.Color(255, 255, 255));
         pn_TimKiem.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
@@ -421,7 +437,13 @@ public class QuanLyKho extends javax.swing.JPanel {
         });
 
         btn_GetList.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_GetList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/quanlyvattu/images/refresh-button (1).png"))); // NOI18N
         btn_GetList.setText("Lấy danh sách");
+        btn_GetList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_GetListActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pn_TimKiemLayout = new javax.swing.GroupLayout(pn_TimKiem);
         pn_TimKiem.setLayout(pn_TimKiemLayout);
@@ -430,25 +452,24 @@ public class QuanLyKho extends javax.swing.JPanel {
             .addGroup(pn_TimKiemLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(cbLocSP, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(tfTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_GetList)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         pn_TimKiemLayout.setVerticalGroup(
             pn_TimKiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pn_TimKiemLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(pn_TimKiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbLocSP, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addGroup(pn_TimKiemLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btn_GetList, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
+                    .addComponent(tfTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_GetList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 7, Short.MAX_VALUE))
         );
 
-        add(pn_TimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 422, -1, -1));
+        add(pn_TimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 422, 820, 80));
     }// </editor-fold>//GEN-END:initComponents
 
     private void tb_DSSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_DSSPMouseClicked
@@ -493,12 +514,12 @@ public class QuanLyKho extends javax.swing.JPanel {
         // TODO add your handling code here:
         action_QLLSP = "update";
         int i = tb_DSSP.getSelectedRow();
-        if (i<0) {
+        if (i < 0) {
             JOptionPane.showMessageDialog(this, "Chọn sản phẩm để sửa", "Input warning", JOptionPane.WARNING_MESSAGE);
         } else {
-        DefaultTableModel dtm = (DefaultTableModel) tb_DSSP.getModel();
-        String cateName = dtm.getValueAt(i, 1).toString();
-        current_cateID = loaisp_data.name_to_ID(cateName);
+            DefaultTableModel dtm = (DefaultTableModel) tb_DSSP.getModel();
+            String cateName = dtm.getValueAt(i, 1).toString();
+            current_cateID = loaisp_data.name_to_ID(cateName);
         }
     }//GEN-LAST:event_btn_UpdateActionPerformed
 
@@ -506,12 +527,12 @@ public class QuanLyKho extends javax.swing.JPanel {
         // TODO add your handling code here:
         action_QLLSP = "delete";
         int i = tb_DSSP.getSelectedRow();
-        if (i<0) {
+        if (i < 0) {
             JOptionPane.showMessageDialog(this, "Chọn sản phẩm để xoá", "Input warning", JOptionPane.WARNING_MESSAGE);
         } else {
-        DefaultTableModel dtm = (DefaultTableModel) tb_DSSP.getModel();
-        String cateName = dtm.getValueAt(i, 1).toString();
-        current_cateID = loaisp_data.name_to_ID(cateName);
+            DefaultTableModel dtm = (DefaultTableModel) tb_DSSP.getModel();
+            String cateName = dtm.getValueAt(i, 1).toString();
+            current_cateID = loaisp_data.name_to_ID(cateName);
         }
     }//GEN-LAST:event_btn_deleteActionPerformed
 
@@ -564,6 +585,19 @@ public class QuanLyKho extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btn_SaveActionPerformed
 
+    private void btn_GetListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_GetListActionPerformed
+        // TODO add your handling code here:
+        int i = tb_DSSP.getSelectedRow();
+        if (i < 0) {
+            JOptionPane.showMessageDialog(this, "Chọn sản phẩm để lấy danh sách tồn kho", "Input warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+            DefaultTableModel dtm = (DefaultTableModel) tb_DSSP.getModel();
+            String cateName = dtm.getValueAt(i, 1).toString();
+            current_cateID = loaisp_data.name_to_ID(cateName);
+        }
+        //loadDataTable_DSTonKho(current_cateID);
+    }//GEN-LAST:event_btn_GetListActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Create;
@@ -578,7 +612,6 @@ public class QuanLyKho extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lb_QLSP;
     private javax.swing.JPanel pn_ChucNangQLSP;
     private javax.swing.JPanel pn_DSSP;
@@ -587,6 +620,6 @@ public class QuanLyKho extends javax.swing.JPanel {
     private javax.swing.JTable tb_DSSP;
     private javax.swing.JTable tb_DSSP_Serial;
     private javax.swing.JTextField tfTimKiem;
-    private javax.swing.JTextArea txt_Name;
+    private javax.swing.JTextField txt_Name;
     // End of variables declaration//GEN-END:variables
 }

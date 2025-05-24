@@ -78,9 +78,10 @@ public class PHIEUNHAP_DATA {
         ArrayList<PHIEUNHAP> allSP = getListPN();
         ArrayList<PHIEUNHAP> dssp = new ArrayList<>();
         for (PHIEUNHAP sp : allSP) {
+            String ncc = sp.getSupplier().toLowerCase();
             String tenSP = sp.getTenLoai().toLowerCase();
            
-            if (tenSP.contains(key.toLowerCase()) ) {
+            if (tenSP.contains(key.toLowerCase()) || ncc.contains(key.toLowerCase()) ) {
                 dssp.add(sp);
             }
         }
