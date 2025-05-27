@@ -26,46 +26,270 @@ public class NCC extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        pn_funtion = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        cb_Status = new javax.swing.JComboBox<>();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txt_Name = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txt_Name1 = new javax.swing.JTextArea();
+        txt_tenGoiNho = new javax.swing.JTextField();
+        txt_MST = new javax.swing.JTextField();
+        pn_button = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tb_Supplier = new javax.swing.JTable();
+        pn_TimKiem = new javax.swing.JPanel();
+        cbLocSP = new javax.swing.JComboBox<>();
+        tfTimKiem = new javax.swing.JTextField();
+        btn_GetList = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setText("Quản lý nhà cung cấp");
+
+        cb_Status.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cb_Status.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Trạng thái", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
+
+        txt_Name.setColumns(20);
+        txt_Name.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txt_Name.setRows(5);
+        txt_Name.setBorder(javax.swing.BorderFactory.createTitledBorder("Tên"));
+        jScrollPane3.setViewportView(txt_Name);
+
+        txt_Name1.setColumns(20);
+        txt_Name1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txt_Name1.setRows(5);
+        txt_Name1.setBorder(javax.swing.BorderFactory.createTitledBorder("Địa chỉ"));
+        jScrollPane4.setViewportView(txt_Name1);
+
+        txt_tenGoiNho.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txt_tenGoiNho.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tên gợi nhớ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
+        txt_tenGoiNho.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_tenGoiNhoActionPerformed(evt);
+            }
+        });
+
+        txt_MST.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txt_MST.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Mã số thuế", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
+        txt_MST.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_MSTActionPerformed(evt);
+            }
+        });
+
+        pn_button.setBackground(new java.awt.Color(255, 255, 255));
+        pn_button.setBorder(javax.swing.BorderFactory.createTitledBorder("Chức năng"));
+
+        jButton1.setText("Thêm");
+
+        jButton2.setText("Sửa");
+
+        jButton3.setText("Xoá");
+
+        jButton4.setText("Ghi");
+
+        javax.swing.GroupLayout pn_buttonLayout = new javax.swing.GroupLayout(pn_button);
+        pn_button.setLayout(pn_buttonLayout);
+        pn_buttonLayout.setHorizontalGroup(
+            pn_buttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pn_buttonLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(pn_buttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(jButton3))
+                .addGap(33, 33, 33)
+                .addGroup(pn_buttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton4)
+                    .addComponent(jButton2))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 80, Short.MAX_VALUE)
+        pn_buttonLayout.setVerticalGroup(
+            pn_buttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pn_buttonLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pn_buttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addGap(18, 18, 18)
+                .addGroup(pn_buttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 80));
+        javax.swing.GroupLayout pn_funtionLayout = new javax.swing.GroupLayout(pn_funtion);
+        pn_funtion.setLayout(pn_funtionLayout);
+        pn_funtionLayout.setHorizontalGroup(
+            pn_funtionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pn_funtionLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(75, 75, 75))
+            .addGroup(pn_funtionLayout.createSequentialGroup()
+                .addGroup(pn_funtionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pn_funtionLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(pn_funtionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cb_Status, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(pn_funtionLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(pn_funtionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txt_tenGoiNho, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_MST, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(22, Short.MAX_VALUE))
+            .addGroup(pn_funtionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pn_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        pn_funtionLayout.setVerticalGroup(
+            pn_funtionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pn_funtionLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(txt_tenGoiNho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(txt_MST, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(cb_Status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(pn_button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24))
+        );
 
+        add(pn_funtion, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 0, 340, 580));
+
+        tb_Supplier.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tb_Supplier.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Tên", "Mã số thuế", "Địa chỉ", "Trạng thái"
+                "Tên", "Tên gợi nhớ", "Mã số thuế", "Địa chỉ", "Trạng thái"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tb_Supplier);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, -1, -1));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 820, 490));
+
+        pn_TimKiem.setBackground(new java.awt.Color(255, 255, 255));
+        pn_TimKiem.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
+        pn_TimKiem.setPreferredSize(new java.awt.Dimension(822, 75));
+
+        cbLocSP.setBackground(new java.awt.Color(204, 204, 204));
+        cbLocSP.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cbLocSP.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Tồn kho", "Đã bán" }));
+        cbLocSP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbLocSPActionPerformed(evt);
+            }
+        });
+
+        tfTimKiem.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tfTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfTimKiemActionPerformed(evt);
+            }
+        });
+
+        btn_GetList.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_GetList.setText("Lấy danh sách");
+
+        javax.swing.GroupLayout pn_TimKiemLayout = new javax.swing.GroupLayout(pn_TimKiem);
+        pn_TimKiem.setLayout(pn_TimKiemLayout);
+        pn_TimKiemLayout.setHorizontalGroup(
+            pn_TimKiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pn_TimKiemLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cbLocSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(tfTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addComponent(btn_GetList)
+                .addGap(29, 29, 29))
+        );
+        pn_TimKiemLayout.setVerticalGroup(
+            pn_TimKiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pn_TimKiemLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pn_TimKiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbLocSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_GetList))
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+
+        add(pn_TimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, 90));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setText("DANH SÁCH NHÀ CUNG CẤP");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 130, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cbLocSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLocSPActionPerformed
+
+    }//GEN-LAST:event_cbLocSPActionPerformed
+
+    private void tfTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfTimKiemActionPerformed
+
+    }//GEN-LAST:event_tfTimKiemActionPerformed
+
+    private void txt_tenGoiNhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_tenGoiNhoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_tenGoiNhoActionPerformed
+
+    private void txt_MSTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_MSTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_MSTActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton btn_GetList;
+    private javax.swing.JComboBox<String> cbLocSP;
+    private javax.swing.JComboBox<String> cb_Status;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JPanel pn_TimKiem;
+    private javax.swing.JPanel pn_button;
+    private javax.swing.JPanel pn_funtion;
     private javax.swing.JTable tb_Supplier;
+    private javax.swing.JTextField tfTimKiem;
+    private javax.swing.JTextField txt_MST;
+    private javax.swing.JTextArea txt_Name;
+    private javax.swing.JTextArea txt_Name1;
+    private javax.swing.JTextField txt_tenGoiNho;
     // End of variables declaration//GEN-END:variables
 }
