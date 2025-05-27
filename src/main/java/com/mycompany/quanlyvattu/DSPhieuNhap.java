@@ -301,7 +301,7 @@ public class DSPhieuNhap extends JPanel {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            JOptionPane.showMessageDialog(this, "Lỗi khi xóa phiếu xuất: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Lỗi khi xóa phiếu nhập: " + e.getMessage());
             e.printStackTrace();
             return false;
         } finally {
@@ -323,8 +323,8 @@ public class DSPhieuNhap extends JPanel {
     }
 
     //SỬA NHẬP HÀNG
-    public boolean suaPhieuNhap(int idpn, int userId, int categoryId, int quantity, int price,
-            int supplierId, String ngayNhap,String NYC, String ghiChu, List<String> listSerial) {
+    public boolean suaPhieuNhap(int idpn, int userId, int categoryId,int supplierId, int quantity, int price,
+             String ngayNhap,String NYC, String ghiChu, List<String> listSerial) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -360,23 +360,23 @@ public class DSPhieuNhap extends JPanel {
                 rs.close();
             }
 
-            // 3. Kiểm tra serial mới không trùng với bảng SanPham
-            for (String serial : listSerial) {
-                String sqlCheck = "SELECT * FROM SanPham WHERE serial = ?";
-                ps = conn.prepareStatement(sqlCheck);
-                ps.setString(1, serial);
-                rs = ps.executeQuery();
-                if (rs.next()) {
-                    JOptionPane.showMessageDialog(null, "Serial bị trùng trong hệ thống: " + serial);
-                    conn.rollback();
-                    return false;
-                }
-                ps.close();
-                rs.close();
-            }
+//            // 3. Kiểm tra serial mới không trùng với bảng SanPham
+//            for (String serial : listSerial) {
+//                String sqlCheck = "SELECT * FROM SanPham WHERE serial = ?";
+//                ps = conn.prepareStatement(sqlCheck);
+//                ps.setString(1, serial);
+//                rs = ps.executeQuery();
+//                if (rs.next()) {
+//                    JOptionPane.showMessageDialog(null, "Serial bị trùng trong hệ thống: " + serial);
+//                    conn.rollback();
+//                    return false;
+//                }
+//                ps.close();
+//                rs.close();
+//            }
 
             // 4. Cập nhật phiếu nhập
-            String sqlUpdatePN = "UPDATE PhieuNhap SET user_id=?, category_id=?,supplier_id=?, quantity=?, price=?,  ngayNhap=?, NYCau=?, ghiChu=?, WHERE idpn=?";
+            String sqlUpdatePN = "UPDATE PhieuNhap SET user_id=?, category_id=?,supplier_id=?, quantity=?, price=?,  ngayNhap=?, NYCau=?, ghiChu=? WHERE idpn=?";
             ps = conn.prepareStatement(sqlUpdatePN);
             ps.setInt(1, userId);
             ps.setInt(2, categoryId);
@@ -466,7 +466,7 @@ public class DSPhieuNhap extends JPanel {
     public void suaNhapHang() {
         try {
 
-            int userId = 1;
+            int userId = Session.getInstance().getUserId();
             int selectedRow = tbPN.getSelectedRow();
             String name = tbPN.getValueAt(selectedRow, 1).toString();
             int categoryId = loaisp_data.getCategoryIdByName(name);
@@ -481,8 +481,10 @@ public class DSPhieuNhap extends JPanel {
             // Lấy danh sách serial từ bảng
             List<String> listSerial = new ArrayList<>();
             //ngayNhap
-
-            LocalDate ngayNhapStr = LocalDate.parse(tf_ngayNhap.getText().trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+             //ngayXuat
+            LocalDate ngayNhap = LocalDate.now();
+            String ngaynhapStr = ngayNhap.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+           
 
             DefaultTableModel model = (DefaultTableModel) tbSerial.getModel();
             int rowCount = model.getRowCount();
@@ -499,13 +501,14 @@ public class DSPhieuNhap extends JPanel {
 
             // Gọi xử lý
 
-            int idpn = Integer.parseInt(tbPN.getValueAt(selectedRow, 0).toString()); // Cột 0 là idpx
-            boolean ok = suaPhieuNhap(idpn, userId, categoryId,ncc_id, soLuong, price, NYC, ghiChu, ngayNhapStr.toString(), listSerial);
+            int idpn = Integer.parseInt(tbPN.getValueAt(selectedRow, 0).toString()); // Cột 0 là idpn
+            boolean ok = suaPhieuNhap(idpn, userId, categoryId,ncc_id, soLuong, price, ngaynhapStr, NYC, ghiChu, listSerial);
+             
             if (ok) {
                 JOptionPane.showMessageDialog(null, "Sửa thành công!");
                 model.setRowCount(0); // clear table
             } else {
-                JOptionPane.showMessageDialog(null, "Xuất hàng thất bại! Kiểm tra lại serial hoặc dữ liệu.");
+                JOptionPane.showMessageDialog(null, "Nhập hàng thất bại! Kiểm tra lại serial hoặc dữ liệu.");
             }
 
         } catch (Exception e) {

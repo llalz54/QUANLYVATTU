@@ -23,7 +23,7 @@ public class PHIEUNHAP_DATA {
     public ArrayList<PHIEUNHAP> getListPN() {
         try {
            DBAccess acc = new DBAccess();
-            ResultSet rs = acc.Query("SELECT pn.*, c.name AS tenLoai, s.name AS tenNCC FROM PhieuNhap pn  JOIN LoaiSP c ON pn.category_id = c.category_id JOIN NCC s on pn.supplier_id = s.supplier_id");
+            ResultSet rs = acc.Query("SELECT pn.*, c.name AS tenLoai, s.name AS tenNCC FROM PhieuNhap pn  JOIN LoaiSP c ON pn.category_id = c.category_id JOIN NCC s on pn.supplier_id = s.supplier_id ORDER BY pn.ngayNhap DESC");
             ArrayList<PHIEUNHAP> dssp = new ArrayList<>();
             while (rs.next()) {
                 PHIEUNHAP px = new PHIEUNHAP();
@@ -78,9 +78,10 @@ public class PHIEUNHAP_DATA {
         ArrayList<PHIEUNHAP> allSP = getListPN();
         ArrayList<PHIEUNHAP> dssp = new ArrayList<>();
         for (PHIEUNHAP sp : allSP) {
+            String ncc = sp.getSupplier().toLowerCase();
             String tenSP = sp.getTenLoai().toLowerCase();
            
-            if (tenSP.contains(key.toLowerCase()) ) {
+            if (tenSP.contains(key.toLowerCase()) || ncc.contains(key.toLowerCase()) ) {
                 dssp.add(sp);
             }
         }

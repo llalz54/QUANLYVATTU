@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 /**
  *
@@ -24,6 +25,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
+        applyDefaultUIStyle();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1500, 800);
         setLocationRelativeTo(null); // căn giữa màn hình
@@ -39,6 +41,40 @@ public class MainFrame extends javax.swing.JFrame {
         panelShow.add(panel); // Thêm panel mới
         panelShow.revalidate();             // Làm mới hiển thị
         panelShow.repaint();
+    }
+
+    public static void applyDefaultUIStyle() {
+        try {
+            // Giao diện hệ điều hành (Windows/macOS/Linux)
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+            // ComboBox
+            UIManager.put("ComboBox.background", Color.WHITE);
+            UIManager.put("ComboBox.foreground", Color.BLACK);
+            UIManager.put("ComboBox.selectionBackground", Color.WHITE);
+            UIManager.put("ComboBox.selectionForeground", Color.BLACK);
+            UIManager.put("ComboBox.rendererUseListColors", Boolean.TRUE);
+
+            // Button
+            UIManager.put("Button.background", Color.WHITE);
+            UIManager.put("Button.foreground", Color.BLACK);
+
+            // Table
+            UIManager.put("Table.background", Color.WHITE);
+            UIManager.put("Table.foreground", Color.BLACK);
+            UIManager.put("Table.selectionBackground", new Color(220, 220, 255));
+            UIManager.put("Table.selectionForeground", Color.BLACK);
+            UIManager.put("Table.gridColor", Color.LIGHT_GRAY);
+
+            // TextField (nếu cần)
+            UIManager.put("TextField.background", Color.WHITE);
+            UIManager.put("TextField.foreground", Color.BLACK);
+
+            // Panel (nếu cần)
+            UIManager.put("Panel.background", Color.WHITE);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -281,7 +317,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(pn_OpenPhieuXuatLayout.createSequentialGroup()
                 .addGap(70, 70, 70)
                 .addComponent(lb_PhieuXuat)
-                .addContainerGap(79, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
         pn_OpenPhieuXuatLayout.setVerticalGroup(
             pn_OpenPhieuXuatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -343,19 +379,24 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(panelMenuLayout.createSequentialGroup()
                 .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelMenuLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(panelMenuLayout.createSequentialGroup()
                         .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(pn_Logout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(pn_OpenPhieuXuat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(pn_OpenSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(pn_OpenSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(pn_OpenNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(pn_OpenXuat, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(pn_OpenPhieuNhap, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(panelMenuLayout.createSequentialGroup()
+                                .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(pn_OpenSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(pn_OpenSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(pn_OpenNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(pn_OpenXuat, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(pn_OpenPhieuNhap, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGap(1, 1, 1)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(panelMenuLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMenuLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(pn_OpenPhieuXuat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -374,11 +415,11 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(pn_OpenNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pn_OpenPhieuNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pn_OpenXuat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pn_OpenXuat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addComponent(pn_OpenPhieuXuat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
+                .addGap(45, 45, 45)
                 .addComponent(pn_Logout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(52, Short.MAX_VALUE))
         );
@@ -409,11 +450,6 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         showPanel(new QuanLyKho());
     }//GEN-LAST:event_pn_OpenSPMouseClicked
-
-    private void lblXuatHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblXuatHangMouseClicked
-
-    }//GEN-LAST:event_lblXuatHangMouseClicked
-
 
     private void pn_OpenSPMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenSPMouseExited
         // TODO add your handling code here:
@@ -452,7 +488,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void pn_OpenNhapMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenNhapMouseMoved
         // TODO add your handling code here:
-        pn_OpenPhieuNhap.setBackground(clickColor);
+        pn_OpenNhap.setBackground(clickColor);
     }//GEN-LAST:event_pn_OpenNhapMouseMoved
 
     private void pn_OpenPhieuNhapMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenPhieuNhapMouseClicked
