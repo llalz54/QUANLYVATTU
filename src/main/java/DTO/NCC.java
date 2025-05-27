@@ -11,16 +11,19 @@ public class NCC {
     private String name;
     private String MST;
     private String diaChi;
+    private String status;
 
     public NCC() {
     }
 
     
-    public NCC(int supplier_id, String name, String MST, String diaChi) {
+    public NCC(int supplier_id, String name,String fullName, String MST, String diaChi, String status) {
         this.supplier_id = supplier_id;
         this.name = name;
+        this.fullName = fullName;
         this.MST = MST;
         this.diaChi = diaChi;
+        this.status = status;
     }
 
     public int getSupplier_id() {
@@ -41,6 +44,14 @@ public class NCC {
         this.name = name;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+    
     public String getMST() {
         return MST;
     }
@@ -61,6 +72,13 @@ public class NCC {
     public String toString() {
         return  name;
     }
-    
-    
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+      
 }

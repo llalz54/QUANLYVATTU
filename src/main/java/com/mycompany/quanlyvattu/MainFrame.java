@@ -463,6 +463,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void pn_OpenSupplierMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pn_OpenSupplierMouseClicked
         // TODO add your handling code here:
+        showPanel(new QuanLyNCC());
 
     }//GEN-LAST:event_pn_OpenSupplierMouseClicked
 

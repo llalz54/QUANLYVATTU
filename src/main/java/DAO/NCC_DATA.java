@@ -36,13 +36,15 @@ public class NCC_DATA {
                 NCC gr = new NCC();
                 gr.setSupplier_id(rs.getInt(1));
                 gr.setName(rs.getString(2).trim());
-                gr.setMST(rs.getString(3));
-                gr.setDiaChi(rs.getString(4).trim());
+                gr.setFullName(rs.getString(3).trim());
+                gr.setMST(rs.getString(4).trim());
+                gr.setDiaChi(rs.getString(5).trim());
+                gr.setStatus(rs.getString(6).trim());
                 dssp.add(gr);
             }
             return dssp;
         } catch (SQLException e) {
-            System.out.println("Lỗi lấy danh sách nhóm sản phẩm!!!");
+            System.out.println("Lỗi lấy danh sách nhà cung cấp!!!");
             return null;
         } finally {
             if (acc != null) {
