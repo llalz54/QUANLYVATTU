@@ -23,7 +23,7 @@ public class PHIEUNHAP_DATA {
     public ArrayList<PHIEUNHAP> getListPN() {
         try {
            DBAccess acc = new DBAccess();
-            ResultSet rs = acc.Query("SELECT pn.*, c.name AS tenLoai, s.name AS tenNCC FROM PhieuNhap pn  JOIN LoaiSP c ON pn.category_id = c.category_id JOIN NCC s on pn.supplier_id = s.supplier_id");
+            ResultSet rs = acc.Query("SELECT pn.*, c.name AS tenLoai, s.name AS tenNCC FROM PhieuNhap pn  JOIN LoaiSP c ON pn.category_id = c.category_id JOIN NCC s on pn.supplier_id = s.supplier_id ORDER BY pn.ngayNhap DESC");
             ArrayList<PHIEUNHAP> dssp = new ArrayList<>();
             while (rs.next()) {
                 PHIEUNHAP px = new PHIEUNHAP();

@@ -31,7 +31,7 @@ public class PHIEUXUAT_DATA {
     public ArrayList<PHIEUXUAT> getListPX() {
         try {
             DBAccess acc = new DBAccess();
-            ResultSet rs = acc.Query("SELECT px.*, c.name FROM PhieuXuat px  JOIN LoaiSP c ON px.category_id = c.category_id");
+            ResultSet rs = acc.Query("SELECT px.*, c.name FROM PhieuXuat px  JOIN LoaiSP c ON px.category_id = c.category_id ORDER BY px.ngayXuat DESC");
             ArrayList<PHIEUXUAT> dssp = new ArrayList<>();
             while (rs.next()) {
                 PHIEUXUAT px = new PHIEUXUAT();

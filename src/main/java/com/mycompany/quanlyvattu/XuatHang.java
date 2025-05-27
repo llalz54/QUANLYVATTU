@@ -6,6 +6,7 @@ import DAO.NCC_DATA;
 import DAO.NHOMSP_DATA;
 import DAO.PHIEUXUAT_DATA;
 import DAO.SANPHAM_DATA;
+import DAO.Session;
 import DTO.LOAISP;
 import DTO.NCC;
 import java.awt.Color;
@@ -305,7 +306,7 @@ public class XuatHang extends javax.swing.JPanel {
     public void thucHienXuatHang() {
         try {
 
-            int userId = 1;
+            int userId = Session.getInstance().getUserId();
             System.out.println("id user = " + userId);
             int categoryId = 0;
             for (LOAISP loaisp : loaisps) {

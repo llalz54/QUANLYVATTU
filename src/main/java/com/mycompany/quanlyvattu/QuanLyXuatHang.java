@@ -472,7 +472,7 @@ public class QuanLyXuatHang extends JPanel {
     public void suaXuatHang() {
         try {
 
-            int userId = 1;
+            int userId = Session.getInstance().getUserId();
             int selectedRow = tbPX.getSelectedRow();
             String name = tbPX.getValueAt(selectedRow, 1).toString();
             int categoryId = loaisp_data.getCategoryIdByName(name);
