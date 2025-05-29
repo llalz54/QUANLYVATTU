@@ -9,12 +9,13 @@ public class PHIEUXUAT {
     private String ngayXuat;
     private String customer;
     private String tenLoai;
+    private String diachi;
     private int tongTien;
 
     public PHIEUXUAT() {
     }
 
-    public PHIEUXUAT(int idpx, int userID, int categoryID, int quantity, int price, String ngayXuat, String customer) {
+    public PHIEUXUAT(int idpx, int userID, int categoryID, int quantity, int price, String ngayXuat, String customer,String diaChi) {
         this.idpx = idpx;
         this.userID = userID;
         this.categoryID = categoryID;
@@ -22,8 +23,18 @@ public class PHIEUXUAT {
         this.price = price;
         this.ngayXuat = ngayXuat;
         this.customer = customer;
+        this.diachi = diaChi;
     }
 
+    public String getDiachi() {
+        return diachi;
+    }
+
+    public void setDiachi(String diachi) {
+        this.diachi = diachi;
+    }
+
+    
     public int getTongTien() {
         return quantity * price;
     }

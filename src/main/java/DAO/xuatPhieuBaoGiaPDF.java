@@ -9,8 +9,18 @@ import DTO.PHIEUXUAT;
 import java.io.FileOutputStream;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.text.Document;
-
+import com.itextpdf.text.Document;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPCell;
+import java.awt.Desktop;
+import java.io.File;
 /**
  *
  * @author Admin
@@ -39,38 +49,43 @@ public class xuatPhieuBaoGiaPDF {
         Paragraph header = new Paragraph("BÁO GIÁ", fontTitle);
         header.setAlignment(Element.ALIGN_CENTER);
         document.add(header);
-
-        document.add(new Paragraph("Tên khách hàng: " + px.getKhachHang(), fontNormal));
-        document.add(new Paragraph("Địa chỉ: " + px.getDiaChi(), fontNormal));
+        document.add(new Paragraph("Tên khách hàng: " + px.getCustomer(), fontNormal));
+        document.add(new Paragraph("Địa chỉ: " + px.getDiachi(), fontNormal));
         document.add(new Paragraph("Ngày: " + px.getNgayXuat(), fontNormal));
         document.add(new Paragraph("Số phiếu: BG" + String.format("%05d", px.getIdpx()), fontNormal));
+        document.add(new Paragraph("Tên Sản Phẩm: " + px.getTenLoai(), fontNormal));
+        document.add(new Paragraph("Số Lượng: " + px.getQuantity(), fontNormal));
+        document.add(new Paragraph("Đơn giá: " + px.getPrice(), fontNormal));
+        document.add(new Paragraph("Tổng tiền: " + px.getTongTien(), fontNormal));
         document.add(new Paragraph(" ", fontNormal));
+        
+        
 
         // 5. Bảng chi tiết
-        PdfPTable table = new PdfPTable(6);
-        table.setWidths(new float[]{1.2f, 3f, 2f, 1.2f, 2f, 2f});
+        PdfPTable table = new PdfPTable(2);
+        table.setWidths(new float[]{1.2f, 4f});
         table.setWidthPercentage(100);
 
         // Header bảng
-        String[] headers = {"Mã hàng", "Tên hàng", "ĐVT", "SL", "Đơn giá", "Thành tiền"};
+        String[] headers = {"Mã hàng", "Tên hàng"};
         for (String h : headers) {
             PdfPCell cell = new PdfPCell(new Phrase(h, fontBold));
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             table.addCell(cell);
         }
+ 
+ 
 
         // Dữ liệu
-        long tongTien = 0;
+        long tongTien = px.getTongTien();
         for (CTPX ct : ctpxList) {
-            long thanhTien = ct.getDonGia() * ct.getSoLuong();
-            tongTien += thanhTien;
+           
+            
 
-            table.addCell(new Phrase(ct.getMaSP(), fontNormal));
-            table.addCell(new Phrase(ct.getTenSP(), fontNormal));
+            table.addCell(new Phrase(ct.getSerial(), fontNormal));
+            
             table.addCell(new Phrase("Cái", fontNormal));
-            table.addCell(new Phrase(String.valueOf(ct.getSoLuong()), fontNormal));
-            table.addCell(new Phrase(String.format("%,d", ct.getDonGia()), fontNormal));
-            table.addCell(new Phrase(String.format("%,d", thanhTien), fontNormal));
+          
         }
 
         document.add(table);

@@ -1,13 +1,28 @@
 package com.mycompany.quanlyvattu;
 
 import ConDB.DBAccess;
+import DAO.CTPX_DATA;
 import DAO.LOAISP_DATA;
 import DAO.NHOMSP_DATA;
+import DAO.NumberToWords;
 import DAO.PHIEUXUAT_DATA;
 import DAO.Session;
 import DAO.UpperCase;
+import DAO.xuatPhieuBaoGiaPDF;
+import DTO.CTPX;
 import DTO.LOAISP;
 import DTO.PHIEUXUAT;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
@@ -21,8 +36,11 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.time.LocalDate;
@@ -33,6 +51,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -44,13 +63,14 @@ public class QuanLyXuatHang extends JPanel {
     private NHOMSP_DATA nhomsp_data = new NHOMSP_DATA();
     private LOAISP_DATA loaisp_data = new LOAISP_DATA();
     private PHIEUXUAT_DATA px_data = new PHIEUXUAT_DATA();
+    private CTPX_DATA ctpx_data = new CTPX_DATA();
+    private xuatPhieuBaoGiaPDF pdf = new xuatPhieuBaoGiaPDF();
 
     public QuanLyXuatHang() {
 
         initComponents();
         loadDataTableSP();
         customControls();
-        
 
     }
 
@@ -104,7 +124,6 @@ public class QuanLyXuatHang extends JPanel {
 //            });
 //        }
 //    }
-
     private void loadChiTietPhieuXuat(int idpx) {
         try {
             System.out.println("idpx: " + idpx);
@@ -121,7 +140,7 @@ public class QuanLyXuatHang extends JPanel {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-               
+
                 tf_NYCau.setText(rs.getString("NYCau"));
                 tf_ghiChu.setText(rs.getString("ghiChu"));
                 tf_soLuong.setText(rs.getString("quantity"));
@@ -314,8 +333,8 @@ public class QuanLyXuatHang extends JPanel {
     }
 
     //SỬA XUẤT HÀNG
-    public boolean updateXuatHang(int idpx, int userId, int categoryId, int quantity, int price,String NYC, String ghiChu,
-            String customer,String diaChi, String ngayXuat,
+    public boolean updateXuatHang(int idpx, int userId, int categoryId, int quantity, int price, String NYC, String ghiChu,
+            String customer, String diaChi, String ngayXuat,
             String startDate, String endDate,
             List<String> listSerial) {
         Connection conn = null;
@@ -350,7 +369,7 @@ public class QuanLyXuatHang extends JPanel {
                         if (serialCategoryId != categoryId) {
                             JOptionPane.showMessageDialog(null,
                                     "Serial " + serial + " không thuộc loại sản phẩm này!\n"
-                                    + "Vui lòng nhập serial đúng cho " );
+                                    + "Vui lòng nhập serial đúng cho ");
                             conn.rollback();
                             return false;
                         }
@@ -476,7 +495,7 @@ public class QuanLyXuatHang extends JPanel {
             int selectedRow = tbPX.getSelectedRow();
             String name = tbPX.getValueAt(selectedRow, 1).toString();
             int categoryId = loaisp_data.getCategoryIdByName(name);
-            System.out.println("category "+ categoryId);
+            System.out.println("category " + categoryId);
             int price = Integer.parseInt(tf_giaXuat.getText().trim());
             String NYC = tf_NYCau.getText().trim();
             String ghiChu = tf_ghiChu.getText().trim();
@@ -515,7 +534,7 @@ public class QuanLyXuatHang extends JPanel {
 
             // Gọi xử lý
             int idpx = Integer.parseInt(tbPX.getValueAt(selectedRow, 0).toString()); // Cột 0 là idpx
-            boolean ok = updateXuatHang(idpx, userId, categoryId, soLuong, price,NYC, ghiChu, customer,address, ngayXuatStr, startDate.toString(), endDateStr, listSerial);
+            boolean ok = updateXuatHang(idpx, userId, categoryId, soLuong, price, NYC, ghiChu, customer, address, ngayXuatStr, startDate.toString(), endDateStr, listSerial);
             if (ok) {
                 JOptionPane.showMessageDialog(null, "Sửa thành công!");
                 model.setRowCount(0); // clear table
@@ -526,6 +545,201 @@ public class QuanLyXuatHang extends JPanel {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Lỗi: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    //Xuất
+    public void xuatPhieuBaoGiaPDF() {
+        try {
+            int selectedRow = tbPX.getSelectedRow();
+            int idpx = Integer.parseInt(tbPX.getValueAt(selectedRow, 0).toString());
+            String name = tbPX.getValueAt(selectedRow, 1).toString();
+            int price = Integer.parseInt(tf_giaXuat.getText().trim());
+            String NYC = tf_NYCau.getText().trim();
+            String ghiChu = tf_ghiChu.getText().trim();
+            String customer = tf_khachHang.getText().trim();
+            String address = tf_diaChi.getText().trim();
+            int thanhTien = Integer.parseInt(tbPX.getValueAt(selectedRow, 4).toString().trim().replaceAll("[^\\d]", ""));
+            int soLuong = Integer.parseInt(tf_soLuong.getText().trim());
+            // Lấy danh sách serial từ bảng
+            List<String> listSerial = new ArrayList<>();
+            //ngayXuat
+
+            String ngayXuatStr = tf_ngayXuat.getText().trim();
+
+            // 1. Nhập VAT
+            String inputVat = JOptionPane.showInputDialog(null, "Nhập VAT (%):", "10");
+            if (inputVat == null || inputVat.isEmpty()) {
+                return;
+            }
+            int vatPercent = Integer.parseInt(inputVat.trim());
+
+// === Mở hộp thoại chọn nơi lưu file ===
+            JFileChooser chooser = new JFileChooser();
+            chooser.setDialogTitle("Chọn thư mục để lưu file PDF");
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setAcceptAllFileFilterUsed(false);
+
+            int result = chooser.showSaveDialog(null);
+            if (result != JFileChooser.APPROVE_OPTION) {
+                return; // Người dùng bấm Cancel
+            }
+
+            File selectedDir = chooser.getSelectedFile();
+            String fileName = name + " cho " + customer + ".pdf";
+            String fullPath = selectedDir.getAbsolutePath() + File.separator + fileName;
+            // 2. Tạo Document PDF
+            Document document = new Document(PageSize.A4) {
+            };
+
+            PdfWriter.getInstance(document, new FileOutputStream(fullPath));
+            document.open();
+
+            // 3. Fonts
+            //BaseFont bf = BaseFont.createFont("fonts/arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont bf = BaseFont.createFont(
+                    getClass().getResource("/fonts/arial.ttf").toString(),
+                    BaseFont.IDENTITY_H,
+                    BaseFont.EMBEDDED
+            );
+            Font fontTitle = new Font(bf, 14, Font.BOLD);
+            Font fontNormal = new Font(bf, 12);
+            Font fontBold = new Font(bf, 12, Font.BOLD);
+            Font ctyBold = new Font(bf, 10, Font.BOLD);
+            Font fontcty = new Font(bf, 10);
+            // 4. Header bảng 2 cột
+            PdfPTable headerTable = new PdfPTable(2);
+            headerTable.setWidthPercentage(100);
+            headerTable.setWidths(new float[]{75f, 25f}); // chia đôi trái phải     
+
+// 1. Thông tin công ty góc trái
+            PdfPTable companyInfo = new PdfPTable(2);
+            companyInfo.setWidthPercentage(100);
+            companyInfo.setWidths(new float[]{70f, 30f});
+
+            PdfPCell leftCompany = new PdfPCell();
+            leftCompany.setBorder(Rectangle.NO_BORDER);
+            leftCompany.addElement(new Paragraph("CÔNG TY CỔ PHẦN ĐẦU TƯ KT TM NAM TRUNG", ctyBold));
+            leftCompany.addElement(new Paragraph("45 Thạch Thị Thanh, Phường Tân Định, Quận 1", fontcty));
+            companyInfo.addCell(leftCompany);
+
+// Cột phải trống hoặc thêm nội dung
+            PdfPCell rightEmpty = new PdfPCell(new Phrase(""));
+            rightEmpty.setBorder(Rectangle.NO_BORDER);
+            companyInfo.addCell(rightEmpty);
+
+            document.add(companyInfo);
+
+// Phần trái
+            PdfPCell leftCell = new PdfPCell();
+            leftCell.setBorder(Rectangle.NO_BORDER);
+            leftCell.addElement(new Paragraph("Tên khách hàng: " + customer, fontNormal));
+            leftCell.addElement(new Paragraph("Địa chỉ: " + address, fontNormal));
+            leftCell.addElement(new Paragraph("Tên Sản Phẩm: " + name, fontNormal));
+            leftCell.addElement(new Paragraph("Số Lượng: " + soLuong, fontNormal));
+            leftCell.addElement(new Paragraph("Tổng tiền: " + String.format("%,d", thanhTien), fontNormal));
+            leftCell.addElement(new Paragraph("Nội dung:", fontNormal));
+
+// Phần phải
+            PdfPCell rightCell = new PdfPCell();
+            rightCell.setBorder(Rectangle.NO_BORDER);
+            rightCell.addElement(new Paragraph("Ngày: " + ngayXuatStr, fontNormal));
+            rightCell.addElement(new Paragraph("Số phiếu: BG" + String.format("%05d", idpx), fontNormal));
+            rightCell.addElement(new Paragraph(" ", fontNormal));
+            rightCell.addElement(new Paragraph("Đơn giá: " + String.format("%,d", price), fontNormal));
+            rightCell.addElement(new Paragraph("Đơn vị tiền tệ: VND", fontNormal));
+
+// Thêm vào bảng
+            headerTable.addCell(leftCell);
+            headerTable.addCell(rightCell);
+
+// Tiêu đề "BÁO GIÁ" ở giữa
+            Paragraph title = new Paragraph("HOÁ ĐƠN", fontTitle);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+            document.add(new Paragraph(" ")); // Dòng trắng
+
+// Thêm bảng header 2 cột
+            document.add(headerTable);
+            document.add(new Paragraph(" ")); // Dòng trắng nếu cần
+            // 5. Bảng chi tiết
+            PdfPTable table = new PdfPTable(1);
+            table.setWidths(new float[]{100f});
+            table.setWidthPercentage(30);
+
+            // Header bảng
+            String[] headers = {"Serial"};
+            for (String h : headers) {
+                PdfPCell cell = new PdfPCell(new Phrase(h, fontBold));
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(cell);
+            }
+
+            // Dữ liệu
+            DefaultTableModel model = (DefaultTableModel) tbSerial.getModel();
+            int rowCount = model.getRowCount();
+
+            for (int i = 0; i < rowCount; i++) {
+                Object value = model.getValueAt(i, 1); // Giờ Serial ở cột 1 (cột 2)
+                if (value != null) {
+                    String serial = value.toString().trim();
+                    if (!serial.isEmpty()) {
+                        listSerial.add(serial);
+                    }
+                }
+            }
+            for (String s : listSerial) {
+
+                PdfPCell serialCell = new PdfPCell(new Phrase(s, fontNormal));
+                serialCell.setHorizontalAlignment(Element.ALIGN_CENTER); // căn giữa ngang
+                serialCell.setVerticalAlignment(Element.ALIGN_MIDDLE);   // căn giữa dọc (nếu cần)
+                table.addCell(serialCell);
+
+            }
+
+            document.add(table);
+
+            // 6. Tổng kết
+            long tienVAT = thanhTien * vatPercent / 100;
+            long tongThanhToan = thanhTien + tienVAT;
+
+            document.add(new Paragraph("\nCộng tiền hàng: " + String.format("%,d", thanhTien), fontNormal));
+            document.add(new Paragraph("Thuế VAT (" + vatPercent + "%): " + String.format("%,d", tienVAT), fontNormal));
+            document.add(new Paragraph("Tổng thanh toán: " + String.format("%,d", tongThanhToan), fontBold));
+            document.add(new Paragraph("Số tiền bằng chữ: " + NumberToWords.convert(tongThanhToan), fontNormal));
+
+            // 7. Ký tên
+            // Bảng chữ ký 2 cột
+            PdfPTable signTable = new PdfPTable(2);
+            signTable.setWidthPercentage(100);
+            signTable.setWidths(new float[]{75f, 25f});
+
+// Ô bên trái – Người lập phiếu
+            PdfPCell nguoiLap = new PdfPCell();
+            nguoiLap.setBorder(Rectangle.NO_BORDER);
+            nguoiLap.setHorizontalAlignment(Element.ALIGN_CENTER);
+            nguoiLap.addElement(new Paragraph("Người lập phiếu", fontNormal));
+            nguoiLap.addElement(new Paragraph("(Ký, họ tên)", fontcty));
+            signTable.addCell(nguoiLap);
+
+// Ô bên phải – Khách hàng
+            PdfPCell khachHang = new PdfPCell();
+            khachHang.setBorder(Rectangle.NO_BORDER);
+            khachHang.setHorizontalAlignment(Element.ALIGN_CENTER);
+            khachHang.addElement(new Paragraph("Khách hàng", fontNormal));
+            khachHang.addElement(new Paragraph("(Ký, họ tên)", fontcty));
+            signTable.addCell(khachHang);
+
+// Thêm bảng chữ ký vào document
+            document.add(new Paragraph("\n\n")); // Dòng trắng phía trên chữ ký
+            document.add(signTable);
+            document.close();
+
+            JOptionPane.showMessageDialog(null, "Xuất file PDF thành công:\n" + fileName);
+            Desktop.getDesktop().open(new File(fullPath));
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi khi xuất PDF: " + e.getMessage());
         }
     }
 
@@ -552,6 +766,7 @@ public class QuanLyXuatHang extends JPanel {
         tf_diaChi = new javax.swing.JTextField();
         tf_ghiChu = new javax.swing.JTextField();
         tf_NYCau = new javax.swing.JTextField();
+        btnXuat = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -694,6 +909,14 @@ public class QuanLyXuatHang extends JPanel {
             }
         });
 
+        btnXuat.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        btnXuat.setText("Xuất PDF");
+        btnXuat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -710,10 +933,12 @@ public class QuanLyXuatHang extends JPanel {
                                 .addComponent(tfTim, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnTim, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(96, 96, 96)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnXuat)
+                        .addGap(9, 9, 9)
                         .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 575, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btn_Luu, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -728,7 +953,7 @@ public class QuanLyXuatHang extends JPanel {
                                 .addComponent(tf_giaXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(tf_NYCau, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(tf_soLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tf_ghiChu, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cb_Time, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -748,7 +973,8 @@ public class QuanLyXuatHang extends JPanel {
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tfTim, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnTim)
-                            .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnXuat))
                         .addGap(26, 26, 26)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -803,6 +1029,22 @@ public class QuanLyXuatHang extends JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_NYCauActionPerformed
 
+    private void btnXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatActionPerformed
+        int selectedRow = tbPX.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn phiếu xuất để xuất báo giá.");
+            return;
+        }
+
+        try {
+            int idpx = Integer.parseInt(tbPX.getValueAt(selectedRow, 0).toString());
+            xuatPhieuBaoGiaPDF();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi xuất báo giá: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnXuatActionPerformed
+
     private void btn_LuuActionPerformed(java.awt.event.ActionEvent evt) {
         int selectedRow = tbPX.getSelectedRow();
         if (selectedRow >= 0) {
@@ -818,7 +1060,7 @@ public class QuanLyXuatHang extends JPanel {
                 loadDataTableSP(); // Tải lại danh sách phiếu xuất
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn phiếu xuất cần xóa!");
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn phiếu xuất cần sửa!");
         }
     }
 
@@ -899,6 +1141,7 @@ public class QuanLyXuatHang extends JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTim;
     private javax.swing.JButton btnXoa;
+    private javax.swing.JButton btnXuat;
     private javax.swing.JButton btn_Luu;
     private javax.swing.JComboBox<String> cb_Time;
     private javax.swing.JLabel jLabel1;
