@@ -6,6 +6,7 @@ package com.mycompany.quanlyvattu;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -61,14 +62,23 @@ public class MainFrame extends javax.swing.JFrame {
 
             // Table
             UIManager.put("Table.background", Color.WHITE);
-            UIManager.put("Table.foreground", Color.BLACK);
-            UIManager.put("Table.selectionBackground", new Color(220, 220, 255));
             UIManager.put("Table.selectionForeground", Color.BLACK);
-            UIManager.put("Table.gridColor", Color.LIGHT_GRAY);
+            UIManager.put("Table.font", new Font("Segoe UI", Font.PLAIN, 13));
+            UIManager.put("Table.rowHeight", 28);
+
+//            UIManager.put("TableHeader.font", new Font("Segoe UI", Font.BOLD, 14));
+//            UIManager.put("TableHeader.background", Color.WHITE);
+//            UIManager.put("TableHeader.foreground", Color.BLACK);
 
             // TextField (nếu cần)
             UIManager.put("TextField.background", Color.WHITE);
             UIManager.put("TextField.foreground", Color.BLACK);
+
+            // Nền trắng cho viewport (phần chứa JTable, JTextArea, ...)
+            UIManager.put("Viewport.background", Color.WHITE);
+
+            // Nền của chính JScrollPane
+            UIManager.put("ScrollPane.background", Color.WHITE);;
 
             // Panel (nếu cần)
             UIManager.put("Panel.background", Color.WHITE);

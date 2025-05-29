@@ -53,82 +53,161 @@ public class NCC_DATA {
         }
     }
 
-    
-    public static void create_Supplier (String name, String MST, String address){
+    public static void create_Supplier(String name, String fullName, String MST, String address, String status) {
         Connection conn = CONNECTION.getConnection();
-        String sql = "insert into NCC values(?,?,?)";
+        String sql = "insert into NCC values(?,?,?,?,?)";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, name);
-            ps.setString(2, MST);
-            ps.setString(3, address);
+            ps.setString(2, fullName);
+            ps.setString(3, MST);
+            ps.setString(4, address);
+            ps.setString(5, status);
+
             ps.executeUpdate();
-            ps.close();
-            conn.close();
+
             JOptionPane.showMessageDialog(null, "Thêm nhà cung cấp thành công!");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Lỗi thêm NCC!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
-    
-    public static void update_Supplier(int id, String name, String MST, String address) {
-        Connection conn = CONNECTION.getConnection();
-        String sql = "UPDATE NCC SET name='" + name + "', MST='" + MST + "', address='" + address + "'  where supplier_id='" + id + "'";
+
+    public static void update_Supplier(int id, String name, String fullName, String MST, String address, String status) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
+            conn = CONNECTION.getConnection();
+            String sql = "UPDATE NCC SET name = ?, fullname = ?, MST = ?, address = ?, status = ? WHERE supplier_id= ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, name);
+            ps.setString(2, fullName);
+            ps.setString(3, MST);
+            ps.setString(4, address);
+            ps.setString(5, status);
+            ps.setInt(6, id);
+
             ps.executeUpdate();
-            ps.close();
-            conn.close();
+
             JOptionPane.showMessageDialog(null, "Sửa nhà cung cấp thành công!");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Lỗi sửa nhà cung cấp!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
-    
-    public static void delete_LSP(int id) {
-        Connection conn = CONNECTION.getConnection();
-        if (check_HD_NCC(id) == false) {
-            String sql = "DELETE FROM NCC WHERE supplier_id='" + id + "'";
-            try {
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ps.executeUpdate();
-                ps.close();
-                conn.close();
-                JOptionPane.showMessageDialog(null, "Xoá nhà cung cấp thành công!");
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Lỗi khi xoá nhà cung cấp!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+
+    public static void delete_Supplier(int id) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            conn = CONNECTION.getConnection();
+            Boolean result = check_HD_NCC(id);
+            if (result == null) {
+                JOptionPane.showMessageDialog(null, "Lỗi kiểm tra dữ liệu nhà cung cấp!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        } else {
-            String sql1 = "UPDATE NCC SET status='0' WHERE supplier_id='" + id + "'";
-            try {
-                PreparedStatement ps1 = conn.prepareStatement(sql1);
-                ps1.executeUpdate();
-                ps1.close();
-                conn.close();
+            if (!result) {
+                String sql = "DELETE FROM NCC WHERE supplier_id = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, id);
+                ps.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Xoá nhà cung cấp thành công!");
+            } else {
+                String sql = "UPDATE NCC SET status = 0 WHERE supplier_id = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, id);
+                ps.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Nhà cung cấp này đã được ghi phiếu nhập => Thay đổi trạng thái!");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Lỗi thao tác với nhà cung cấp!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Lỗi cập nhật trạng thái Nhà cung cấp!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
             }
         }
-    }    
-    
-    private static boolean check_HD_NCC(int id) {
-        Connection conn = CONNECTION.getConnection();
-        String sql = "SELECT supplier_id FROM PhieuNhap WHERE supplier_id ='" + id + "'";
+    }
+
+    private static Boolean check_HD_NCC(int id) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return true;
-            }
-            rs.close();
-            ps.close();
-            conn.close();
+            conn = CONNECTION.getConnection();
+            String sql = "SELECT TOP 1 1 FROM PhieuNhap WHERE supplier_id = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+
+            return rs.next(); // Trả về true nếu có ít nhất 1 dòng
 
         } catch (Exception e) {
             System.out.println("Lỗi hàm kiểm tra hoạt động Nhà cung cấp!");
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
-        return false;
+    }
+
+    public int name_to_ID(String name) {
+        for (NCC ncc : listNCC) {
+            if (name.equals(ncc.getName())) {
+                return ncc.getSupplier_id();
+            }
+        }
+        return -1;
+    }
+
+    public boolean checkName_NCC(String name, String fullName) {
+        String sql = "SELECT 1 FROM NCC WHERE name = ? OR fullname = ?";
+        try (
+                Connection conn = CONNECTION.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, name);
+            stmt.setString(2, fullName);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next(); // Có bản ghi => đã tồn tại
+            }
+        } catch (SQLException e) {
+            System.err.println("Lỗi kiểm tra trùng tên NCC: " + e.getMessage());
+            return false;
+        }
     }
 
     public int getNCCId(String name) {

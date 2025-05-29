@@ -2,7 +2,9 @@ package com.mycompany.quanlyvattu;
 
 import ConDB.DBAccess;
 import DAO.NCC_DATA;
+import DAO.OTHER_DATA;
 import DTO.NCC;
+import com.sun.source.tree.BreakTree;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,13 +17,28 @@ public class QuanLyNCC extends javax.swing.JPanel {
     public QuanLyNCC() {
         initComponents();
         loadDataTable_DSNCC();
-        loadCB_Status();
+        //OTHER_DATA.customTable(tb_Supplier);
     }
 
     private NCC_DATA ncc_data = new NCC_DATA();
 
     private String action_QLNCC = "";
     private int current_supplierID;
+
+    private void clearTXT() {
+        txt_Name.setText("");
+        txt_tenGoiNho.setText("");
+        txt_MST.setText("");
+        txt_diaChi.setText("");
+    }
+
+    private void enableTXT() {
+        txt_Name.setEnabled(true);
+        txt_tenGoiNho.setEnabled(true);
+        txt_MST.setEnabled(true);
+        txt_diaChi.setEnabled(true);
+        cb_Status.setEnabled(true);
+    }
 
     private String convertStatus(String status) {
         String trangThai;
@@ -55,25 +72,10 @@ public class QuanLyNCC extends javax.swing.JPanel {
         return status;
     }
 
-    private void loadCB_Status() {
-        cb_Status.removeAllItems();
-        try {
-            DBAccess acc = new DBAccess();
-            ResultSet rs = acc.Query("SELECT DISTINCT status FROM NCC");
-            while (rs.next()) {
-                String status = rs.getString("status").trim();
-                String trangThai = convertStatus(status);
-                cb_Status.addItem(trangThai);
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Lỗi loadCB_Status!", "ERROR!", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     private void loadDataTable_DSNCC() {
         DefaultTableModel dtm = (DefaultTableModel) tb_Supplier.getModel();
         dtm.setNumRows(0);
-        ArrayList<DTO.NCC> dsncc = ncc_data.getListNCC();
+        ArrayList<NCC> dsncc = ncc_data.getListNCC();
         for (NCC ncc : dsncc) {
             Vector vec = new Vector();
             vec.add(ncc.getName());
@@ -123,6 +125,7 @@ public class QuanLyNCC extends javax.swing.JPanel {
         jLabel2.setText("Quản lý nhà cung cấp");
 
         cb_Status.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cb_Status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đối tác", "Bị xoá" }));
         cb_Status.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Trạng thái", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
 
         txt_Name.setColumns(20);
@@ -144,6 +147,11 @@ public class QuanLyNCC extends javax.swing.JPanel {
 
         txt_MST.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txt_MST.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Mã số thuế", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
+        txt_MST.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_MSTKeyTyped(evt);
+            }
+        });
 
         pn_button.setBackground(new java.awt.Color(255, 255, 255));
         pn_button.setBorder(javax.swing.BorderFactory.createTitledBorder("Chức năng"));
@@ -196,7 +204,7 @@ public class QuanLyNCC extends javax.swing.JPanel {
                 .addGap(43, 43, 43)
                 .addGroup(pn_buttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btn_Save, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btn_Update, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE))
+                    .addComponent(btn_Update, javax.swing.GroupLayout.PREFERRED_SIZE, 104, Short.MAX_VALUE))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         pn_buttonLayout.setVerticalGroup(
@@ -254,10 +262,12 @@ public class QuanLyNCC extends javax.swing.JPanel {
                 .addComponent(cb_Status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(pn_button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(pn_funtion, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 0, 340, 580));
+
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
 
         tb_Supplier.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tb_Supplier.setModel(new javax.swing.table.DefaultTableModel(
@@ -279,9 +289,14 @@ public class QuanLyNCC extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tb_Supplier.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tb_SupplierMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tb_Supplier);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 820, 490));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 820, 550));
 
         pn_TimKiem.setBackground(new java.awt.Color(255, 255, 255));
         pn_TimKiem.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
@@ -319,11 +334,11 @@ public class QuanLyNCC extends javax.swing.JPanel {
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
-        add(pn_TimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, 90));
+        add(pn_TimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, 90));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("DANH SÁCH NHÀ CUNG CẤP");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 130, -1, -1));
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 160, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_CreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CreateActionPerformed
@@ -343,15 +358,100 @@ public class QuanLyNCC extends javax.swing.JPanel {
 
     private void btn_UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_UpdateActionPerformed
         // TODO add your handling code here:
+        action_QLNCC = "update";
+        int i = tb_Supplier.getSelectedRow();
+        if (i < 0) {
+            JOptionPane.showMessageDialog(this, "Chọn nhà cung cấp để sửa", "Input warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+            DefaultTableModel dtm = (DefaultTableModel) tb_Supplier.getModel();
+            String supplierName = dtm.getValueAt(i, 0).toString();
+            current_supplierID = ncc_data.name_to_ID(supplierName);
+        }
     }//GEN-LAST:event_btn_UpdateActionPerformed
 
     private void btn_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_DeleteActionPerformed
         // TODO add your handling code here:
+        action_QLNCC = "delete";
+        int i = tb_Supplier.getSelectedRow();
+        if (i < 0) {
+            JOptionPane.showMessageDialog(this, "Chọn nhà cung cấp để xoá", "Input warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+            txt_Name.setEnabled(false);
+            txt_tenGoiNho.setEnabled(false);
+            txt_MST.setEnabled(false);
+            txt_diaChi.setEnabled(false);
+            cb_Status.setEnabled(false);
+            DefaultTableModel dtm = (DefaultTableModel) tb_Supplier.getModel();
+            String supplierName = dtm.getValueAt(i, 0).toString();
+            current_supplierID = ncc_data.name_to_ID(supplierName);
+        }
     }//GEN-LAST:event_btn_DeleteActionPerformed
 
     private void btn_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SaveActionPerformed
         // TODO add your handling code here:
+        try {
+            String name = txt_Name.getText().trim();
+            String suggestName = txt_tenGoiNho.getText().trim();
+            String MST = txt_MST.getText().trim();
+            String address = txt_diaChi.getText().trim();
+            String trangThai = cb_Status.getSelectedItem().toString();
+            String status = convertTrangThai(trangThai);
+            if (name.isEmpty() || suggestName.isEmpty() || MST.isEmpty() || address.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Hãy điền đầy đủ thông tin!", "Input warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            if (action_QLNCC.equals("create")) {
+                if (ncc_data.checkName_NCC(name, suggestName) == true) {
+                    JOptionPane.showMessageDialog(this, "Tên hoặc tên gới nhớ nhà cung cấp bị trùng!", "Input warning", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                ncc_data.create_Supplier(name, suggestName, MST, address, status);
+                loadDataTable_DSNCC();
+                clearTXT();
+
+            } else if (action_QLNCC.equals("update")) {
+                boolean check = true;
+                if (check == true) {
+                    ncc_data.update_Supplier(current_supplierID, name, suggestName, MST, address, status);
+                    loadDataTable_DSNCC();
+                    clearTXT();
+                    tb_Supplier.clearSelection();
+                }
+
+            } else if (action_QLNCC.equals("delete")) {
+                ncc_data.delete_Supplier(current_supplierID);
+                loadDataTable_DSNCC();
+                clearTXT();
+                enableTXT();
+                tb_Supplier.clearSelection();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Chưa chọn hành động để ghi !!!", "Input warning", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi ghi nhà cung cấp", "ERROR!", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btn_SaveActionPerformed
+
+    private void txt_MSTKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_MSTKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        // Nếu ký tự nhập không phải là số và không phải phím backspace
+        if (!Character.isDigit(c) && c != '\b') {
+            evt.consume(); // Hủy bỏ ký tự đó, không cho nhập
+        }
+    }//GEN-LAST:event_txt_MSTKeyTyped
+
+    private void tb_SupplierMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_SupplierMouseClicked
+        // TODO add your handling code here:
+        int i = tb_Supplier.getSelectedRow();
+        DefaultTableModel dtm = (DefaultTableModel) tb_Supplier.getModel();
+        txt_Name.setText(dtm.getValueAt(i, 0).toString());
+        txt_tenGoiNho.setText(dtm.getValueAt(i, 1).toString());
+        txt_MST.setText(dtm.getValueAt(i, 2).toString());
+        txt_diaChi.setText(dtm.getValueAt(i, 3).toString());
+        cb_Status.setSelectedItem(dtm.getValueAt(i, 4).toString());
+    }//GEN-LAST:event_tb_SupplierMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
