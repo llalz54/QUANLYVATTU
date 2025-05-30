@@ -64,6 +64,8 @@ public class OTHER_DATA {
 
         // 3. Font dòng
         table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        
+        table.setShowVerticalLines(false);
 
         // 4. (Tùy chọn) Căn giữa hoặc trái cho dữ liệu trong ô
         DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();

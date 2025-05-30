@@ -31,7 +31,7 @@ public class NCC_DATA {
         try {
             acc = new DBAccess();
             ResultSet rs = acc.Query("SELECT * FROM NCC");
-            ArrayList<NCC> dssp = new ArrayList<>();
+            ArrayList<NCC> dsncc = new ArrayList<>();
             while (rs.next()) {
                 NCC gr = new NCC();
                 gr.setSupplier_id(rs.getInt(1));
@@ -40,9 +40,9 @@ public class NCC_DATA {
                 gr.setMST(rs.getString(4).trim());
                 gr.setDiaChi(rs.getString(5).trim());
                 gr.setStatus(rs.getString(6).trim());
-                dssp.add(gr);
+                dsncc.add(gr);
             }
-            return dssp;
+            return dsncc;
         } catch (SQLException e) {
             System.out.println("Lỗi lấy danh sách nhà cung cấp!!!");
             return null;
@@ -51,6 +51,35 @@ public class NCC_DATA {
                 acc.close();
             }
         }
+    }
+
+    public ArrayList<NCC> getListNCC_Status(String status) {
+        ArrayList<NCC> list = new ArrayList<>();
+        String sql = "SELECT * FROM NCC WHERE status = ?";
+
+        try (Connection conn = CONNECTION.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, status);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                NCC ncc = new NCC();
+                ncc.setSupplier_id(rs.getInt(1));
+                ncc.setName(rs.getString(2).trim());
+                ncc.setFullName(rs.getString(3).trim());
+                ncc.setMST(rs.getString(4).trim());
+                ncc.setDiaChi(rs.getString(5).trim());
+                ncc.setStatus(rs.getString(6).trim());
+                list.add(ncc);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Lỗi lấy danh sách nhà cung cấp!!!");
+            e.printStackTrace();
+            return null;
+        }
+
+        return list;
     }
 
     public static void create_Supplier(String name, String fullName, String MST, String address, String status) {
@@ -196,8 +225,7 @@ public class NCC_DATA {
     public boolean checkName_NCC(String name, String fullName) {
         String sql = "SELECT 1 FROM NCC WHERE name = ? OR fullname = ?";
         try (
-                Connection conn = CONNECTION.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
+                Connection conn = CONNECTION.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, name);
             stmt.setString(2, fullName);
 
@@ -224,4 +252,17 @@ public class NCC_DATA {
         }
         return -1;
     }
+
+    public ArrayList<NCC> getNCC_Name(String text) {
+        ArrayList<NCC> list = new ArrayList<>();
+        for (NCC ncc : listNCC) {
+            String name = ncc.getName().toLowerCase();
+            if (name.contains(text.toLowerCase())) {
+                System.out.println(name);
+                list.add(ncc);
+            }
+        }
+        return list;
+    }
+
 }

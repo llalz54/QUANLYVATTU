@@ -3,21 +3,24 @@ package com.mycompany.quanlyvattu;
 import ConDB.DBAccess;
 import DAO.NCC_DATA;
 import DAO.OTHER_DATA;
+import DAO.Session;
 import DTO.NCC;
-import com.sun.source.tree.BreakTree;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 public class QuanLyNCC extends javax.swing.JPanel {
 
     public QuanLyNCC() {
         initComponents();
+        check_Role();
         loadDataTable_DSNCC();
-        //OTHER_DATA.customTable(tb_Supplier);
+        OTHER_DATA.customTable(tb_Supplier);
+        customControls();
     }
 
     private NCC_DATA ncc_data = new NCC_DATA();
@@ -38,6 +41,33 @@ public class QuanLyNCC extends javax.swing.JPanel {
         txt_MST.setEnabled(true);
         txt_diaChi.setEnabled(true);
         cb_Status.setEnabled(true);
+    }
+    
+    private void check_Role(){
+        String role = Session.getInstance().getRole();
+        if(!"admin".equalsIgnoreCase(role)){
+            pn_funtion.setVisible(false);
+        }
+    }
+
+    private void customControls() {
+        tfTimKiem.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                btn_Search.doClick();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                btn_Search.doClick();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                btn_Search.doClick();
+            }
+        });
+        btn_Search.setVisible(false);
     }
 
     private String convertStatus(String status) {
@@ -88,6 +118,58 @@ public class QuanLyNCC extends javax.swing.JPanel {
         }
         tb_Supplier.setModel(dtm);
     }
+    
+    private void loadDataTable_NCC_Search(String name) {
+        DefaultTableModel dtm = (DefaultTableModel) tb_Supplier.getModel();
+        dtm.setNumRows(0);
+        ArrayList<NCC> dsncc = ncc_data.getNCC_Name(name);
+        for (NCC ncc : dsncc) {
+            Vector vec = new Vector();
+            vec.add(ncc.getName());
+            vec.add(ncc.getFullName());
+            vec.add(ncc.getMST());
+            vec.add(ncc.getDiaChi());
+            String status = convertStatus(ncc.getStatus());
+            vec.add(status);
+            dtm.addRow(vec);
+        }
+        tb_Supplier.setModel(dtm);
+    }
+
+    private void loadDataTable_NCC_Status() {
+        String selected = cbLocSP.getSelectedItem().toString();
+        ArrayList<NCC> dsncc = null;
+
+        switch (selected) {
+            case "Tất cả":
+                dsncc = ncc_data.getListNCC();
+                break;
+            case "Đối tác":
+                dsncc = ncc_data.getListNCC_Status("1");
+                break;
+            case "Bị xoá":
+                dsncc = ncc_data.getListNCC_Status("0");
+                break;
+        }
+
+        DefaultTableModel dtm = (DefaultTableModel) tb_Supplier.getModel();
+        dtm.setRowCount(0); // Xóa dữ liệu cũ
+
+        if (dsncc != null) {
+            for (NCC ncc : dsncc) {
+                Vector<Object> vec = new Vector<>();
+                // vec.add(sp.getProductID());
+                vec.add(ncc.getName());
+                vec.add(ncc.getFullName());
+                vec.add(ncc.getMST());
+                vec.add(ncc.getDiaChi());
+                vec.add(convertStatus(ncc.getStatus()));
+
+                dtm.addRow(vec);
+            }
+        }
+        tb_Supplier.setModel(dtm);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -107,19 +189,21 @@ public class QuanLyNCC extends javax.swing.JPanel {
         txt_MST = new javax.swing.JTextField();
         pn_button = new javax.swing.JPanel();
         btn_Create = new javax.swing.JButton();
-        btn_Update = new javax.swing.JButton();
         btn_Delete = new javax.swing.JButton();
         btn_Save = new javax.swing.JButton();
+        btn_Update = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tb_Supplier = new javax.swing.JTable();
         pn_TimKiem = new javax.swing.JPanel();
         cbLocSP = new javax.swing.JComboBox<>();
         tfTimKiem = new javax.swing.JTextField();
-        btn_GetList = new javax.swing.JButton();
+        btn_Search = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        pn_funtion.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Quản lý nhà cung cấp");
@@ -165,15 +249,6 @@ public class QuanLyNCC extends javax.swing.JPanel {
             }
         });
 
-        btn_Update.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btn_Update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/quanlyvattu/images/updated.png"))); // NOI18N
-        btn_Update.setText("Sửa");
-        btn_Update.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_UpdateActionPerformed(evt);
-            }
-        });
-
         btn_Delete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_Delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/quanlyvattu/images/delete (1).png"))); // NOI18N
         btn_Delete.setText("Xoá");
@@ -192,6 +267,15 @@ public class QuanLyNCC extends javax.swing.JPanel {
             }
         });
 
+        btn_Update.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_Update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/mycompany/quanlyvattu/images/updated.png"))); // NOI18N
+        btn_Update.setText("Sửa");
+        btn_Update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_UpdateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pn_buttonLayout = new javax.swing.GroupLayout(pn_button);
         pn_button.setLayout(pn_buttonLayout);
         pn_buttonLayout.setHorizontalGroup(
@@ -204,7 +288,7 @@ public class QuanLyNCC extends javax.swing.JPanel {
                 .addGap(43, 43, 43)
                 .addGroup(pn_buttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btn_Save, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btn_Update, javax.swing.GroupLayout.PREFERRED_SIZE, 104, Short.MAX_VALUE))
+                    .addComponent(btn_Update, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         pn_buttonLayout.setVerticalGroup(
@@ -258,11 +342,11 @@ public class QuanLyNCC extends javax.swing.JPanel {
                 .addComponent(txt_MST, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(txt_diaChi, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
+                .addGap(18, 18, 18)
                 .addComponent(cb_Status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(pn_button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         add(pn_funtion, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 0, 340, 580));
@@ -303,12 +387,21 @@ public class QuanLyNCC extends javax.swing.JPanel {
         pn_TimKiem.setPreferredSize(new java.awt.Dimension(822, 75));
 
         cbLocSP.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        cbLocSP.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Tồn kho", "Đã bán" }));
+        cbLocSP.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Đối tác", "Bị xoá" }));
+        cbLocSP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbLocSPActionPerformed(evt);
+            }
+        });
 
         tfTimKiem.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        btn_GetList.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btn_GetList.setText("Lấy danh sách");
+        btn_Search.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_Search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_SearchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pn_TimKiemLayout = new javax.swing.GroupLayout(pn_TimKiem);
         pn_TimKiem.setLayout(pn_TimKiemLayout);
@@ -318,27 +411,27 @@ public class QuanLyNCC extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(cbLocSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(tfTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(79, 79, 79)
-                .addComponent(btn_GetList)
-                .addContainerGap(113, Short.MAX_VALUE))
+                .addComponent(tfTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE)
+                .addGap(51, 51, 51)
+                .addComponent(btn_Search, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
         pn_TimKiemLayout.setVerticalGroup(
             pn_TimKiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pn_TimKiemLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pn_TimKiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbLocSP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_GetList))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGroup(pn_TimKiemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(cbLocSP, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+                    .addComponent(tfTimKiem)
+                    .addComponent(btn_Search, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        add(pn_TimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, 90));
+        add(pn_TimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, 90));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("DANH SÁCH NHÀ CUNG CẤP");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 160, -1, -1));
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 150, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_CreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CreateActionPerformed
@@ -355,19 +448,6 @@ public class QuanLyNCC extends javax.swing.JPanel {
         cb_Status.setSelectedItem("Đối tác");
         cb_Status.setEnabled(false);
     }//GEN-LAST:event_btn_CreateActionPerformed
-
-    private void btn_UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_UpdateActionPerformed
-        // TODO add your handling code here:
-        action_QLNCC = "update";
-        int i = tb_Supplier.getSelectedRow();
-        if (i < 0) {
-            JOptionPane.showMessageDialog(this, "Chọn nhà cung cấp để sửa", "Input warning", JOptionPane.WARNING_MESSAGE);
-        } else {
-            DefaultTableModel dtm = (DefaultTableModel) tb_Supplier.getModel();
-            String supplierName = dtm.getValueAt(i, 0).toString();
-            current_supplierID = ncc_data.name_to_ID(supplierName);
-        }
-    }//GEN-LAST:event_btn_UpdateActionPerformed
 
     private void btn_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_DeleteActionPerformed
         // TODO add your handling code here:
@@ -453,12 +533,35 @@ public class QuanLyNCC extends javax.swing.JPanel {
         cb_Status.setSelectedItem(dtm.getValueAt(i, 4).toString());
     }//GEN-LAST:event_tb_SupplierMouseClicked
 
+    private void btn_UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_UpdateActionPerformed
+        // TODO add your handling code here:
+        action_QLNCC = "update";
+        int i = tb_Supplier.getSelectedRow();
+        if (i < 0) {
+            JOptionPane.showMessageDialog(this, "Chọn nhà cung cấp để sửa", "Input warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+            DefaultTableModel dtm = (DefaultTableModel) tb_Supplier.getModel();
+            String supplierName = dtm.getValueAt(i, 0).toString();
+            current_supplierID = ncc_data.name_to_ID(supplierName);
+        }
+    }//GEN-LAST:event_btn_UpdateActionPerformed
+
+    private void cbLocSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLocSPActionPerformed
+        // TODO add your handling code here:
+        loadDataTable_NCC_Status();
+    }//GEN-LAST:event_cbLocSPActionPerformed
+
+    private void btn_SearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SearchActionPerformed
+        // TODO add your handling code here:
+        loadDataTable_NCC_Search(tfTimKiem.getText().trim());
+    }//GEN-LAST:event_btn_SearchActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Create;
     private javax.swing.JButton btn_Delete;
-    private javax.swing.JButton btn_GetList;
     private javax.swing.JButton btn_Save;
+    private javax.swing.JButton btn_Search;
     private javax.swing.JButton btn_Update;
     private javax.swing.JComboBox<String> cbLocSP;
     private javax.swing.JComboBox<String> cb_Status;

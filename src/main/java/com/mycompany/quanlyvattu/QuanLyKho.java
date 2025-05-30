@@ -20,7 +20,7 @@ public class QuanLyKho extends javax.swing.JPanel {
     public QuanLyKho() {
         initComponents();
         OTHER_DATA.loadCBDM(cb_GrProduct);
-        OTHER_DATA.load_Cb_Brand(cb_Brand);
+        OTHER_DATA.load_Cb_Brand(cb_Brand);        
         loadCB_Status();
     }
 

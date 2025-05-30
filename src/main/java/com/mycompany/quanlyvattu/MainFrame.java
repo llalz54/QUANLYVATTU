@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -58,18 +59,8 @@ public class MainFrame extends javax.swing.JFrame {
 
             // Button
             UIManager.put("Button.background", Color.WHITE);
-            UIManager.put("Button.foreground", Color.BLACK);
-
-            // Table
-            UIManager.put("Table.background", Color.WHITE);
-            UIManager.put("Table.selectionForeground", Color.BLACK);
-            UIManager.put("Table.font", new Font("Segoe UI", Font.PLAIN, 13));
-            UIManager.put("Table.rowHeight", 28);
-
-//            UIManager.put("TableHeader.font", new Font("Segoe UI", Font.BOLD, 14));
-//            UIManager.put("TableHeader.background", Color.WHITE);
-//            UIManager.put("TableHeader.foreground", Color.BLACK);
-
+            UIManager.put("Button.foreground", Color.BLACK);            
+            
             // TextField (nếu cần)
             UIManager.put("TextField.background", Color.WHITE);
             UIManager.put("TextField.foreground", Color.BLACK);

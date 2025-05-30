@@ -116,7 +116,8 @@ public class Login extends javax.swing.JFrame {
             if (rs.next()) {
                 int userIdFromDB = rs.getInt("user_id");
                 String usernameFromDB = rs.getString("username");
-                Session.getInstance().setUser(userIdFromDB, usernameFromDB);
+                String roleFromDB = rs.getString("role");
+                Session.getInstance().setUser(userIdFromDB, usernameFromDB, roleFromDB);
                 MainFrame main = new MainFrame();
                 main.setVisible(true);
                 this.setVisible(false);
