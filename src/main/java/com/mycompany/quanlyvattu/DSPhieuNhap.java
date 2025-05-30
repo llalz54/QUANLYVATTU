@@ -772,6 +772,9 @@ public class DSPhieuNhap extends JPanel {
     }//GEN-LAST:event_tf_NYCauActionPerformed
 
     private void btn_LuuActionPerformed(java.awt.event.ActionEvent evt) {
+         if (tbSerial.isEditing()) {
+            tbSerial.getCellEditor().stopCellEditing();
+        }
         int selectedRow = tbPN.getSelectedRow();
         if (selectedRow >= 0) {
             int idpn = Integer.parseInt(tbPN.getValueAt(selectedRow, 0).toString());
@@ -822,8 +825,6 @@ public class DSPhieuNhap extends JPanel {
         int selectedRow = tbPN.getSelectedRow();
         if (selectedRow >= 0) {
             int idpn = Integer.parseInt(tbPN.getValueAt(selectedRow, 0).toString()); // Cột 0 là idpx
-            System.out.println("CLICKED idpn = " + idpn); // ✅ để test có click không
-
             // Gọi form sửa hoặc load dữ liệu
             loadChiTietPhieuNhap(idpn); // hoặc gọi form mới: new SuaXuatHang(idpx)
         }

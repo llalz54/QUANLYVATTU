@@ -8,7 +8,7 @@ import DAO.NumberToWords;
 import DAO.PHIEUXUAT_DATA;
 import DAO.Session;
 import DAO.UpperCase;
-import DAO.xuatPhieuBaoGiaPDF;
+
 import DTO.CTPX;
 import DTO.LOAISP;
 import DTO.PHIEUXUAT;
@@ -64,7 +64,7 @@ public class QuanLyXuatHang extends JPanel {
     private LOAISP_DATA loaisp_data = new LOAISP_DATA();
     private PHIEUXUAT_DATA px_data = new PHIEUXUAT_DATA();
     private CTPX_DATA ctpx_data = new CTPX_DATA();
-    private xuatPhieuBaoGiaPDF pdf = new xuatPhieuBaoGiaPDF();
+
 
     public QuanLyXuatHang() {
 
@@ -491,11 +491,11 @@ public class QuanLyXuatHang extends JPanel {
     public void suaXuatHang() {
         try {
 
-            int userId = Session.getInstance().getUserId();
+            int userId = 1;
             int selectedRow = tbPX.getSelectedRow();
             String name = tbPX.getValueAt(selectedRow, 1).toString();
             int categoryId = loaisp_data.getCategoryIdByName(name);
-            System.out.println("category " + categoryId);
+         
             int price = Integer.parseInt(tf_giaXuat.getText().trim());
             String NYC = tf_NYCau.getText().trim();
             String ghiChu = tf_ghiChu.getText().trim();
@@ -1046,6 +1046,9 @@ public class QuanLyXuatHang extends JPanel {
     }//GEN-LAST:event_btnXuatActionPerformed
 
     private void btn_LuuActionPerformed(java.awt.event.ActionEvent evt) {
+         if (tbSerial.isEditing()) {
+            tbSerial.getCellEditor().stopCellEditing();
+        }
         int selectedRow = tbPX.getSelectedRow();
         if (selectedRow >= 0) {
             int idpx = Integer.parseInt(tbPX.getValueAt(selectedRow, 0).toString());
@@ -1096,8 +1099,6 @@ public class QuanLyXuatHang extends JPanel {
         int selectedRow = tbPX.getSelectedRow();
         if (selectedRow >= 0) {
             int idpx = Integer.parseInt(tbPX.getValueAt(selectedRow, 0).toString()); // Cột 0 là idpx
-            System.out.println("CLICKED idpx = " + idpx); // ✅ để test có click không
-
             // Gọi form sửa hoặc load dữ liệu
             loadChiTietPhieuXuat(idpx); // hoặc gọi form mới: new SuaXuatHang(idpx)
         }

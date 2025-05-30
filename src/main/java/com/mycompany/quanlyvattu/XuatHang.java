@@ -307,7 +307,7 @@ public class XuatHang extends javax.swing.JPanel {
         try {
 
             int userId = Session.getInstance().getUserId();
-            System.out.println("id user = " + userId);
+          
             int categoryId = 0;
             for (LOAISP loaisp : loaisps) {
                 if (loaisp.getName().equals(cb_TenSP.getSelectedItem())) {
