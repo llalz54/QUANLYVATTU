@@ -1,17 +1,20 @@
 package DTO;
 
 public class NHANVIEN {
+
     private int userId;
+    private String role;
     private String hoTen;
     private String status;
     private String userName;
     private String passWord;
-    
-    public NHANVIEN() {   
+
+    public NHANVIEN() {
     }
 
-    public NHANVIEN(int userId, String hoTen, String status, String userName, String passWord) {
+    public NHANVIEN(int userId, String role, String hoTen, String status, String userName, String passWord) {
         this.userId = userId;
+        this.role = role;
         this.hoTen = hoTen;
         this.status = status;
         this.userName = userName;
@@ -20,6 +23,18 @@ public class NHANVIEN {
 
     public int getUserId() {
         return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getHoTen() {
@@ -53,5 +68,5 @@ public class NHANVIEN {
     public void setPassWord(String passWord) {
         this.passWord = passWord;
     }
-       
+
 }

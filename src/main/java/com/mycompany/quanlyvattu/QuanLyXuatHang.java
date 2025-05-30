@@ -65,7 +65,6 @@ public class QuanLyXuatHang extends JPanel {
     private PHIEUXUAT_DATA px_data = new PHIEUXUAT_DATA();
     private CTPX_DATA ctpx_data = new CTPX_DATA();
 
-
     public QuanLyXuatHang() {
 
         initComponents();

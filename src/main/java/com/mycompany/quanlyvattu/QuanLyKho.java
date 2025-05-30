@@ -20,7 +20,7 @@ public class QuanLyKho extends javax.swing.JPanel {
     public QuanLyKho() {
         initComponents();
         OTHER_DATA.loadCBDM(cb_GrProduct);
-        OTHER_DATA.load_Cb_Brand(cb_Brand);
+        OTHER_DATA.load_Cb_Brand(cb_Brand);        
         loadCB_Status();
     }
 
@@ -545,12 +545,12 @@ public class QuanLyKho extends javax.swing.JPanel {
             String name = txt_Name.getText().trim();
             String trangThai = cb_Status.getSelectedItem().toString();
             String status = convertTrangThai(trangThai);
+            if (grID <= 0 || brand.isEmpty() || name.isEmpty() || status.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Hãy điền đầy đủ thông tin!", "Input warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             if (action_QLLSP.equals("create")) {
                 boolean check = true;
-//                if (name.matches("[\\w ]+") == false) {
-//                    JOptionPane.showMessageDialog(this, "Nhập tên sản phẩm bị lỗi ký tự!", "Input warning", JOptionPane.WARNING_MESSAGE);
-//                    check = false;
-//                }
                 if (loaisp_data.checkName_LSP(name) == true) {
                     JOptionPane.showMessageDialog(this, "Tên sản phẩm bị trùng!", "Input warning", JOptionPane.WARNING_MESSAGE);
                     check = false;
@@ -568,17 +568,14 @@ public class QuanLyKho extends javax.swing.JPanel {
                 }
             } else if (action_QLLSP.equals("delete")) {
                 boolean check = true;
-                int i = tb_DSSP.getSelectedRow();
-                if (i < 0) {
-                    JOptionPane.showMessageDialog(this, "Chọn sản phẩm để xoá", "Input warning", JOptionPane.WARNING_MESSAGE);
-                    check = false;
-                }
                 if (check == true) {
                     loaisp_data.delete_LSP(current_cateID);
                     loadDataTable_DSLSP(grName, brand);
                     txt_Name.setEditable(true);
                     txt_Name.setText("");
                 }
+            } else {
+                JOptionPane.showMessageDialog(this, "Chưa chọn hành động để ghi !!!", "Input warning", JOptionPane.WARNING_MESSAGE);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Lỗi ghi sản phẩm", "ERROR!", JOptionPane.ERROR_MESSAGE);

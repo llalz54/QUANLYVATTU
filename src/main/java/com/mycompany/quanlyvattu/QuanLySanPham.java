@@ -76,7 +76,7 @@ public class QuanLySanPham extends JPanel {
         if (dssp != null) {
             for (SANPHAM sp : dssp) {
                 Vector vec = new Vector();
-               //vec.add(sp.getProductID());
+                //vec.add(sp.getProductID());
                 vec.add(sp.getTenLoai());
                 vec.add(sp.getSerial());
                 String trangThai;
@@ -107,42 +107,42 @@ public class QuanLySanPham extends JPanel {
                 return "Tồn kho";
             default:
                 return "Tất cả";
-}
-    }
-
-   private void loadDataTableSPTheoTrangThai() {
-    String selected = cbLocSP.getSelectedItem().toString();
-    ArrayList<SANPHAM> dssp = null;
-
-    switch (selected) {
-        case "Tất cả":
-            dssp = sp_data.getListSP();
-            break;
-        case "Tồn kho":
-            dssp = sp_data.getlistSP_TK();
-            break;
-        case "Đã bán":
-            dssp = sp_data.getlistSP_DB();
-            break;
-    }
-
-    DefaultTableModel dtm = (DefaultTableModel) tbSP.getModel();
-    dtm.setRowCount(0); // Xóa dữ liệu cũ
-
-    if (dssp != null) {
-        for (SANPHAM sp : dssp) {
-            Vector<Object> vec = new Vector<>();
-           // vec.add(sp.getProductID());
-            vec.add(sp.getTenLoai());
-            vec.add(sp.getSerial());
-            vec.add(convertStatus(sp.getStatus()));
-            vec.add(sp.getStartDate());
-            vec.add(sp.getEndDate());
-
-            dtm.addRow(vec);
         }
     }
-   }
+
+    private void loadDataTableSPTheoTrangThai() {
+        String selected = cbLocSP.getSelectedItem().toString();
+        ArrayList<SANPHAM> dssp = null;
+
+        switch (selected) {
+            case "Tất cả":
+                dssp = sp_data.getListSP();
+                break;
+            case "Tồn kho":
+                dssp = sp_data.getlistSP_TK();
+                break;
+            case "Đã bán":
+                dssp = sp_data.getlistSP_DB();
+                break;
+        }
+
+        DefaultTableModel dtm = (DefaultTableModel) tbSP.getModel();
+        dtm.setRowCount(0); // Xóa dữ liệu cũ
+
+        if (dssp != null) {
+            for (SANPHAM sp : dssp) {
+                Vector<Object> vec = new Vector<>();
+                // vec.add(sp.getProductID());
+                vec.add(sp.getTenLoai());
+                vec.add(sp.getSerial());
+                vec.add(convertStatus(sp.getStatus()));
+                vec.add(sp.getStartDate());
+                vec.add(sp.getEndDate());
+
+                dtm.addRow(vec);
+            }
+        }
+    }
 
     private void loadTable_TheoSerial(String Serial) {
         DefaultTableModel dtm = (DefaultTableModel) tbSP.getModel();
@@ -150,7 +150,7 @@ public class QuanLySanPham extends JPanel {
         ArrayList<SANPHAM> dssp = sp_data.getSPtheoSerial(Serial);
         for (SANPHAM sp : dssp) {
             Vector vec = new Vector<>();
-          //  vec.add(sp.getProductID());
+            //  vec.add(sp.getProductID());
             vec.add(sp.getTenLoai());
             vec.add(sp.getSerial());
             vec.add(convertStatus(sp.getStatus()));

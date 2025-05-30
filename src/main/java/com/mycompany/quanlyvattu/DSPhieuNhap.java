@@ -110,7 +110,7 @@ public class DSPhieuNhap extends JPanel {
 //    }
     private void loadChiTietPhieuNhap(int idpn) {
         try {
-            System.out.println("idpx: " + idpn);
+            
             DBAccess acc = new DBAccess();
 
             // Lấy thông tin phiếu xuất, nhóm SP, loại SP
